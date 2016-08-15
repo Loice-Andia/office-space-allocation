@@ -1,17 +1,16 @@
 class Amity(object):
-	"""Super class for amity"""
-	def __init__(self, rooms):
-		super(Amity, self).__init__()
-		self.rooms = rooms
+    """Super class for amity"""
 
-	def create_room(self, room_name, room_type):
-		self.room_name = room_name
-		self.room_type = room_type
+    def __init__(self, rooms=[]):
+        super(Amity, self).__init__()
+        self.rooms = rooms
 
-	def save_state(self):
-		pass
+    def create_room(self, room_name):
+        self.room_name = room_name
+        self.rooms.append(self.room_name)
 
-	def load_state(self):
-		pass
+    def save_state(self):
+        pass
 
-		
+    def load_state(self):
+        pass

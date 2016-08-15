@@ -13,13 +13,14 @@ class TestClasses(unittest.TestCase):
     """Class to test class initialization"""
 
     def setUp(self):
-        self.test_amity = Amity([])
+        self.test_amity = Amity()
         self.test_fellow = Fellow("fellow", "Narnia", "Emerald")
         self.test_staff = Staff("staff", "Narnia")
         self.test_person = Person(1, "Emerald")
         self.test_room = Room("Emerald", "office")
         self.test_office = Office(4, 2)
         self.test_livingspace = LivingSpace(6, 2)
+
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -37,6 +38,14 @@ class TestClasses(unittest.TestCase):
             self.test_person, Person, msg="Cannot create `Person` instance")
         self.assertIsInstance(
             self.test_staff, Staff, msg="Cannot create `Staff` instance")
+
+    def test_create_room_in_amity(self):
+        self.assertNotEqual(0, len(self.test_amity.rooms))
+        self.assertEqual(str, type(self.test_amity.create_room(room_name)))
+        self.assertNotEqual(0, len(self.test_amity.create_room.room_name))
+
+    def test_add_person_in_person(self):
+    	self.assertEqual(1, len(self.test_person.wants_accomodation))
 
 
 if __name__ == '__main__':
