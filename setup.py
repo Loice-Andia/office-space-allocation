@@ -3,7 +3,7 @@
 This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
-    amity tcp <host> <port> [--timeout=<seconds>]
+    amity create_room <room_name>...
     amity serial <port> [--baud=<n>] [--timeout=<seconds>]
     amity (-i | --interactive)
     amity (-h | --help | --version)
@@ -16,6 +16,7 @@ Options:
 import sys
 import cmd
 from docopt import docopt, DocoptExit
+from app.amity import my_amity
 
 
 def docopt_cmd(func):
@@ -56,10 +57,10 @@ class MyInteractive (cmd.Cmd):
     file = None
 
     @docopt_cmd
-    def do_tcp(self, arg):
-        """Usage: tcp <host> <port> [--timeout=<seconds>]"""
-
-        print(arg)
+    def do_create_room(self, args):
+        """Usage: create_room <room_name>..."""
+        #print args
+        my_amity.create_room(args)
 
     @docopt_cmd
     def do_serial(self, arg):
