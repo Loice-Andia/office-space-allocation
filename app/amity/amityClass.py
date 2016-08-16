@@ -4,8 +4,8 @@ class Amity(object):
     def __init__(self):
         super(Amity, self).__init__()
         self.rooms = {
-            'O': [],
-            'L': []
+            'Office': [],
+            'LivingSpace': []
         }
 
     def create_room(self, args):
@@ -14,7 +14,7 @@ class Amity(object):
 
         room_type = None
 
-        #Assign a group of rooms to a room type
+        # Assign a group of rooms to a room type
         if room_type == None:
             room_type = raw_input(
                 "Enter room type: \n O: Office space \n L: Living space: \n")
@@ -22,13 +22,13 @@ class Amity(object):
             while room_type != "O" and room_type != "L":
                 room_type = raw_input(
                     "Try again. Enter Room Type:\n O: Office space \n L: Living space: \n")
-                
-        #Adds room to the rooms dict
+
+        # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room_type == "O":
-                self.rooms['O'].append(room)
+                self.rooms['Office'].append(room)
             elif room_type == "L":
-                self.rooms['L'].append(room)
+                self.rooms['LivingSpace'].append(room)
 
         print self.rooms
 
