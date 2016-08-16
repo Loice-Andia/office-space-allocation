@@ -1,9 +1,13 @@
-class LivingSpace(object):
+from roomClass import Room
+
+
+class LivingSpace(Room):
     """
     LivingSpace
     """
 
-    def __init__(self, room_capacity, occupants_num):
+    max_capacity = 6
+
+    def __init__(self, room_capacity, occupants=[]):
         self.room_capacity = room_capacity
-        self.occupants_num = occupants_num
-        
+        self.occupants = occupants
