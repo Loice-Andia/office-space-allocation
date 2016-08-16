@@ -17,7 +17,7 @@ Usage:
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
-    --baud=<n>  Baudrate [default: 9600]
+    
 """
 
 import sys
@@ -60,8 +60,19 @@ def docopt_cmd(func):
 
 
 class MyInteractive (cmd.Cmd):
-    intro = 'Welcome to Amity office space allocation!' \
+    intro = 'Welcome to Amity office space allocation!\n\n'\
+        + 'Usage:\n'\
+        + 'amity create_room <room_name>...\n'\
+        + 'amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]\n' \
+        + 'amity reallocate_person <person_identifier> <new_room_name>\n'\
+        + 'amity load_people [-f=filename]\n'\
+        + 'amity print_allocations [-o=filename]\n'\
+        + 'amity print_unallocated [-o=filename]\n'\
+        + 'amity print_room <room_name>\n'\
+        + 'amity save_state [--db=sqlite_database]\n'\
+        + 'amity load_state <sqlite_database>\n'\
         + ' (type help for a list of commands.)'
+
     prompt = '(amity) '
     file = None
 
@@ -78,17 +89,17 @@ class MyInteractive (cmd.Cmd):
         person.add_person(args)
 
     @docopt_cmd
-    def reallocate_person(self, args):
+    def do_reallocate_person(self, args):
         """Usage: \
         amity reallocate_person <person_identifier> <new_room_name>"""
         print args
 
     @docopt_cmd
-    def load_people(self, args):
+    def do_load_people(self, args):
         """Usage: \
         amity load_people [-f=filename]
 
-        Sample Input Format:
+                Sample Input Format:
 
                 OLUWAFEMI SULE FELLOW Y
                 DOMINIC WALTERS STAFF
@@ -101,19 +112,19 @@ class MyInteractive (cmd.Cmd):
         print args
 
     @docopt_cmd
-    def print_allocations(self, args):
+    def do_print_allocations(self, args):
         """Usage: \
         amity print_allocations [-o=filename]"""
         print args
 
     @docopt_cmd
-    def print_unallocated(self, args):
+    def do_print_unallocated(self, args):
         """Usage: \
         amity print_unallocated [-o=filename]"""
         print args
 
     @docopt_cmd
-    def print_room(self, args):
+    def do_print_room(self, args):
         """Usage: \
         amity print_room <room_name>
                 Sample Output Format
@@ -130,13 +141,13 @@ class MyInteractive (cmd.Cmd):
         print args
 
     @docopt_cmd
-    def save_state(self, args):
+    def do_save_state(self, args):
         """Usage: \
         amity save_state [--db=sqlite_database]"""
         print args
 
     @docopt_cmd
-    def load_state(self, args):
+    def do_load_state(self, args):
         """Usage: \
         amity load_state <sqlite_database>"""
         print args
