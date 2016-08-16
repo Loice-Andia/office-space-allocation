@@ -6,11 +6,10 @@ class Amity(object):
         self.rooms = []
 
     def create_room(self, args):
-    	for room in args["<room_name>"]:
-    		#print room
-        	self.rooms.append(room)
+        for room in args["<room_name>"]:
+            # print room
+            self.rooms.append(room)
         print self.rooms
-
 
     def save_state(self):
         pass

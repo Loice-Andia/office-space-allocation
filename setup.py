@@ -4,9 +4,16 @@ This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
     amity create_room <room_name>...
-    amity serial <port> [--baud=<n>] [--timeout=<seconds>]
+    amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]
+    amity reallocate_person <person_identifier> <new_room_name>
+    amity load_people [-f=filename]
+    amity print_allocations [-o=filename]
+    amity print_unallocated [-o=filename]
+    amity print_room <room_name>
+    amity save_state [--db=sqlite_database]
+    amity load_state <sqlite_database>
     amity (-i | --interactive)
-    amity (-h | --help | --version)
+    amity (-h | --help)
 Options:
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
@@ -17,6 +24,7 @@ import sys
 import cmd
 from docopt import docopt, DocoptExit
 from app.amity import my_amity
+from app.person import person
 
 
 def docopt_cmd(func):
@@ -24,6 +32,7 @@ def docopt_cmd(func):
     This decorator is used to simplify the try/except block and pass the result
     of the docopt parsing to the called action.
     """
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
@@ -59,17 +68,78 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, args):
         """Usage: create_room <room_name>..."""
-        #print args
+        # print args
         my_amity.create_room(args)
 
     @docopt_cmd
-    def do_serial(self, arg):
-        """Usage: serial <port> [--baud=<n>] [--timeout=<seconds>]
-Options:
-    --baud=<n>  Baudrate [default: 9600]
-        """
+    def do_add_person(self, args):
+        """Usage: \
+        add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]"""
+        person.add_person(args)
 
-        print(arg)
+    @docopt_cmd
+    def reallocate_person(self, args):
+        """Usage: \
+        amity reallocate_person <person_identifier> <new_room_name>"""
+        print args
+
+    @docopt_cmd
+    def load_people(self, args):
+        """Usage: \
+        amity load_people [-f=filename]
+
+        Sample Input Format:
+
+                OLUWAFEMI SULE FELLOW Y
+                DOMINIC WALTERS STAFF
+                SIMON PATTERSON FELLOW Y
+                MARI LAWRENCE FELLOW Y
+                LEIGH RILEY STAFF
+                TANA LOPEZ FELLOW Y
+                KELLY McGUIRE STAFF N
+        """
+        print args
+
+    @docopt_cmd
+    def print_allocations(self, args):
+        """Usage: \
+        amity print_allocations [-o=filename]"""
+        print args
+
+    @docopt_cmd
+    def print_unallocated(self, args):
+        """Usage: \
+        amity print_unallocated [-o=filename]"""
+        print args
+
+    @docopt_cmd
+    def print_room(self, args):
+        """Usage: \
+        amity print_room <room_name>
+                Sample Output Format
+
+                ROOM NAME
+                -------------------------------------
+                MEMBER 1, MEMBER 2, MEMBER 3
+
+                ROOM NAME
+                -------------------------------------
+                MEMBER 1, MEMBER 2
+
+        """
+        print args
+
+    @docopt_cmd
+    def save_state(self, args):
+        """Usage: \
+        amity save_state [--db=sqlite_database]"""
+        print args
+
+    @docopt_cmd
+    def load_state(self, args):
+        """Usage: \
+        amity load_state <sqlite_database>"""
+        print args
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
