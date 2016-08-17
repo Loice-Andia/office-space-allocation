@@ -8,6 +8,7 @@ class LivingSpace(Room):
 
     max_capacity = 6
 
-    def __init__(self, room_capacity, occupants=[]):
-        self.room_capacity = room_capacity
+    def __init__(self, occupants=[]):
+        self.room_type = 'LivingSpace'
+        self.room_capacity = 6
         self.occupants = occupants

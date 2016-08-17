@@ -5,8 +5,8 @@ class Office(Room):
     """
     Office
     """
-    max_capacity = 4
 
-    def __init__(self, room_capacity, occupants=[]):
-        self.room_capacity = room_capacity
-        self.occupants_num = occupants
+    def __init__(self, occupants=[]):
+    	self.room_type = 'Office'
+        self.room_capacity = 4
+        self.occupants = occupants
