@@ -1,5 +1,11 @@
+rooms = {
+            'Office': [],
+            'LivingSpace': []
+        }
+
+
 class Amity(object):
-    """Super class for amity"""
+    """Super class for amity"""#
 
     def __init__(self):
         super(Amity, self).__init__()
@@ -26,11 +32,11 @@ class Amity(object):
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room_type == "O":
-                self.rooms['Office'].append(room)
+                rooms['Office'].append(room)
             elif room_type == "L":
-                self.rooms['LivingSpace'].append(room)
+                rooms['LivingSpace'].append(room)
 
-        print self.rooms
+        return rooms
 
     def save_state(self):
         pass
