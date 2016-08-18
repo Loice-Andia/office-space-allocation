@@ -1,5 +1,6 @@
 import random
-from app.amity.amityClass import Amity, rooms
+from app.amity.amityClass import rooms
+
 class Person(object):
     """
     Person Class
@@ -37,18 +38,32 @@ class Person(object):
                 self.person_identifier, self.people_data)
 
         self.person_identifier += 1
-        print self.people_data
+        
 
     def allocate_living_space(self, identifier, data):
         # Checks if the person is a fellow and wants accomodation
         # Checks which living spaces arre available
         # Randomly picks a room and appends the person identifier
-        
-        
+        room_list = []
+        for room in rooms['LivingSpace']:
+            room_list.append(room)
+
+        allocated_room = random.choice(room_list)
+
         if identifier in data["Fellow"]:
             if data["Fellow"][identifier]['accomodation'] == 'Y':
-                print rooms
+                name = data["Fellow"][identifier]['name']
+                print name
+        import ipdb
+        ipdb.set_trace()
+        print allocated_room
 
+        rooms['LivingSpace'][allocated_room].append(name)
+
+        # if rooms['LivingSpace'][allocated_room]:
+        #     rooms['LivingSpace'][allocated_room].join(identifier)
+
+        print rooms['LivingSpace']
 
     def load_people(self):
         pass

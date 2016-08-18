@@ -1,18 +1,18 @@
 rooms = {
-            'Office': [],
-            'LivingSpace': []
-        }
+    'Office': {},
+    'LivingSpace': {}
+}
 
 
 class Amity(object):
-    """Super class for amity"""#
+    """Super class for amity"""
 
     def __init__(self):
         super(Amity, self).__init__()
-        self.rooms = {
-            'Office': [],
-            'LivingSpace': []
-        }
+        # self.rooms = {
+        #     'Office': [],
+        #     'LivingSpace': []
+        # }
 
     def create_room(self, args):
         """Allows user to enter a list of room names specifying
@@ -21,7 +21,7 @@ class Amity(object):
         room_type = None
 
         # Assign a group of rooms to a room type
-        if room_type == None:
+        if room_type is None:
             room_type = raw_input(
                 "Enter room type: \n O: Office space \n L: Living space: \n")
             room_type = room_type.upper()
@@ -32,9 +32,9 @@ class Amity(object):
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room_type == "O":
-                rooms['Office'].append(room)
+                rooms['Office'].update({room: []})
             elif room_type == "L":
-                rooms['LivingSpace'].append(room)
+                rooms['LivingSpace'].update({room:[]})
 
         return rooms
 
