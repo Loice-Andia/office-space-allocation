@@ -53,15 +53,10 @@ class Person(object):
 
         rooms['LivingSpace'][allocated_living_space].append(identifier)
 
-        # if rooms['LivingSpace'][allocated_room]:
-        #     rooms['LivingSpace'][allocated_room].join(identifier)
-
-        print rooms
+        return rooms
 
     def allocate_office(self, identifier, data):
-        # Checks if the person is a fellow and wants accomodation
-        # Checks which living spaces arre available
-        # Randomly picks a room and appends the person identifier
+        # Randomly picks an office and appends the person identifier
         available_offices = []
 
         for office in rooms['Office']:
@@ -71,7 +66,7 @@ class Person(object):
         allocated_office = random.choice(available_offices)
         # print rooms
         rooms['Office'][allocated_office].append(identifier)
-        print rooms
+        return rooms
 
     def load_people(self):
         pass
