@@ -21,9 +21,9 @@ class Person(object):
 
         self.person_name = args["<first_name>"] + " " + args["<last_name>"]
 
-        if args["<wants_accomodation>"] == 'Y':
+        if args["<wants_accomodation>"] is 'Y':
             wants_accomodation = args["<wants_accomodation>"]
-        elif args["<wants_accomodation>"] == 'N' or args["Staff"]:
+        elif args["<wants_accomodation>"] is None:
             wants_accomodation = 'N'
 
         if args["Staff"]:
@@ -34,10 +34,11 @@ class Person(object):
             self.people_data.update({"Fellow": dict([(self.person_identifier,
                                                       {'name': self.person_name, 'accomodation': wants_accomodation})])})
             self.allocate_office(self.person_identifier, self.people_data)
-            self.allocate_living_space(
-                self.person_identifier, self.people_data)
+            if wants_accomodation is 'Y':
+                self.allocate_living_space(self.person_identifier, self.people_data)
 
         self.person_identifier += 1
+        
 
     def allocate_living_space(self, identifier, data):
         # Checks if the person is a fellow and wants accomodation
@@ -67,6 +68,18 @@ class Person(object):
         # print rooms
         rooms['Office'][allocated_office].append(identifier)
         return rooms
+
+    def reallocate_person(self, args):
+
+        person_identifier = args["<person_identifier>"]
+        new_room = args["<new_room_name>"]
+        import ipdb
+        ipdb.set_trace()
+        for room in rooms['LivingSpace'].keys():
+            if room is new_room:
+                print rooms['LivingSpace'][new_room]
+        else:
+            print rooms['Office'][new_room]
 
     def load_people(self):
         pass

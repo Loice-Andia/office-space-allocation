@@ -91,13 +91,14 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage: \
-        amity reallocate_person <person_identifier> <new_room_name>"""
-        print args
+        reallocate_person <person_identifier> <new_room_name>"""
+
+        person.reallocate_person(args)
 
     @docopt_cmd
     def do_load_people(self, args):
         """Usage: \
-        amity load_people [-f=filename]
+        load_people [-f=filename]
 
                 Sample Input Format:
 
@@ -114,13 +115,13 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, args):
         """Usage: \
-        amity print_allocations [-o=filename]"""
+        print_allocations [-o=filename]"""
         print args
 
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage: \
-        amity print_unallocated [-o=filename]"""
+        print_unallocated [-o=filename]"""
         print args
 
     @docopt_cmd
@@ -143,13 +144,13 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_save_state(self, args):
         """Usage: \
-        amity save_state [--db=sqlite_database]"""
+        save_state [--db=sqlite_database]"""
         print args
 
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: \
-        amity load_state <sqlite_database>"""
+        load_state <sqlite_database>"""
         print args
 
     def do_quit(self, arg):
