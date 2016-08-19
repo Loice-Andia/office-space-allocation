@@ -28,13 +28,13 @@ class Amity(object):
             while room_type != "O" and room_type != "L":
                 room_type = raw_input(
                     "Try again. Enter Room Type:\n O: Office space \n L: Living space: \n")
-
+  
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room_type == "O":
                 rooms['Office'].update({room: []})
             elif room_type == "L":
-                rooms['LivingSpace'].update({room:[]})
+                rooms['LivingSpace'].update({room: []})
 
         return rooms
 
