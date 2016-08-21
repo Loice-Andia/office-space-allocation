@@ -25,6 +25,7 @@ import cmd
 from docopt import docopt, DocoptExit
 from app.amity import my_amity
 from app.person import person
+from app.rooms import my_room
 
 
 def docopt_cmd(func):
@@ -115,31 +116,23 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, args):
         """Usage: \
-        print_allocations [-o=filename]"""
-        print args
+        print_allocations [-o=filename]
+        """
+        my_room.print_allocations(args)
 
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage: \
         print_unallocated [-o=filename]"""
-        print args
+        my_room.print_unallocated(args)
 
     @docopt_cmd
     def do_print_room(self, args):
         """Usage: \
-        amity print_room <room_name>
-                Sample Output Format
-
-                ROOM NAME
-                -------------------------------------
-                MEMBER 1, MEMBER 2, MEMBER 3
-
-                ROOM NAME
-                -------------------------------------
-                MEMBER 1, MEMBER 2
+        print_room <room_name>
 
         """
-        print args
+        my_room.print_room(args)
 
     @docopt_cmd
     def do_save_state(self, args):
