@@ -1,6 +1,8 @@
 import random
 from app.amity.amityClass import rooms
 
+people_data = {}
+
 
 class Person(object):
     """
@@ -10,7 +12,6 @@ class Person(object):
     def __init__(self):
         self.person_name = []
         self.person_identifier = 1
-        self.people_data = {}
 
     wants_accomodation = 'N'
 
@@ -27,16 +28,16 @@ class Person(object):
             wants_accomodation = 'N'
 
         if args["Staff"]:
-            self.people_data.update({"Staff": dict([(self.person_identifier,
+            people_data.update({"Staff": dict([(self.person_identifier,
                                                      {'name': self.person_name, 'accomodation': wants_accomodation})])})
-            self.allocate_office(self.person_identifier, self.people_data)
+            self.allocate_office(self.person_identifier, people_data)
         elif args["Fellow"]:
-            self.people_data.update({"Fellow": dict([(self.person_identifier,
+            people_data.update({"Fellow": dict([(self.person_identifier,
                                                       {'name': self.person_name, 'accomodation': wants_accomodation})])})
-            self.allocate_office(self.person_identifier, self.people_data)
+            self.allocate_office(self.person_identifier, people_data)
             if wants_accomodation is 'Y':
                 self.allocate_living_space(
-                    self.person_identifier, self.people_data)
+                    self.person_identifier, people_data)
 
         self.person_identifier += 1
 
@@ -45,6 +46,7 @@ class Person(object):
         Checks if the person is a fellow and wants accomodation
         Checks which living spaces are available
         Randomly picks a room and appends the person identifier
+
         """
 
         available_living_spaces = []
@@ -73,7 +75,7 @@ class Person(object):
         allocated_office = random.choice(available_offices)
         # print rooms
         rooms['Office'][allocated_office].append(identifier)
-        print rooms
+
         return rooms
 
     def reallocate_person(self, args):
@@ -85,15 +87,13 @@ class Person(object):
         person_identifier = int(args["<person_identifier>"])
         new_room = args["<new_room_name>"]
 
-        for identifier in self.people_data["Staff"].keys():
+        for identifier in people_data["Staff"].keys():
             if identifier is person_identifier:
-                name = self.people_data["Staff"][person_identifier]["name"]
+                name = people_data["Staff"][person_identifier]["name"]
             else:
-                name = self.people_data["Fellow"][person_identifier]["name"]
+                name = people_data["Fellow"][person_identifier]["name"]
 
-        print name
-
-        # find currently allocated room
+        # find currently allocated room and remove identifier
         for current_room in rooms['Office'].keys():
             if person_identifier in rooms['Office'][current_room]:
                 rooms['Office'][current_room].remove(person_identifier)
@@ -102,10 +102,8 @@ class Person(object):
                 if person_identifier in rooms['LivingSpace'][current_room]:
                     rooms['LivingSpace'][current_room].remove(
                         person_identifier)
-        print rooms
-        import ipdb
-        ipdb.set_trace()
 
+        #Append identifier to new_room
         if new_room in rooms['LivingSpace'].keys():
             rooms['LivingSpace'][new_room].append(person_identifier)
         elif new_room in rooms['Office'].keys():
