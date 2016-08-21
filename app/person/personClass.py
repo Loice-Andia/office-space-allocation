@@ -111,7 +111,7 @@ class Person(object):
         elif new_room in rooms['Office'].keys():
             rooms['Office'][new_room].append(person_identifier)
 
-        print rooms
+        return rooms
 
     def load_people(self):
         pass
