@@ -35,15 +35,18 @@ class Person(object):
                                                       {'name': self.person_name, 'accomodation': wants_accomodation})])})
             self.allocate_office(self.person_identifier, self.people_data)
             if wants_accomodation is 'Y':
-                self.allocate_living_space(self.person_identifier, self.people_data)
+                self.allocate_living_space(
+                    self.person_identifier, self.people_data)
 
         self.person_identifier += 1
-        
 
     def allocate_living_space(self, identifier, data):
-        # Checks if the person is a fellow and wants accomodation
-        # Checks which living spaces arre available
-        # Randomly picks a room and appends the person identifier
+        """
+        Checks if the person is a fellow and wants accomodation
+        Checks which living spaces are available
+        Randomly picks a room and appends the person identifier
+        """
+
         available_living_spaces = []
 
         for room in rooms['LivingSpace']:
@@ -57,7 +60,10 @@ class Person(object):
         return rooms
 
     def allocate_office(self, identifier, data):
-        # Randomly picks an office and appends the person identifier
+        """
+        Checks which offices are available
+        Randomly picks an office and appends the person identifier
+        """
         available_offices = []
 
         for office in rooms['Office']:
@@ -67,19 +73,45 @@ class Person(object):
         allocated_office = random.choice(available_offices)
         # print rooms
         rooms['Office'][allocated_office].append(identifier)
+        print rooms
         return rooms
 
     def reallocate_person(self, args):
+        """
+        Deletes the person identifier in the current room
+        and appends it to the new room
+        """
 
-        person_identifier = args["<person_identifier>"]
+        person_identifier = int(args["<person_identifier>"])
         new_room = args["<new_room_name>"]
+
+        for identifier in self.people_data["Staff"].keys():
+            if identifier is person_identifier:
+                name = self.people_data["Staff"][person_identifier]["name"]
+            else:
+                name = self.people_data["Fellow"][person_identifier]["name"]
+
+        print name
+
+        # find currently allocated room
+        for current_room in rooms['Office'].keys():
+            if person_identifier in rooms['Office'][current_room]:
+                rooms['Office'][current_room].remove(person_identifier)
+        else:
+            for current_room in rooms['LivingSpace'].keys():
+                if person_identifier in rooms['LivingSpace'][current_room]:
+                    rooms['LivingSpace'][current_room].remove(
+                        person_identifier)
+        print rooms
         import ipdb
         ipdb.set_trace()
-        for room in rooms['LivingSpace'].keys():
-            if room is new_room:
-                print rooms['LivingSpace'][new_room]
-        else:
-            print rooms['Office'][new_room]
+
+        if new_room in rooms['LivingSpace'].keys():
+            rooms['LivingSpace'][new_room].append(person_identifier)
+        elif new_room in rooms['Office'].keys():
+            rooms['Office'][new_room].append(person_identifier)
+
+        print rooms
 
     def load_people(self):
         pass
