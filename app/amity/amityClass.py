@@ -25,7 +25,7 @@ class Amity(object):
             room_type = raw_input(
                 "Enter room type: \n O: Office space \n L: Living space: \n")
             room_type = room_type.upper()
-            while room_type != "O" and room_type != "L":
+            if room_type != "O" and room_type != "L":
                 room_type = raw_input(
                     "Try again. Enter Room Type:\n O: Office space \n L: Living space: \n")
   

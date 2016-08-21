@@ -31,16 +31,20 @@ class Room(object):
         """
         Loops through the rooms object printing the room and the occupants
         """
+        print args
         data = ""
         for room_type in rooms.keys():
             data += room_type.upper()
             data += "\n"
             for room_name in rooms[room_type].keys():
                 data += room_name.upper()
+                data += "\n"
                 data += "----------------------------------------"
+                data += "\n"
                 for identifier in rooms[room_type][room_name]:
                     data += self.get_names(identifier, people_data)
                     data += ", "
+                data += "\n"
                 data += "\n"
 
         print data

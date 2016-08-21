@@ -7,7 +7,7 @@ Usage:
     amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]
     amity reallocate_person <person_identifier> <new_room_name>
     amity load_people [-f=filename]
-    amity print_allocations [-o=filename]
+    amity print_allocations [--o=filename]
     amity print_unallocated [-o=filename]
     amity print_room <room_name>
     amity save_state [--db=sqlite_database]
@@ -85,20 +85,20 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_add_person(self, args):
-        """Usage: \
+        """Usage:
         add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]"""
         person.add_person(args)
 
     @docopt_cmd
     def do_reallocate_person(self, args):
-        """Usage: \
+        """Usage:
         reallocate_person <person_identifier> <new_room_name>"""
 
         person.reallocate_person(args)
 
     @docopt_cmd
     def do_load_people(self, args):
-        """Usage: \
+        """Usage:
         load_people [-f=filename]
 
                 Sample Input Format:
@@ -115,20 +115,20 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_print_allocations(self, args):
-        """Usage: \
-        print_allocations [-o=filename]
+        """Usage:
+        print_allocations [--o=filename]
         """
         my_room.print_allocations(args)
 
     @docopt_cmd
     def do_print_unallocated(self, args):
-        """Usage: \
+        """Usage:
         print_unallocated [-o=filename]"""
         my_room.print_unallocated(args)
 
     @docopt_cmd
     def do_print_room(self, args):
-        """Usage: \
+        """Usage:
         print_room <room_name>
 
         """
@@ -136,7 +136,7 @@ class MyInteractive (cmd.Cmd):
 
     @docopt_cmd
     def do_save_state(self, args):
-        """Usage: \
+        """Usage:
         save_state [--db=sqlite_database]"""
         print args
 
