@@ -28,14 +28,29 @@ class Room(object):
                 print self.get_names(identifier, people_data)
 
     def print_allocations(self, args):
+        """
+        Loops through the rooms object printing the room and the occupants
+        """
+        data = ""
         for room_type in rooms.keys():
-            print room_type.upper()
+            data += room_type.upper()
+            data += "\n"
             for room_name in rooms[room_type].keys():
-                print room_name.upper()
-                print "----------------------------------------"
+                data += room_name.upper()
+                data += "----------------------------------------"
                 for identifier in rooms[room_type][room_name]:
-                    print self.get_names(identifier, people_data)
-                print "\n"
+                    data += self.get_names(identifier, people_data)
+                    data += ", "
+                data += "\n"
+
+        print data
+
+        if args["--o"]:
+            with open(args["--o"], 'wt') as f:
+                f.write(data)
+                print "The list of allocations has been saved " \
+                    "to the following file: "
+                print args["--o"]
 
     def print_unallocated(self, args):
         pass
