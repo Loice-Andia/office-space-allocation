@@ -49,12 +49,12 @@ class Room(object):
 
         print data
 
-        if args["--o"]:
-            with open(args["--o"], 'wt') as f:
+        if args["-o"]:
+            with open(args["filename"], 'wt') as f:
                 f.write(data)
                 print "The list of allocations has been saved " \
                     "to the following file: "
-                print args["--o"]
+                print args["-o"]
 
     def print_unallocated(self, args):
         pass

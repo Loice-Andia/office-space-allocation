@@ -7,7 +7,7 @@ Usage:
     amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]
     amity reallocate_person <person_identifier> <new_room_name>
     amity load_people [-f=filename]
-    amity print_allocations [--o=filename]
+    amity print_allocations [-o <filename>]
     amity print_unallocated [-o=filename]
     amity print_room <room_name>
     amity save_state [--db=sqlite_database]
@@ -15,6 +15,7 @@ Usage:
     amity (-i | --interactive)
     amity (-h | --help)
 Options:
+    -o, --output  Options to save to a txt file
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
     
@@ -67,7 +68,7 @@ class MyInteractive (cmd.Cmd):
         + 'amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]\n' \
         + 'amity reallocate_person <person_identifier> <new_room_name>\n'\
         + 'amity load_people [-f=filename]\n'\
-        + 'amity print_allocations [-o=filename]\n'\
+        + 'amity print_allocations [-o <filename>]\n'\
         + 'amity print_unallocated [-o=filename]\n'\
         + 'amity print_room <room_name>\n'\
         + 'amity save_state [--db=sqlite_database]\n'\
@@ -116,7 +117,7 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_allocations(self, args):
         """Usage:
-        print_allocations [--o=filename]
+        print_allocations [-o <filename>]
         """
         my_room.print_allocations(args)
 
