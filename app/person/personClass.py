@@ -28,18 +28,31 @@ class Person(object):
             wants_accomodation = 'N'
 
         if args["Staff"]:
-            people_data.update({"Staff": dict([(self.person_identifier,
-                                                     {'name': self.person_name, 'accomodation': wants_accomodation})])})
-            self.allocate_office(self.person_identifier, people_data)
+            people_data.update({
+                "Staff": dict([(self.person_identifier,
+                                {'name': self.person_name, 'accomodation': wants_accomodation})])
+            })
+            office = self.allocate_office(self.person_identifier, people_data)
         elif args["Fellow"]:
-            people_data.update({"Fellow": dict([(self.person_identifier,
-                                                      {'name': self.person_name, 'accomodation': wants_accomodation})])})
-            self.allocate_office(self.person_identifier, people_data)
+            people_data.update({
+                "Fellow": dict([(self.person_identifier,
+                                 {'name': self.person_name, 'accomodation': wants_accomodation})])
+            })
+            office = self.allocate_office(self.person_identifier, people_data)
+            livingspace = ""
             if wants_accomodation is 'Y':
-                self.allocate_living_space(
+                livingspace = self.allocate_living_space(
                     self.person_identifier, people_data)
+        print self.person_name.upper() + " has been allocated "\
+            + office.upper() + " office."
+        if livingspace != "":
+            print self.person_name.upper() + " has been allocated "\
+                + livingspace.upper() + " Living Space."
+        else:
+            print "No living Space allocated"
 
         self.person_identifier += 1
+        return people_data
 
     def allocate_living_space(self, identifier, data):
         """
@@ -59,7 +72,7 @@ class Person(object):
 
         rooms['LivingSpace'][allocated_living_space].append(identifier)
 
-        return rooms
+        return allocated_living_space
 
     def allocate_office(self, identifier, data):
         """
@@ -76,7 +89,7 @@ class Person(object):
         # print rooms
         rooms['Office'][allocated_office].append(identifier)
 
-        return rooms
+        return allocated_office
 
     def reallocate_person(self, args):
         """
@@ -103,13 +116,62 @@ class Person(object):
                     rooms['LivingSpace'][current_room].remove(
                         person_identifier)
 
-        #Append identifier to new_room
+        # Append identifier to new_room
         if new_room in rooms['LivingSpace'].keys():
             rooms['LivingSpace'][new_room].append(person_identifier)
         elif new_room in rooms['Office'].keys():
             rooms['Office'][new_room].append(person_identifier)
 
+        name = name.upper()
+        print name + " has been removed from " + current_room +\
+            " and has been allocated to " + new_room
+
         return rooms
 
-    def load_people(self):
-        pass
+    def load_people(self, args):
+        """
+        Adds people to rooms from a txt file
+        Sample Input Format:
+
+                OLUWAFEMI SULE FELLOW Y
+                DOMINIC WALTERS STAFF
+                SIMON PATTERSON FELLOW Y
+                MARI LAWRENCE FELLOW Y
+                LEIGH RILEY STAFF
+                TANA LOPEZ FELLOW Y
+                KELLY McGUIRE STAFF N
+        """
+        # print args
+        arg_dict = {}
+        with open(args["<filename>"], 'r') as input_file:
+            people = input_file.readlines()
+            for person in people:
+                person = person.split()
+                # import ipdb
+                # ipdb.set_trace()
+
+                if person:
+                    if person[2] is 'STAFF':
+                        is_staff = True
+                        is_fellow = False
+                    else:
+                        is_staff = False
+                        is_fellow = True
+
+                    if len(person) is 4:
+                        if person[3] is 'Y':
+                            wants_accomodation = person[3]
+                        elif person[3] is 'N':
+                            wants_accomodation = None
+                    else:
+                        wants_accomodation = None
+
+                    arg_dict.update({
+                        "<first_name>": person[0],
+                        "<last_name>": person[1],
+                        "Staff": is_staff,
+                        "Fellow": is_fellow,
+                        "<wants_accomodation>": wants_accomodation
+                    })
+
+                    self.add_person(arg_dict)

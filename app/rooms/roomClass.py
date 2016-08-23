@@ -31,7 +31,7 @@ class Room(object):
         """
         Loops through the rooms object printing the room and the occupants
         """
-        print args
+        #print args
         data = ""
         for room_type in rooms.keys():
             data += room_type.upper()
@@ -50,11 +50,10 @@ class Room(object):
         print data
 
         if args["-o"]:
-            with open(args["filename"], 'wt') as f:
-                f.write(data)
+            with open(args["<filename>"], 'wt') as output_file:
+                output_file.write(data)
                 print "The list of allocations has been saved " \
-                    "to the following file: "
-                print args["-o"]
+                    "to the following file: " + args["<filename>"]
 
     def print_unallocated(self, args):
         pass

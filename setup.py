@@ -6,7 +6,7 @@ Usage:
     amity create_room <room_name>...
     amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]
     amity reallocate_person <person_identifier> <new_room_name>
-    amity load_people [-f=filename]
+    amity load_people <filename>
     amity print_allocations [-o <filename>]
     amity print_unallocated [-o=filename]
     amity print_room <room_name>
@@ -67,7 +67,7 @@ class MyInteractive (cmd.Cmd):
         + 'amity create_room <room_name>...\n'\
         + 'amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]\n' \
         + 'amity reallocate_person <person_identifier> <new_room_name>\n'\
-        + 'amity load_people [-f=filename]\n'\
+        + 'amity load_people <filename>\n'\
         + 'amity print_allocations [-o <filename>]\n'\
         + 'amity print_unallocated [-o=filename]\n'\
         + 'amity print_room <room_name>\n'\
@@ -100,7 +100,7 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_load_people(self, args):
         """Usage:
-        load_people [-f=filename]
+        load_people <filename>
 
                 Sample Input Format:
 
@@ -112,7 +112,7 @@ class MyInteractive (cmd.Cmd):
                 TANA LOPEZ FELLOW Y
                 KELLY McGUIRE STAFF N
         """
-        print args
+        person.load_people(args)
 
     @docopt_cmd
     def do_print_allocations(self, args):
