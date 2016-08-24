@@ -8,17 +8,16 @@ Usage:
     amity reallocate_person <person_identifier> <new_room_name>
     amity load_people <filename>
     amity print_allocations [-o <filename>]
-    amity print_unallocated [-o=filename]
+    amity print_unallocated [-o <filename>]
     amity print_room <room_name>
     amity save_state [--db=sqlite_database]
     amity load_state <sqlite_database>
     amity (-i | --interactive)
     amity (-h | --help)
 Options:
-    -o, --output  Options to save to a txt file
+    -o, --output  Save to a txt file
     -i, --interactive  Interactive Mode
     -h, --help  Show this screen and exit.
-    
 """
 
 import sys
@@ -69,7 +68,7 @@ class MyInteractive (cmd.Cmd):
         + 'amity reallocate_person <person_identifier> <new_room_name>\n'\
         + 'amity load_people <filename>\n'\
         + 'amity print_allocations [-o <filename>]\n'\
-        + 'amity print_unallocated [-o=filename]\n'\
+        + 'amity print_unallocated [-o <filename>]\n'\
         + 'amity print_room <room_name>\n'\
         + 'amity save_state [--db=sqlite_database]\n'\
         + 'amity load_state <sqlite_database>\n'\
@@ -124,7 +123,7 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage:
-        print_unallocated [-o=filename]"""
+        print_unallocated [-o <filename>]"""
         my_room.print_unallocated(args)
 
     @docopt_cmd

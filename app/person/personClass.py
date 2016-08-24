@@ -1,7 +1,10 @@
 import random
 from app.amity.amityClass import rooms
 
-people_data = {}
+people_data = {
+    "Staff": {},
+    "Fellow": {}
+}
 
 
 class Person(object):
@@ -28,28 +31,27 @@ class Person(object):
             wants_accomodation = 'N'
 
         if args["Staff"]:
-            people_data.update({
-                "Staff": dict([(self.person_identifier,
-                                {'name': self.person_name, 'accomodation': wants_accomodation})])
+            people_data["Staff"].update({
+                self.person_identifier:
+                {'name': self.person_name, 'accomodation': wants_accomodation}
             })
             office = self.allocate_office(self.person_identifier, people_data)
+            livingspace = "No"
         elif args["Fellow"]:
-            people_data.update({
-                "Fellow": dict([(self.person_identifier,
-                                 {'name': self.person_name, 'accomodation': wants_accomodation})])
+            people_data["Fellow"].update({
+                self.person_identifier:
+                {'name': self.person_name, 'accomodation': wants_accomodation}
             })
             office = self.allocate_office(self.person_identifier, people_data)
-            livingspace = ""
+
             if wants_accomodation is 'Y':
                 livingspace = self.allocate_living_space(
                     self.person_identifier, people_data)
+            else:
+                livingspace = "No"
         print self.person_name.upper() + " has been allocated "\
-            + office.upper() + " office."
-        if livingspace != "":
-            print self.person_name.upper() + " has been allocated "\
-                + livingspace.upper() + " Living Space."
-        else:
-            print "No living Space allocated"
+            + office.upper() + " office and "\
+            + livingspace.upper() + " Living Space."
 
         self.person_identifier += 1
         return people_data
@@ -64,13 +66,20 @@ class Person(object):
 
         available_living_spaces = []
 
-        for room in rooms['LivingSpace']:
-            if len(rooms['LivingSpace'][room]) < 6:
-                available_living_spaces.append(room)
+        if len(rooms['LivingSpace'].keys()) is 0:
+            allocated_living_space = "No"
 
-        allocated_living_space = random.choice(available_living_spaces)
+        else:
+            for room in rooms['LivingSpace']:
+                if len(rooms['LivingSpace'][room]) < 6:
+                    available_living_spaces.append(room)
 
-        rooms['LivingSpace'][allocated_living_space].append(identifier)
+            if len(available_living_spaces) > 0:
+                allocated_living_space = random.choice(available_living_spaces)
+
+                rooms['LivingSpace'][allocated_living_space].append(identifier)
+            else:
+                allocated_living_space = "No"
 
         return allocated_living_space
 
@@ -81,13 +90,20 @@ class Person(object):
         """
         available_offices = []
 
-        for office in rooms['Office']:
-            if len(rooms['Office'][office]) < 4:
-                available_offices.append(office)
+        if len(rooms["Office"].keys()) is 0:
+            allocated_office = "No"
 
-        allocated_office = random.choice(available_offices)
-        # print rooms
-        rooms['Office'][allocated_office].append(identifier)
+        else:
+            for office in rooms['Office']:
+                if len(rooms['Office'][office]) < 4:
+                    available_offices.append(office)
+
+            if len(available_offices) > 0:
+                allocated_office = random.choice(available_offices)
+
+                rooms['Office'][allocated_office].append(identifier)
+            else:
+                allocated_office = "No"
 
         return allocated_office
 
@@ -147,22 +163,16 @@ class Person(object):
             people = input_file.readlines()
             for person in people:
                 person = person.split()
-                # import ipdb
-                # ipdb.set_trace()
-
                 if person:
-                    if person[2] is 'STAFF':
+                    if 'STAFF' in person:
                         is_staff = True
                         is_fellow = False
                     else:
                         is_staff = False
                         is_fellow = True
 
-                    if len(person) is 4:
-                        if person[3] is 'Y':
-                            wants_accomodation = person[3]
-                        elif person[3] is 'N':
-                            wants_accomodation = None
+                    if 'Y' in person:
+                        wants_accomodation = 'Y'
                     else:
                         wants_accomodation = None
 
