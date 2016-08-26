@@ -76,24 +76,27 @@ class Room(object):
         """
         data = ""
         data += "Those unallocated:\n"
-        for person_role in people_data.keys():
-            for identifier in people_data[person_role].keys():
-                for room in rooms["Office"].keys():
-                    if identifier in rooms["Office"][room]:
-                        data += ""
-                    else:
-                        data += self.get_names(identifier,
-                                               people_data) + ": No Office"
-                if people_data[person_role][identifier]['accomodation'] is 'Y':
-                    for room in rooms["LivingSpace"].keys():
-                        if identifier in rooms["LivingSpace"][room]:
+
+        if len(rooms["Office"].keys()) is 0:
+            data += "No Offices Created\n"
+        else:
+            for person_role in people_data.keys():
+                for identifier in people_data[person_role].keys():
+                    data += self.get_names(identifier, people_data)
+                    for room in rooms["Office"].keys():
+                        if identifier in rooms["Office"][room]:
                             data += ""
                         else:
-                            data += " and Living Space\n "
-                else:
-                    data += " and Doesn't qualify for Living Space"
-            else:
-                data += "No " + person_role + " registered\n"
+                            data += ": No Office"
+                    if person_role is 'Staff':
+                        data += " Doesn't qualify for a living space"
+                    elif person_role is 'Fellow' and people_data["Fellow"][identifier]["accomodation"] is 'Y':
+                        for room in rooms["LivingSpace"].keys():
+                            if identifier in rooms["LivingSpace"][room]:
+                                data += ""
+                            else:
+                                data += " and no Living Space"
+                    data += "\n"
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
