@@ -82,20 +82,19 @@ class Room(object):
         else:
             for person_role in people_data.keys():
                 for identifier in people_data[person_role].keys():
-                    data += self.get_names(identifier, people_data)
                     for room in rooms["Office"].keys():
                         if identifier in rooms["Office"][room]:
                             data += ""
                         else:
-                            data += ": No Office"
-                    if person_role is 'Staff':
-                        data += " Doesn't qualify for a living space"
-                    elif person_role is 'Fellow' and people_data["Fellow"][identifier]["accomodation"] is 'Y':
+                            data += self.get_names(identifier,
+                                                   people_data) + ": No Office"
+                    if people_data[person_role][identifier]["accomodation"] is 'Y':
                         for room in rooms["LivingSpace"].keys():
                             if identifier in rooms["LivingSpace"][room]:
                                 data += ""
-                            else:
-                                data += " and no Living Space"
+                        else:
+                            data += self.get_names(identifier,
+                                                   people_data) + ": No Living Space"
                     data += "\n"
 
         if args["-o"]:

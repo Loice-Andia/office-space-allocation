@@ -24,37 +24,48 @@ class Person(object):
         """
 
         self.person_name = args["<first_name>"] + " " + args["<last_name>"]
+        message = ""
 
-        if args["<wants_accomodation>"] is 'Y':
-            wants_accomodation = args["<wants_accomodation>"]
-        elif args["<wants_accomodation>"] is None:
-            wants_accomodation = 'N'
+        for person_role in people_data:
+            for identifier in people_data[person_role]:
+                if self.person_name in people_data[person_role][identifier].values():
+                    message += self.person_name.upper()
+                    message += " Already Exists"
+                    print message
+                    return message
+        else:
+            if args["<wants_accomodation>"] is 'Y':
+                wants_accomodation = args["<wants_accomodation>"]
+            elif args["<wants_accomodation>"] is None:
+                wants_accomodation = 'N'
 
-        if args["Staff"]:
-            people_data["Staff"].update({
-                self.person_identifier:
-                {'name': self.person_name, 'accomodation': wants_accomodation}
-            })
-            office = self.allocate_office(self.person_identifier, people_data)
-            livingspace = "No"
-        elif args["Fellow"]:
-            people_data["Fellow"].update({
-                self.person_identifier:
-                {'name': self.person_name, 'accomodation': wants_accomodation}
-            })
-            office = self.allocate_office(self.person_identifier, people_data)
-
-            if wants_accomodation is 'Y':
-                livingspace = self.allocate_living_space(
+            if args["Staff"]:
+                people_data["Staff"].update({
+                    self.person_identifier:
+                    {'name': self.person_name, 'accomodation': wants_accomodation}
+                })
+                office = self.allocate_office(
                     self.person_identifier, people_data)
-            else:
                 livingspace = "No"
-        print self.person_name.upper() + " has been allocated "\
-            + office.upper() + " office and "\
-            + livingspace.upper() + " Living Space."
+            elif args["Fellow"]:
+                people_data["Fellow"].update({
+                    self.person_identifier:
+                    {'name': self.person_name, 'accomodation': wants_accomodation}
+                })
+                office = self.allocate_office(
+                    self.person_identifier, people_data)
 
-        self.person_identifier += 1
-        return people_data
+                if wants_accomodation is 'Y':
+                    livingspace = self.allocate_living_space(
+                        self.person_identifier, people_data)
+                else:
+                    livingspace = "No"
+            print self.person_name.upper() + " has been allocated "\
+                + office.upper() + " office and "\
+                + livingspace.upper() + " Living Space."
+
+            self.person_identifier += 1
+            return people_data
 
     def allocate_living_space(self, identifier, data):
         """

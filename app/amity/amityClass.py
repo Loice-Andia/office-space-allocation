@@ -1,3 +1,5 @@
+import sqlite3
+
 rooms = {
     'Office': {},
     'LivingSpace': {}
@@ -43,8 +45,12 @@ class Amity(object):
 
         return rooms
 
-    def save_state(self):
-        pass
+    def save_state(self,args):
+        """
+        Takes up an optional argument --db that specifies the database to store the data in rooms and people dictionary.
+        Creates database and saves data.
+        """
+        print args
 
     def load_state(self):
         pass
