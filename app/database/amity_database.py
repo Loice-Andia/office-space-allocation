@@ -1,6 +1,12 @@
 from app.amity import my_amity
+from app.amity.amityClass import rooms
+from app.person.personClass import people_data
 from sqlalchemy import create_engine
-from sqlalchemy import MetaData, Column, Table
+from sqlalchemy import MetaData, Column, Table, Integer, String, Boolean, ForeignKey, func
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 
 class Database(object):
@@ -26,7 +32,25 @@ class Database(object):
         print self.db_name + " database"
 
     def load_state(self, args):
-    	"""
-    	Loads data from a database into the application
-    	"""
+        """
+        Loads data from a database into the application
+        """
         print args
+
+class Rooms(Base):
+    __tablename__ = 'rooms'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    room_type = Column(String)
+    occupants_id = Column(Integer, ForeignKey('people.id'))
+    occupants = relationship(
+        'people',
+        secondary='department_employee_link'
+    )
+
+class People(Base):
+    __tablename__ = 'people'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    is_staff = Column(Boolean)
+    
