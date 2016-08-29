@@ -26,6 +26,7 @@ from docopt import docopt, DocoptExit
 from app.amity import my_amity
 from app.person import person
 from app.rooms import my_room
+from app.database import amity_db
 
 
 def docopt_cmd(func):
@@ -138,13 +139,13 @@ class MyInteractive (cmd.Cmd):
     def do_save_state(self, args):
         """Usage:
         save_state [--db=sqlite_database]"""
-        my_amity.save_state(args)
+        amity_db.save_state(args)
 
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: \
         load_state <sqlite_database>"""
-        my_amity.load_state(args)
+        amity_db.load_state(args)
 
     def do_quit(self, arg):
         """Quits out of Interactive Mode."""
