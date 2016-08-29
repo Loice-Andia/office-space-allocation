@@ -44,13 +44,14 @@ class Rooms(Base):
     room_type = Column(String)
     occupants_id = Column(Integer, ForeignKey('people.id'))
     occupants = relationship(
-        'people',
-        secondary='department_employee_link'
+        People,
+        secondary='people'
     )
 
 class People(Base):
     __tablename__ = 'people'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    wants_accomodation = Column(Boolean)
     is_staff = Column(Boolean)
-    
+
