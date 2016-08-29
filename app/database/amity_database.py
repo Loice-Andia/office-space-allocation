@@ -28,6 +28,7 @@ class Database(object):
         else:
             self.db_name = "amity.db"
         self.db = create_engine("sqlite:///" + self.db_name)
+        Base.metadata.create_all(self.db)
         print "Data has been stored in the "
         print self.db_name + " database"
 
@@ -37,6 +38,7 @@ class Database(object):
         """
         print args
 
+
 class Rooms(Base):
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
@@ -44,9 +46,10 @@ class Rooms(Base):
     room_type = Column(String)
     occupants_id = Column(Integer, ForeignKey('people.id'))
     occupants = relationship(
-        People,
+        'people',
         secondary='people'
     )
+
 
 class People(Base):
     __tablename__ = 'people'
@@ -54,4 +57,3 @@ class People(Base):
     name = Column(String)
     wants_accomodation = Column(Boolean)
     is_staff = Column(Boolean)
-
