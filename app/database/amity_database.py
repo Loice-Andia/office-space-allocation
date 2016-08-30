@@ -1,9 +1,10 @@
+import os
 from app.amity import my_amity
 from app.amity.amityClass import rooms
 from app.person.personClass import people_data
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -27,10 +28,18 @@ class Database(object):
             self.db_name = args["--db"]
         else:
             self.db_name = "amity.db"
+
+        if os.path.exists(self.db_name):
+            os.remove(self.db_name)
         self.db = create_engine("sqlite:///" + self.db_name)
+
+        session = sessionmaker()
+        session.configure(bind=self.db)
         Base.metadata.create_all(self.db)
-        print "Data has been stored in the "
-        print self.db_name + " database"
+
+        storage_session = session()
+
+        print "Data has been stored in the " + self.db_name + " database"
 
     def save_people(self, people_data):
         """
