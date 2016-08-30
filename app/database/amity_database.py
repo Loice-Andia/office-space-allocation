@@ -2,7 +2,7 @@ from app.amity import my_amity
 from app.amity.amityClass import rooms
 from app.person.personClass import people_data
 from sqlalchemy import create_engine
-from sqlalchemy import MetaData, Column, Table, Integer, String, Boolean, ForeignKey, func
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -31,6 +31,18 @@ class Database(object):
         Base.metadata.create_all(self.db)
         print "Data has been stored in the "
         print self.db_name + " database"
+
+    def save_people(self, people_data):
+        """
+        Loads data from the people_data dict into the database
+        """
+        pass
+
+    def save_rooms(self, rooms):
+        """
+        Loads data from the rooms dict into the database
+        """
+        pass
 
     def load_state(self, args):
         """
