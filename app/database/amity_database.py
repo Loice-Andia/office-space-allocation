@@ -29,6 +29,8 @@ class Database(object):
         else:
             self.db_name = "amity.db"
 
+        # Check if the database already exists, if it does delete existing.
+
         if os.path.exists(self.db_name):
             os.remove(self.db_name)
         self.db = create_engine("sqlite:///" + self.db_name)
@@ -45,13 +47,25 @@ class Database(object):
         """
         Loads data from the people_data dict into the database
         """
-        pass
+        for role in people_data.keys():
+            for identifier in people_data[role].keys():
+                person_id = identifier
+                name = people_data[role][identifier]['name']
+                wants_accomodation = people_data[role][identifier]['accomodation']
+                if role is 'Staff':
+                    is_staff = True
+                else:
+                    is_staff = False
 
     def save_rooms(self, rooms):
         """
         Loads data from the rooms dict into the database
         """
-        pass
+        for room_type in rooms.keys():
+            for room in rooms[room_type].keys():
+                room_name = room
+                room_type = room_type
+                occupants_id = rooms[room_type][room]
 
     def load_state(self, args):
         """
@@ -63,7 +77,7 @@ class Database(object):
 class Rooms(Base):
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    room_name = Column(String)
     room_type = Column(String)
     occupants_id = Column(Integer, ForeignKey('people.id'))
     occupants = relationship(
@@ -74,7 +88,7 @@ class Rooms(Base):
 
 class People(Base):
     __tablename__ = 'people'
-    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, primary_key=True)
     name = Column(String)
     wants_accomodation = Column(Boolean)
     is_staff = Column(Boolean)
