@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/andela-lolo/office-space-allocation.svg?branch=master)](https://travis-ci.org/andela-lolo/office-space-allocation)
+[![Build Status](https://travis-ci.org/andela-lolo/office-space-allocation.svg?branch=dev)](https://travis-ci.org/andela-lolo/office-space-allocation)
 
 # Office Space Allocation
 
@@ -12,7 +12,7 @@ This system will be used to automatically allocate spaces to people at random.
 Run ```python app.py -i```
 
 ## Usage
-1. ```create_room (Living|Office) <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Office Hogwarts Valhalla Krypton ```
+1. ```create_room <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Office Hogwarts Valhalla Krypton ```
 
 2. ```add_person < first_name> <last_name> (Fellow|Staff)``` Add a new person. You must specify their first name, last name and whether they are a fellow or staff member. Optionally, you can indicate whether or not they want space with "Y" or "N". If you indicate that the person wants space, they are automatically allocated a room. Staff members can only be allocated an office while fellows can only be allocated a living space using this command. If there are no rooms in the system, the person will not be added. Example: ```add_person Ada Lovelace Fellow Y```
 
