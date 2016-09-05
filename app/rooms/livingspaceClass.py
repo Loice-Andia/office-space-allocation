@@ -11,4 +11,3 @@ class LivingSpace(Room):
     def __init__(self):
         self.room_type = 'LivingSpace'
         self.room_capacity = 6
-        
