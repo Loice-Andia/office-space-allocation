@@ -23,7 +23,7 @@ class Database(object):
         database to store the data in rooms and people dictionary.
         Creates database and saves data.
         """
-        print args
+        # print args
         if args["--db"]:
             self.db_name = args["--db"]
         else:
@@ -51,13 +51,17 @@ class Database(object):
             for identifier in people_data[role].keys():
                 person_id = identifier
                 name = people_data[role][identifier]['name']
-                wants_accomodation = people_data[role][identifier]['accomodation']
+                wants_accomodation = people_data[
+                    role][identifier]['accomodation']
                 if role is 'Staff':
                     is_staff = True
                     is_fellow = False
-                else:
+                elif role is 'Fellow':
                     is_staff = False
                     is_fellow = True
+
+        people = People(person_id=person_id, name=name, wants_accomodation=wants_accomodation, is_staff=is_staff, is_fellow=is_fellow)
+        
 
     def save_rooms(self, rooms):
         """
@@ -81,7 +85,7 @@ class Rooms(Base):
     id = Column(Integer, primary_key=True)
     room_name = Column(String)
     room_type = Column(String)
-    occupants_id = Column(Integer, ForeignKey('people.id'))
+    occupants_id = Column(Integer, ForeignKey('people.person_id'))
     occupants = relationship(
         'people',
         secondary='people'
