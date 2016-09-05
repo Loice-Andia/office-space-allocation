@@ -39,9 +39,9 @@ class TestClasses(unittest.TestCase):
             self.test_staff, Staff, msg="Cannot create `Staff` instance")
 
     def test_create_room_in_amity(self):
-        try_create = self.test_amity.create_room({"<room_name>": ["Emerald"]})
+        # try_create = self.test_amity.create_room({"<room_name>": ["Emerald"]})
         # self.assertNotEqual(0, len(self.test_amity.rooms))
-        # self.assertEqual(str, type(self.test_amity.create_room(room_name)))
+        # self.assertEqual(str, type(self.test_amity.create_room(room_name))
         pass
 
     def test_add_person_in_person(self):

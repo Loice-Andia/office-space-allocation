@@ -37,9 +37,9 @@ class Amity(object):
             elif room_type == "L":
                 rooms['LivingSpace'].update({room: []})
 
-        print "You have created the following rooms: \n"\
-            + "OFFICES: " + ', '.join(rooms['Office'].keys()) +\
-            "\nLIVING SPACES: " + ', '.join(rooms['LivingSpace'].keys())
+        print "You have created the following rooms: \n"
+        print "OFFICES: " + ', '.join(rooms['Office'].keys())
+        print "LIVING SPACES: " + ', '.join(rooms['LivingSpace'].keys())
 
         return rooms
 
