@@ -54,8 +54,10 @@ class Database(object):
                 wants_accomodation = people_data[role][identifier]['accomodation']
                 if role is 'Staff':
                     is_staff = True
+                    is_fellow = False
                 else:
                     is_staff = False
+                    is_fellow = True
 
     def save_rooms(self, rooms):
         """
@@ -92,3 +94,4 @@ class People(Base):
     name = Column(String)
     wants_accomodation = Column(Boolean)
     is_staff = Column(Boolean)
+    is_fellow = Column(Boolean)
