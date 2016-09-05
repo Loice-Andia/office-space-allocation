@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/andela-lolo/office-space-allocation.svg?branch=dev)](https://travis-ci.org/andela-lolo/office-space-allocation)
-[![Coverage Status](https://coveralls.io/repos/github/andela-lolo/office-space-allocation/badge.svg?branch=dev)](https://coveralls.io/github/andela-lolo/office-space-allocation?branch=dev)
+[![Coverage Status](https://coveralls.io/repos/github/andela-lolo/office-space-allocation/badge.svg?branch=master)](https://coveralls.io/github/andela-lolo/office-space-allocation?branch=master)
 
 # Office Space Allocation
 
