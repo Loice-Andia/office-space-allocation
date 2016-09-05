@@ -9,7 +9,7 @@ A person to be allocated could be a fellow or staff. Staff cannot be allocated l
 This system will be used to automatically allocate spaces to people at random.
 
 ## Launching the Program
-Run ```python setup.py -i```
+Run ```python app.py -i```
 
 ## Usage
 1. ```create_room (Living|Office) <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Office Hogwarts Valhalla Krypton ```
