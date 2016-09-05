@@ -1,5 +1,6 @@
-# checkpoint1
-Office Space Allocation
+[![Build Status](https://travis-ci.org/andela-lolo/office-space-allocation.svg?branch=master)](https://travis-ci.org/andela-lolo/office-space-allocation)
+
+# Office Space Allocation
 
 Amity has rooms which can be offices or living spaces. An office can occupy a maximum of 6 people. A living space can inhabit a maximum of 4 people.
 
