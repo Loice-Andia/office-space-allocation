@@ -35,15 +35,27 @@ class Database(object):
             os.remove(self.db_name)
         self.db = create_engine("sqlite:///" + self.db_name)
 
-        session = sessionmaker()
-        session.configure(bind=self.db)
-        Base.metadata.create_all(self.db)
+        try:
+            session = sessionmaker()
+            session.configure(bind=self.db)
+            Base.metadata.create_all(self.db)
 
-        storage_session = session()
+            storage_session = session()
+            storage_session.add(self.save_people())
+            storage_session.add(self.save_rooms())
 
-        print "Data has been stored in the " + self.db_name + " database"
+            message = "Data has been stored in the " + self.db_name + " database"
 
-    def save_people(self, people_data):
+        except:
+            message = "Error saving data to " + self.db_name
+
+        storage_session.commit()
+        storage_session.close()
+
+        print message
+        return message
+
+    def save_people(self):
         """
         Loads data from the people_data dict into the database
         """
@@ -60,10 +72,12 @@ class Database(object):
                     is_staff = False
                     is_fellow = True
 
-        people = People(person_id=person_id, name=name, wants_accomodation=wants_accomodation, is_staff=is_staff, is_fellow=is_fellow)
-        
+        people = People(person_id=person_id, name=name,
+                        wants_accomodation=wants_accomodation,
+                        is_staff=is_staff, is_fellow=is_fellow)
+        return people
 
-    def save_rooms(self, rooms):
+    def save_rooms(self):
         """
         Loads data from the rooms dict into the database
         """
@@ -71,7 +85,8 @@ class Database(object):
             for room in rooms[room_type].keys():
                 room_name = room
                 room_type = room_type
-                occupants_id = rooms[room_type][room]
+        room_data = Rooms(room_name=room_name, room_type=room_type)
+        return room_data
 
     def load_state(self, args):
         """
@@ -85,11 +100,6 @@ class Rooms(Base):
     id = Column(Integer, primary_key=True)
     room_name = Column(String)
     room_type = Column(String)
-    occupants_id = Column(Integer, ForeignKey('people.person_id'))
-    occupants = relationship(
-        'people',
-        secondary='people'
-    )
 
 
 class People(Base):
@@ -99,3 +109,13 @@ class People(Base):
     wants_accomodation = Column(Boolean)
     is_staff = Column(Boolean)
     is_fellow = Column(Boolean)
+
+
+class Allocations(Base):
+    __tablename__ = 'allocations'
+    id = Column(Integer, primary_key=True)
+    room_id = Column(Integer, ForeignKey('rooms.id'))
+    occupant_id = Column(Integer, ForeignKey('people.person_id'))
+
+    occupants = relationship(People)
+    room = relationship(Rooms)
