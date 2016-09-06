@@ -99,14 +99,17 @@ class Database(object):
                     occupant_id = identifier
                     room_name = room
 
-        allocation_data = Allocations(room_name=room_name, occupant_id=occupant_id)
+                    allocation_data = Allocations(room_name=room_name,
+                                                  occupant_id=occupant_id)
+                    self.save_state.storage_session.add(allocation_data)
         return allocation_data
 
     def get_room_id(self, room):
         """
         Query room_id for a room from rooms table
         """
-        room_id = Session.query(Base.metadata.tables['rooms']).filter_by(room_name=room).one()
+        room_id = Session.query(Base.metadata.tables[
+                                'rooms']).filter_by(room_name=room).one()
 
         return room_id
 
