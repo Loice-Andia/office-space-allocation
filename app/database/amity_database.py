@@ -43,6 +43,7 @@ class Database(object):
             storage_session = session()
             storage_session.add(self.save_people())
             storage_session.add(self.save_rooms())
+            storage_session.add(self.save_allocations())
 
             message = "Data has been stored in the " + self.db_name + " database"
 
@@ -88,6 +89,27 @@ class Database(object):
         room_data = Rooms(room_name=room_name, room_type=room_type)
         return room_data
 
+    def save_allocations(self):
+        """
+        Loads data of room allocations into allocations table
+        """
+        for room_type in rooms.keys():
+            for room in rooms[room_type].keys():
+                for identifier in rooms[room_type][room]:
+                    occupant_id = identifier
+                    room_name = room
+
+        allocation_data = Allocations(room_name=room_name, occupant_id=occupant_id)
+        return allocation_data
+
+    def get_room_id(self, room):
+        """
+        Query room_id for a room from rooms table
+        """
+        room_id = Session.query(Base.metadata.tables['rooms']).filter_by(room_name=room).one()
+
+        return room_id
+
     def load_state(self, args):
         """
         Loads data from a database into the application
@@ -106,7 +128,7 @@ class People(Base):
     __tablename__ = 'people'
     person_id = Column(Integer, primary_key=True)
     name = Column(String)
-    wants_accomodation = Column(Boolean)
+    wants_accomodation = Column(String)
     is_staff = Column(Boolean)
     is_fellow = Column(Boolean)
 
@@ -114,8 +136,8 @@ class People(Base):
 class Allocations(Base):
     __tablename__ = 'allocations'
     id = Column(Integer, primary_key=True)
-    room_id = Column(Integer, ForeignKey('rooms.id'))
-    occupant_id = Column(Integer, ForeignKey('people.person_id'))
+    room_name = Column(String)
+    occupant_id = Column(Integer)
 
-    occupants = relationship(People)
-    room = relationship(Rooms)
+    # occupants = relationship(People)
+    # room = relationship(Rooms)
