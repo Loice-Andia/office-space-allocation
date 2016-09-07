@@ -41,9 +41,12 @@ class Database(object):
             Base.metadata.create_all(self.db)
 
             storage_session = session()
-            storage_session.add(self.save_people())
-            storage_session.add(self.save_rooms())
-            storage_session.add(self.save_allocations())
+            self.save_people(storage_session)
+            self.save_rooms(storage_session)
+            self.save_allocations(storage_session)
+            # storage_session.add(self.save_people())
+            # storage_session.add(self.save_rooms())
+            # storage_session.add(self.save_allocations())
 
             message = "Data has been stored in the " + self.db_name + " database"
 
@@ -56,7 +59,7 @@ class Database(object):
         print message
         return message
 
-    def save_people(self):
+    def save_people(self, storage_session):
         """
         Loads data from the people_data dict into the database
         """
@@ -73,12 +76,13 @@ class Database(object):
                     is_staff = False
                     is_fellow = True
 
-        people = People(person_id=person_id, name=name,
-                        wants_accomodation=wants_accomodation,
-                        is_staff=is_staff, is_fellow=is_fellow)
-        return people
+                people = People(person_id=person_id, name=name,
+                                wants_accomodation=wants_accomodation,
+                                is_staff=is_staff, is_fellow=is_fellow)
+                storage_session.add(people)
+        return "Success"
 
-    def save_rooms(self):
+    def save_rooms(self, storage_session):
         """
         Loads data from the rooms dict into the database
         """
@@ -86,10 +90,12 @@ class Database(object):
             for room in rooms[room_type].keys():
                 room_name = room
                 room_type = room_type
-        room_data = Rooms(room_name=room_name, room_type=room_type)
-        return room_data
+                room_data = Rooms(room_name=room_name, room_type=room_type)
 
-    def save_allocations(self):
+                storage_session.add(room_data)
+        return "Success"
+
+    def save_allocations(self, storage_session):
         """
         Loads data of room allocations into allocations table
         """
@@ -101,8 +107,9 @@ class Database(object):
 
                     allocation_data = Allocations(room_name=room_name,
                                                   occupant_id=occupant_id)
-                    self.save_state.storage_session.add(allocation_data)
-        return allocation_data
+                    storage_session.add(allocation_data)
+
+        return "Success"
 
     def get_room_id(self, room):
         """
