@@ -21,20 +21,16 @@ class Amity(object):
         room_type = None
 
         # Assign a group of rooms to a room type
-        if room_type is None:
+        while room_type not in ['O', 'L']:
             room_type = raw_input(
                 "Enter room type: \n o: Office space \n l: Living space: \n")
-
-            if room_type != "o" and room_type != "l":
-                room_type = raw_input(
-                    "Try again. Enter Room Type:\n o: Office space \n l: Living space: \n")
             room_type = room_type.upper()
 
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room_type == "O":
                 rooms['Office'].update({room: []})
-            elif room_type == "L":
+            if room_type == "L":
                 rooms['LivingSpace'].update({room: []})
 
         print "You have created the following rooms: \n"
@@ -42,4 +38,3 @@ class Amity(object):
         print "LIVING SPACES: " + ', '.join(rooms['LivingSpace'].keys())
 
         return rooms
-

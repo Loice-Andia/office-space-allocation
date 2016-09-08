@@ -147,15 +147,15 @@ class MyInteractive (cmd.Cmd):
         load_state <sqlite_database>"""
         amity_db.load_state(args)
 
-    def do_quit(self, arg):
+    def do_quit(self, args):
         """Quits out of Interactive Mode."""
-
+        amity_db.save_state({"--db": 'amity.db'})
         print('Good Bye!')
         exit()
-
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
     MyInteractive().cmdloop()
 
 print(opt)
+

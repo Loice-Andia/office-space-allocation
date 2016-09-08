@@ -14,9 +14,20 @@ class Person(object):
 
     def __init__(self):
         self.person_name = []
-        self.person_identifier = 1
+        self.person_identifier = self.set_default_id(people_data)
+        print self.person_identifier
 
     wants_accomodation = 'N'
+
+    def set_default_id(self, people_data):
+        """
+        Gets previous existing ids and sets the max as default
+        """
+        identifier = max(people_data['Fellow'].values(), people_data['Staff'].values())
+        if type(identifier) is list:
+            identifier = 1
+
+        return identifier
 
     def add_person(self, args):
         """
