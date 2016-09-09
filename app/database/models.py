@@ -17,7 +17,6 @@ class People(Base):
     name = Column(String)
     wants_accomodation = Column(String)
     is_staff = Column(Boolean)
-    is_fellow = Column(Boolean)
 
 
 class Allocations(Base):

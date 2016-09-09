@@ -6,12 +6,16 @@ class Room(object):
     """
     Room
     """
+    #Replace the '+=' with .format()
 
     def __init__(self):
         self.room_name = ""
         self.room_type = ""
 
     def get_names(self, identifier, people_data):
+        # map(function, sequence)
+        # .get(val, msg) to retrieve dict item
+
 
         if identifier in people_data["Staff"].keys():
             return people_data["Staff"][identifier]['name'].upper()
@@ -20,6 +24,7 @@ class Room(object):
 
     def print_room(self, args):
         room_name = args["<room_name>"]
+        # name = rooms.get(identifier, None)
 
         if room_name in rooms['LivingSpace'].keys():
             for identifier in rooms['LivingSpace'][room_name]:

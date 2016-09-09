@@ -1,10 +1,7 @@
 import random
 from app.amity.amityClass import rooms
 
-people_data = {
-    "Staff": {},
-    "Fellow": {}
-}
+people_data = {}
 
 
 class Person(object):
@@ -23,9 +20,9 @@ class Person(object):
         """
         Gets previous existing ids and sets the max as default
         """
-        identifier = max(people_data['Fellow'].values(), people_data['Staff'].values())
-        if type(identifier) is list:
-            identifier = 1
+        identifier = 1
+        if people_data.keys():
+            identifier = max(people_data.keys())
 
         return identifier
 

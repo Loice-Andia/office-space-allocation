@@ -35,8 +35,7 @@ class Database(object):
         # print args
         if args["--db"]:
             self.db_name = args["--db"]
-        else:
-            self.db_name = "amity.db"
+        self.db_name = "amity.db"
 
         # Check if the database already exists, if it does delete existing.
         # import ipdb
@@ -68,23 +67,17 @@ class Database(object):
         Loads data from the people_data dict into the database
         """
         try:
-            for role in people_data.keys():
-                for identifier in people_data[role].keys():
-                    person_id = identifier
-                    name = people_data[role][identifier]['name']
-                    wants_accomodation = people_data[
-                        role][identifier]['accomodation']
-                    if role is 'Staff':
-                        is_staff = True
-                        is_fellow = False
-                    elif role is 'Fellow':
-                        is_staff = False
-                        is_fellow = True
+            for key, values in people_data.items():
+                person_id = key
+                name = values["name"]
+                wants_accomodation = values["accomodation"]
+                is_staff = values["Staff"]
 
-                    people = People(person_id=person_id, name=name,
-                                    wants_accomodation=wants_accomodation,
-                                    is_staff=is_staff, is_fellow=is_fellow)
-                    storage_session.add(people)
+                people = People(person_id=person_id, name=name,
+                                wants_accomodation=wants_accomodation,
+                                is_staff=is_staff)
+                storage_session.add(people)
+                # find out what to return
             return "Success"
         except:
             return "Failed"
@@ -94,13 +87,13 @@ class Database(object):
         Loads data from the rooms dict into the database
         """
         try:
-            for room_type in rooms.keys():
-                for room in rooms[room_type].keys():
-                    room_name = room
-                    room_type = room_type
-                    room_data = Rooms(room_name=room_name, room_type=room_type)
+            for key, values in people_data.items():
+                room_name = key
+                room_type = values["room_type"]
+                room_data = Rooms(room_name=room_name, room_type=room_type)
 
-                    storage_session.add(room_data)
+                storage_session.add(room_data)
+                # find out what to return
             return "Success"
         except:
             return "Failed"
@@ -128,8 +121,8 @@ class Database(object):
         """
         Loads data from a database into the application
         """
-        import ipdb
-        ipdb.set_trace()
+        # import ipdb
+        # ipdb.set_trace()
         db_name = args["<sqlite_database>"]
         if os.path.exists(db_name):
 
@@ -142,6 +135,8 @@ class Database(object):
             self.load_people(people_from_db)
             self.load_rooms(rooms_from_db)
             self.load_allocations(allocations_from_db)
+            import ipdb
+            ipdb.set_trace()
 
             print "Data successfully added"
 
@@ -163,7 +158,7 @@ class Database(object):
                     {'name': str(person.name), 'accomodation': str(
                         person.wants_accomodation)}
                 })
-            elif person.is_fellow is True:
+            if person.is_fellow is True:
                 people_data["Fellow"].update({
                     person.person_id:
                     {'name': str(person.name), 'accomodation': str(
@@ -179,9 +174,9 @@ class Database(object):
         for room in rooms_from_db:
             room_name = str(room.room_name)
             room_type = str(room.room_type)
-            if room_type is 'Office':
+            if room_type == 'Office':
                 rooms['Office'].update({room_name: []})
-            elif room_type is 'LivingSpace':
+            if room_type == 'LivingSpace':
                 rooms['LivingSpace'].update({room_name: []})
             print room.room_name + " successfully added"
         return "Success"
