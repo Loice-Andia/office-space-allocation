@@ -27,15 +27,18 @@ class Amity(object):
                 whether office or living spaces"""
 
         room_type = self.get_room_type()
+        is_office = False
+
+        if room_type == 'O':
+            is_office = True
 
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
-            rooms.update({room: {"occupants": [], "room_type": room_type}})
+            rooms.update({room: {"occupants": [], "is_office": is_office}})
 
         # find a better way of doing the print
 
-        print "You have created the following rooms: \n"
-        print "OFFICES: " + ', '.join(rooms['Office'].keys())
-        print "LIVING SPACES: " + ', '.join(rooms['LivingSpace'].keys())
+        print "You have created the following rooms: "
+        print '\n'.join(rooms.keys())
 
         return rooms

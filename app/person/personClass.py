@@ -10,13 +10,11 @@ class Person(object):
     """
 
     def __init__(self):
-        self.person_name = []
-        self.person_identifier = self.set_default_id(people_data)
-        print self.person_identifier
+        self.person_name = ''
 
     wants_accomodation = 'N'
 
-    def set_default_id(self, people_data):
+    def set_default_id(self):
         """
         Gets previous existing ids and sets the max as default
         """
@@ -28,103 +26,66 @@ class Person(object):
 
     def add_person(self, args):
         """
-        Adds a person to the system and allocates the person to a random room.
+        Adds a person to the People_data dictionary 
+        allocates the person to a random room.
         """
 
         self.person_name = args["<first_name>"] + " " + args["<last_name>"]
         message = ""
+        wants_accomodation = 'N'
+        is_fellow = args['Fellow']
+        self.person_identifier = self.set_default_id()
 
-        for person_role in people_data:
-            for identifier in people_data[person_role]:
-                if self.person_name in people_data[person_role][identifier].values():
-                    message += self.person_name.upper()
-                    message += " Already Exists"
-                    print message
-                    return message
-        else:
-            if args["<wants_accomodation>"] is 'Y':
-                wants_accomodation = args["<wants_accomodation>"]
-            elif args["<wants_accomodation>"] is None:
-                wants_accomodation = 'N'
+        if args["<wants_accomodation>"]:
+            wants_accomodation = args["<wants_accomodation>"]
 
-            if args["Staff"]:
-                people_data["Staff"].update({
-                    self.person_identifier:
-                    {'name': self.person_name, 'accomodation': wants_accomodation}
-                })
-                office = self.allocate_office(
-                    self.person_identifier, people_data)
-                livingspace = "No"
-            elif args["Fellow"]:
-                people_data["Fellow"].update({
-                    self.person_identifier:
-                    {'name': self.person_name, 'accomodation': wants_accomodation}
-                })
-                office = self.allocate_office(
-                    self.person_identifier, people_data)
+        for person in people_data:
+            if people_data.get(self.person_name, None) is None:
+                message = "{} Already Exists".format(self.person_name)
+                return message
 
-                if wants_accomodation is 'Y':
-                    livingspace = self.allocate_living_space(
-                        self.person_identifier, people_data)
-                else:
-                    livingspace = "No"
-            print self.person_name.upper() + " has been allocated "\
-                + office.upper() + " office and "\
-                + livingspace.upper() + " Living Space."
+        people_data.update({
+            self.person_identifier: {
+                'name': self.person_name,
+                'accomodation': wants_accomodation,
+                'is_fellow': is_fellow}
+        })
 
-            self.person_identifier += 1
-            return people_data
+        self.allocate_rooms(self.person_identifier)
+        print rooms
 
-    def allocate_living_space(self, identifier, data):
+        self.person_identifier += 1
+        return people_data
+
+    def allocate_rooms(self, identifier):
         """
-        Checks if the person is a fellow and wants accomodation
+        Checks available offices
         Checks which living spaces are available
         Randomly picks a room and appends the person identifier
+        Checks if the person is a fellow and wants accomodation
 
         """
 
         available_living_spaces = []
-
-        if len(rooms['LivingSpace'].keys()) is 0:
-            allocated_living_space = "No"
-
-        else:
-            for room in rooms['LivingSpace']:
-                if len(rooms['LivingSpace'][room]) < 6:
-                    available_living_spaces.append(room)
-
-            if len(available_living_spaces) > 0:
-                allocated_living_space = random.choice(available_living_spaces)
-
-                rooms['LivingSpace'][allocated_living_space].append(identifier)
-            else:
-                allocated_living_space = "No"
-
-        return allocated_living_space
-
-    def allocate_office(self, identifier, data):
-        """
-        Checks which offices are available
-        Randomly picks an office and appends the person identifier
-        """
         available_offices = []
+        import ipdb
+        ipdb.set_trace()
 
-        if len(rooms["Office"].keys()) is 0:
-            allocated_office = "No"
+        for room in rooms:
+            if rooms[room]['is_office'] and len(rooms[room]['occupants']) < 4:
+                available_offices.append(room)
+            elif len(rooms[room]['occupants']) < 6:
+                available_living_spaces.append(room)
 
-        else:
-            for office in rooms['Office']:
-                if len(rooms['Office'][office]) < 4:
-                    available_offices.append(office)
+        if len(available_offices) > 0:
+            allocated_office = random.choice(available_offices)
+            rooms[allocated_office]['occupants'].append(identifier)
 
-            if len(available_offices) > 0:
-                allocated_office = random.choice(available_offices)
+        if people_data[identifier]['is_fellow'] and len(available_living_spaces) > 0:
+            allocated_living_space = random.choice(available_living_spaces)
+            rooms[allocated_living_space]['occupants'].append(identifier)
 
-                rooms['Office'][allocated_office].append(identifier)
-            else:
-                allocated_office = "No"
-
-        return allocated_office
+        return rooms
 
     def reallocate_person(self, args):
         """

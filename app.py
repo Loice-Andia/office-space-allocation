@@ -149,10 +149,10 @@ class MyInteractive (cmd.Cmd):
 
     def do_quit(self, args):
         """Quits out of Interactive Mode."""
-        amity_db.save_state({"--db": 'amity.db'})
+        # amity_db.save_state({"--db": 'amity.db'})
         print('Good Bye!')
         exit()
-amity_db.load_state({"<sqlite_database>": 'amity.db'})
+# amity_db.load_state({"<sqlite_database>": 'amity.db'})
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
