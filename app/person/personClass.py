@@ -19,8 +19,9 @@ class Person(object):
         Gets previous existing ids and sets the max as default
         """
         identifier = 1
-        if people_data.keys():
-            identifier = max(people_data.keys())
+
+        if len(people_data.keys()) > 0:
+            identifier = max(people_data.keys()) + 1
 
         return identifier
 
@@ -40,7 +41,7 @@ class Person(object):
             wants_accomodation = args["<wants_accomodation>"]
 
         for person in people_data:
-            if people_data.get(self.person_name, None) is None:
+            if people_data.get(self.person_name, None) is not None:
                 message = "{} Already Exists".format(self.person_name)
                 return message
 
@@ -52,9 +53,7 @@ class Person(object):
         })
 
         self.allocate_rooms(self.person_identifier)
-        print rooms
 
-        self.person_identifier += 1
         return people_data
 
     def allocate_rooms(self, identifier):

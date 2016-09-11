@@ -40,33 +40,22 @@ class Room(object):
         """
 
         data = ""
-        for room_type in rooms.keys():
-            data += room_type.upper()
+        for room in rooms:
+            data += "{} \n".format(room.upper())
+            data += "-" * 65
             data += "\n"
-            if len(rooms[room_type].keys()) is 0:
-                data += "No " + room_type + " created\n"
-            else:
-                for room_name in rooms[room_type].keys():
-                    data += room_name.upper()
-                    data += "\n"
-                    data += "-" * 65
-                    data += "\n"
-                    if len(rooms[room_type][room_name]) is 0:
-                        data += "No Occupants"
-                    else:
-                        for identifier in rooms[room_type][room_name]:
-                            data += self.get_names(identifier, people_data)
-                            data += ", "
-                    data += "\n"
-                    data += "\n"
+            if len(rooms[room]['occupants']) is 0:
+                data += "No Occupants"
+            occupants = map(self.get_names, rooms[room]['occupants'])
+            data +=",".join(occupants)
+
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
                 print "The list of allocations has been saved " \
                     "to the following file: " + args["<filename>"]
-        else:
-            print data
+        return data
 
     def print_unallocated(self, args):
         """
