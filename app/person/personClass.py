@@ -68,8 +68,6 @@ class Person(object):
 
         available_living_spaces = []
         available_offices = []
-        import ipdb
-        ipdb.set_trace()
 
         for room in rooms:
             if rooms[room]['is_office'] and len(rooms[room]['occupants']) < 4:
@@ -96,32 +94,17 @@ class Person(object):
         person_identifier = int(args["<person_identifier>"])
         new_room = args["<new_room_name>"]
 
-        for identifier in people_data["Staff"].keys():
-            if identifier is person_identifier:
-                name = people_data["Staff"][person_identifier]["name"]
-            else:
-                name = people_data["Fellow"][person_identifier]["name"]
+        person = people_data.get(person_identifier, 'Does not exist')
 
         # find currently allocated room and remove identifier
-        for current_room in rooms['Office'].keys():
-            if person_identifier in rooms['Office'][current_room]:
-                rooms['Office'][current_room].remove(person_identifier)
-        else:
-            for current_room in rooms['LivingSpace'].keys():
-                if person_identifier in rooms['LivingSpace'][current_room]:
-                    rooms['LivingSpace'][current_room].remove(
-                        person_identifier)
+        for current_room in rooms:
+            if person_identifier in rooms[current_room]['occupants']:
+                rooms[current_room]['occupants'].remove(person_identifier)
 
         # Append identifier to new_room
-        if new_room in rooms['LivingSpace'].keys():
-            rooms['LivingSpace'][new_room].append(person_identifier)
-        elif new_room in rooms['Office'].keys():
-            rooms['Office'][new_room].append(person_identifier)
+        rooms[new_room]['occupants'].append(person_identifier)
 
-        name = name.upper()
-        print name + " has been removed from " + current_room +\
-            " and has been allocated to " + new_room
-
+        print "{} has been removed from {} and allocated {} room".format(person['name'], current_room, new_room)
         return rooms
 
     def load_people(self, args):

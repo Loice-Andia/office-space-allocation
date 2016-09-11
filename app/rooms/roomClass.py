@@ -12,30 +12,27 @@ class Room(object):
         self.room_name = ""
         self.room_type = ""
 
-    def get_names(self, identifier, people_data):
+    def get_names(self, identifier):
         # map(function, sequence)
         # .get(val, msg) to retrieve dict item
 
-
-        if identifier in people_data["Staff"].keys():
-            return people_data["Staff"][identifier]['name'].upper()
-        else:
-            return people_data["Fellow"][identifier]['name'].upper()
+        person = people_data.get(identifier, None)
+        if person == None:
+            return "Person Does not exist"
+        return person['name']
 
     def print_room(self, args):
         room_name = args["<room_name>"]
         # name = rooms.get(identifier, None)
 
-        if room_name in rooms['LivingSpace'].keys():
-            for identifier in rooms['LivingSpace'][room_name]:
-                print self.get_names(identifier, people_data)
-            else:
-                print "No occupants"
-        elif room_name in rooms['Office'].keys():
-            for identifier in rooms['Office'][room_name]:
-                print self.get_names(identifier, people_data)
-            else:
-                print "No Occupants"
+        room = rooms.get(room_name, None)
+        if room == None:
+            return "{} Does Not Exist".format(room_name)
+
+        occupants = map(self.get_names, room['occupants'])
+        print "\n".join(occupants)
+        return occupants
+
 
     def print_allocations(self, args):
         """

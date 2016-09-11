@@ -34,11 +34,16 @@ class Amity(object):
 
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
+            existing_rooms = rooms.get(room, None)
+            if existing_rooms != None:
+                print "{} Exists".format(room)
+            
             rooms.update({room: {"occupants": [], "is_office": is_office}})
+
 
         # find a better way of doing the print
 
-        print "You have created the following rooms: "
+        print "You have the following rooms: "
         print '\n'.join(rooms.keys())
 
         return rooms
