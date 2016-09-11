@@ -53,8 +53,7 @@ class Room(object):
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "The list of allocations has been saved " \
-                    "to the following file: " + args["<filename>"]
+                print "Allocations has been saved to {}".format(args["<filename>"])
         return data
 
     def print_unallocated(self, args):
@@ -65,33 +64,16 @@ class Room(object):
         Checks if a persons who wants accomodation has been allocated a living space,
         if not prints the name and missing room
         """
-        data = ""
-        data += "Those unallocated:\n"
+        data = "Those unallocated:\n"
 
-        if len(rooms["Office"].keys()) is 0:
-            data += "No Offices Created\n"
-        else:
-            for person_role in people_data.keys():
-                for identifier in people_data[person_role].keys():
-                    for room in rooms["Office"].keys():
-                        if identifier in rooms["Office"][room]:
-                            data += ""
-                        else:
-                            data += self.get_names(identifier,
-                                                   people_data) + ": No Office"
-                    if people_data[person_role][identifier]["accomodation"] is 'Y':
-                        for room in rooms["LivingSpace"].keys():
-                            if identifier in rooms["LivingSpace"][room]:
-                                data += ""
-                        else:
-                            data += self.get_names(identifier,
-                                                   people_data) + ": No Living Space"
-                    data += "\n"
+        for person in people_data:
+            for room in rooms:
+                if person in rooms[room]['occupants']:
+                    break
+                data += "{}\n".format(self.get_names(person)
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "The list of unallocated people has been saved " \
-                    "to the following file: " + args["<filename>"]
-        else:
-            print data
+                print "Unallocated people have been saved to {} ".format(args["<filename>"])
+        return data

@@ -125,7 +125,7 @@ class MyInteractive (cmd.Cmd):
     def do_print_unallocated(self, args):
         """Usage:
         print_unallocated [-o <filename>]"""
-        my_room.print_unallocated(args)
+        print my_room.print_unallocated(args)
 
     @docopt_cmd
     def do_print_room(self, args):
