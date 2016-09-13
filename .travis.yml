@@ -5,7 +5,7 @@ python:
 install:
   pip install -r requirements.txt
 script:
-  coverage run tests.py
+  coverage run --omit=*.tox/*,*env/* tests.py
 after_success:
   coveralls
 notifications:
