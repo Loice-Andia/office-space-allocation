@@ -54,7 +54,7 @@ class Database(object):
 
             message = "Data has been stored in the {} database".format(self.db_name)
 
-        except:
+        except Exception:
             message = "Error saving data to {}".format(self.db_name)
 
         save_session.commit()
@@ -79,7 +79,7 @@ class Database(object):
                 storage_session.add(people)
                 # find out what to return
             return people
-        except:
+        except Exception:
             return "Failed"
 
     def save_rooms(self, storage_session):
@@ -95,7 +95,7 @@ class Database(object):
                 storage_session.add(room_data)
 
             return room_data
-        except:
+        except Exception:
             return "Failed"
 
     def save_allocations(self, storage_session):
@@ -113,7 +113,7 @@ class Database(object):
                     storage_session.add(allocation_data)
 
             return allocation_data
-        except:
+        except Exception:
             return "Failed"
 
     def load_state(self, args):
@@ -137,7 +137,7 @@ class Database(object):
                 print(self.load_allocations(allocations_from_db))
 
                 message = "Data successfully added"
-            except:
+            except Exception:
                 message = "No Data Added"
 
             sess.commit()
