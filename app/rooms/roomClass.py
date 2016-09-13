@@ -49,8 +49,13 @@ class Room(object):
         """
 
         data = ""
+
         for room in rooms:
-            data += "\n{} \n".format(room.upper())
+            room_info = rooms.get(room, None)
+            room_type = "Living Space"
+            if room_info['is_office']:
+                room_type = "Office"
+            data += "\n\n{} ({}) \n".format(room.upper(), room_type)
             data += "-" * 65
             data += "\n"
             if len(rooms[room]['occupants']) is 0:

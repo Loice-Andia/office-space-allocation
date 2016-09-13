@@ -87,7 +87,7 @@ class Database(object):
         Loads data from the rooms dict into the database
         """
         try:
-            for key, values in people_data.items():
+            for key, values in rooms.items():
                 room_name = key
                 is_office = values["is_office"]
                 room_data = Rooms(room_name=room_name, is_office=is_office)
@@ -127,15 +127,18 @@ class Database(object):
 
             sess = self.connect_to_db(db_name)
 
-            people_from_db = sess.query(People).all()
-            rooms_from_db = sess.query(Rooms).all()
-            allocations_from_db = sess.query(Allocations).all()
+            try:
+                people_from_db = sess.query(People).all()
+                rooms_from_db = sess.query(Rooms).all()
+                allocations_from_db = sess.query(Allocations).all()
 
-            self.load_people(people_from_db)
-            self.load_rooms(rooms_from_db)
-            self.load_allocations(allocations_from_db)
+                print(self.load_people(people_from_db))
+                print(self.load_rooms(rooms_from_db))
+                print(self.load_allocations(allocations_from_db))
 
-            message = "Data successfully added"
+                message = "Data successfully added"
+            except:
+                message = "No Data Added"
 
             sess.commit()
             sess.close()
@@ -188,7 +191,7 @@ class Database(object):
             room['occupants'].append(allocation.occupant_id)
             name = my_room.get_names(allocation.occupant_id)
 
-            message += "{} successfully added to room {}".format(
+            message += "{} successfully added to room {}\n".format(
                 name.upper(), str(allocation.room_name))
 
         return message

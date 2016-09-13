@@ -31,7 +31,8 @@ class Person(object):
         allocates the person to a random room.
         """
 
-        person_name = args["<first_name>"] + " " + args["<last_name>"]
+        person_name = (args["<first_name>"] + " " +
+                       args["<last_name>"]).upper()
         message = ""
         wants_accomodation = 'N'
         is_fellow = args['Fellow']
@@ -70,22 +71,24 @@ class Person(object):
         available_living_spaces = []
         available_offices = []
 
-        allocated_office = "None"
-        allocated_living_space = "None"
+        allocated_office = "No"
+        allocated_living_space = "No"
+        person = people_data.get(identifier, None)
 
         for room in rooms:
             if rooms[room]['is_office'] and len(rooms[room]['occupants']) < 4:
                 available_offices.append(room)
-            elif len(rooms[room]['occupants']) < 6:
+            if not rooms[room]['is_office'] and len(rooms[room]['occupants']) < 6:
                 available_living_spaces.append(room)
 
         if len(available_offices) > 0:
             allocated_office = random.choice(available_offices)
             rooms[allocated_office]['occupants'].append(identifier)
 
-        if people_data[identifier]['is_fellow'] and len(available_living_spaces) > 0:
-            allocated_living_space = random.choice(available_living_spaces)
-            rooms[allocated_living_space]['occupants'].append(identifier)
+        if person['accomodation'] == 'Y':
+            if person['is_fellow'] and len(available_living_spaces) > 0:
+                allocated_living_space = random.choice(available_living_spaces)
+                rooms[allocated_living_space]['occupants'].append(identifier)
 
         message = "{} has been allocated {} office and {} livingSpace\n".format(
             people_data[identifier]['name'], allocated_office,
@@ -113,7 +116,8 @@ class Person(object):
         # Append identifier to new_room
         rooms[new_room]['occupants'].append(person_identifier)
 
-        message += "{} has been removed from {} and allocated {} room\n".format(person['name'], current_room, new_room)
+        message += "{} has been removed from {} and allocated {} room\n".format(
+            person['name'], current_room, new_room)
         return message
 
     def load_people(self, args):

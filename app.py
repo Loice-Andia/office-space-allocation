@@ -153,7 +153,8 @@ class MyInteractive (cmd.Cmd):
         print('Good Bye!')
         exit()
 
-amity_db.load_state({"<sqlite_database>": 'amity.db'})
+
+print(amity_db.load_state({"<sqlite_database>": 'amity.db'}))
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
