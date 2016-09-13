@@ -2,6 +2,7 @@ import os
 from app.amity import my_amity
 from app.amity.amityClass import rooms
 from app.person.personClass import people_data
+from app.rooms import my_room
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import *
@@ -51,15 +52,14 @@ class Database(object):
             self.save_rooms(save_session)
             self.save_allocations(save_session)
 
-            message = "Data has been stored in the " + self.db_name + " database"
+            message = "Data has been stored in the {} database".format(self.db_name)
 
         except:
-            message = "Error saving data to " + self.db_name
+            message = "Error saving data to {}".format(self.db_name)
 
         save_session.commit()
         save_session.close()
 
-        print message
         return message
 
     def save_people(self, storage_session):
@@ -71,14 +71,14 @@ class Database(object):
                 person_id = key
                 name = values["name"]
                 wants_accomodation = values["accomodation"]
-                is_staff = values["Staff"]
+                is_fellow = values["is_fellow"]
 
                 people = People(person_id=person_id, name=name,
                                 wants_accomodation=wants_accomodation,
-                                is_staff=is_staff)
+                                is_fellow=is_fellow)
                 storage_session.add(people)
                 # find out what to return
-            return "Success"
+            return people
         except:
             return "Failed"
 
@@ -89,13 +89,12 @@ class Database(object):
         try:
             for key, values in people_data.items():
                 room_name = key
-                room_type = values["room_type"]
-                room_data = Rooms(room_name=room_name, room_type=room_type)
+                is_office = values["is_office"]
+                room_data = Rooms(room_name=room_name, is_office=is_office)
 
                 storage_session.add(room_data)
-                # find out what to return
-                
-            return "Success"
+
+            return room_data
         except:
             return "Failed"
 
@@ -104,17 +103,16 @@ class Database(object):
         Loads data of room allocations into allocations table
         """
         try:
-            for room_type in rooms.keys():
-                for room in rooms[room_type].keys():
-                    for identifier in rooms[room_type][room]:
-                        occupant_id = identifier
-                        room_name = room
+            for key, values in rooms.items():
+                room_name = key
+                for identifier in values["occupants"]:
+                    occupant_id = identifier
 
-                        allocation_data = Allocations(room_name=room_name,
-                                                      occupant_id=occupant_id)
-                        storage_session.add(allocation_data)
+                    allocation_data = Allocations(room_name=room_name,
+                                                  occupant_id=occupant_id)
+                    storage_session.add(allocation_data)
 
-            return "Success"
+            return allocation_data
         except:
             return "Failed"
 
@@ -136,59 +134,61 @@ class Database(object):
             self.load_people(people_from_db)
             self.load_rooms(rooms_from_db)
             self.load_allocations(allocations_from_db)
-            import ipdb
-            ipdb.set_trace()
 
-            print "Data successfully added"
+            message = "Data successfully added"
 
             sess.commit()
             sess.close()
         else:
-            print db_name + " does not exist"
+            message = "{} does not exist".format(db_name)
 
-        return "Success"
+        return message
 
     def load_people(self, people_from_db):
         """
         Saves data to people dictionary
         """
+        message = ""
         for person in people_from_db:
-            if person.is_staff is True:
-                people_data["Staff"].update({
-                    person.person_id:
-                    {'name': str(person.name), 'accomodation': str(
-                        person.wants_accomodation)}
-                })
-            if person.is_fellow is True:
-                people_data["Fellow"].update({
-                    person.person_id:
-                    {'name': str(person.name), 'accomodation': str(
-                        person.wants_accomodation)}
-                })
-            print person.name + " successfully added"
-        return "Success"
+            people_data.update({
+                person.person_id:
+                {'name': str(person.name),
+                 'accomodation': str(person.wants_accomodation),
+                 'is_fellow': bool(person.is_fellow)}
+            })
+
+            message += "{} successfully added\n".format(person.name)
+        return message
 
     def load_rooms(self, rooms_from_db):
         """
         Saves data to rooms dictionary
         """
+        message = ""
         for room in rooms_from_db:
             room_name = str(room.room_name)
-            room_type = str(room.room_type)
-            if room_type == 'Office':
-                rooms['Office'].update({room_name: []})
-            if room_type == 'LivingSpace':
-                rooms['LivingSpace'].update({room_name: []})
-            print room.room_name + " successfully added"
-        return "Success"
+            is_office = bool(room.is_office)
+
+            rooms.update(
+                {room_name: {"occupants": [], "is_office": is_office}})
+
+            message += "{} successfully added\n".format(room_name)
+        return message
 
     def load_allocations(self, allocations_from_db):
         """
         Saves data to people dictionary
         """
+        message = ""
         for allocation in allocations_from_db:
-            for room_type in rooms.keys():
-                if str(allocation.room_name) in rooms[room_type].keys():
-                    rooms[room_type][str(allocation.room_name)].append(
-                        allocation.occupant_id)
-        return "Success"
+            room = rooms.get(str(allocation.room_name), None)
+            if room is None:
+                message += "{} Not Created".format(str(allocation.room_name))
+                return message
+            room['occupants'].append(allocation.occupant_id)
+            name = my_room.get_names(allocation.occupant_id)
+
+            message += "{} successfully added to room {}".format(
+                name.upper(), str(allocation.room_name))
+
+        return message

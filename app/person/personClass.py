@@ -31,7 +31,7 @@ class Person(object):
         allocates the person to a random room.
         """
 
-        self.person_name = args["<first_name>"] + " " + args["<last_name>"]
+        person_name = args["<first_name>"] + " " + args["<last_name>"]
         message = ""
         wants_accomodation = 'N'
         is_fellow = args['Fellow']
@@ -41,20 +41,22 @@ class Person(object):
             wants_accomodation = args["<wants_accomodation>"]
 
         for person in people_data:
-            if people_data.get(self.person_name, None) is not None:
-                message = "{} Already Exists".format(self.person_name)
+            # import ipdb
+            # ipdb.set_trace()
+            if people_data[person]['name'] == person_name:
+                message = "{} Already Exists\n".format(person_name)
                 return message
 
         people_data.update({
             self.person_identifier: {
-                'name': self.person_name,
+                'name': person_name,
                 'accomodation': wants_accomodation,
                 'is_fellow': is_fellow}
         })
 
-        self.allocate_rooms(self.person_identifier)
+        message += self.allocate_rooms(self.person_identifier)
 
-        return people_data
+        return message
 
     def allocate_rooms(self, identifier):
         """
@@ -67,6 +69,9 @@ class Person(object):
 
         available_living_spaces = []
         available_offices = []
+
+        allocated_office = "None"
+        allocated_living_space = "None"
 
         for room in rooms:
             if rooms[room]['is_office'] and len(rooms[room]['occupants']) < 4:
@@ -82,13 +87,18 @@ class Person(object):
             allocated_living_space = random.choice(available_living_spaces)
             rooms[allocated_living_space]['occupants'].append(identifier)
 
-        return rooms
+        message = "{} has been allocated {} office and {} livingSpace\n".format(
+            people_data[identifier]['name'], allocated_office,
+            allocated_living_space)
+
+        return message
 
     def reallocate_person(self, args):
         """
         Deletes the person identifier in the current room
         and appends it to the new room
         """
+        message = ""
 
         person_identifier = int(args["<person_identifier>"])
         new_room = args["<new_room_name>"]
@@ -103,8 +113,8 @@ class Person(object):
         # Append identifier to new_room
         rooms[new_room]['occupants'].append(person_identifier)
 
-        print "{} has been removed from {} and allocated {} room".format(person['name'], current_room, new_room)
-        return rooms
+        message += "{} has been removed from {} and allocated {} room\n".format(person['name'], current_room, new_room)
+        return message
 
     def load_people(self, args):
         """
@@ -121,22 +131,23 @@ class Person(object):
         """
         # print args
         arg_dict = {}
+        message = ""
+
         with open(args["<filename>"], 'r') as input_file:
             people = input_file.readlines()
             for person in people:
                 person = person.split()
                 if person:
+                    is_fellow = True
+                    is_staff = False
+                    wants_accomodation = None
+
                     if 'STAFF' in person:
-                        is_staff = True
                         is_fellow = False
-                    else:
-                        is_staff = False
-                        is_fellow = True
+                        is_staff = True
 
                     if 'Y' in person:
                         wants_accomodation = 'Y'
-                    else:
-                        wants_accomodation = None
 
                     arg_dict.update({
                         "<first_name>": person[0],
@@ -146,4 +157,5 @@ class Person(object):
                         "<wants_accomodation>": wants_accomodation
                     })
 
-                    self.add_person(arg_dict)
+                    message += self.add_person(arg_dict)
+        return message

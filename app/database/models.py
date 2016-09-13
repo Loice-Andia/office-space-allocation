@@ -8,7 +8,7 @@ class Rooms(Base):
     __tablename__ = 'rooms'
     id = Column(Integer, primary_key=True)
     room_name = Column(String)
-    room_type = Column(String)
+    is_office = Column(Boolean)
 
 
 class People(Base):
@@ -16,7 +16,7 @@ class People(Base):
     person_id = Column(Integer, primary_key=True)
     name = Column(String)
     wants_accomodation = Column(String)
-    is_staff = Column(Boolean)
+    is_fellow = Column(Boolean)
 
 
 class Allocations(Base):

@@ -6,13 +6,16 @@ class Room(object):
     """
     Room
     """
-    #Replace the '+=' with .format()
+    # Replace the '+=' with .format()
 
     def __init__(self):
         self.room_name = ""
         self.room_type = ""
 
     def get_names(self, identifier):
+        """
+        Gets the name of a person from the people_data dictionary
+        """
         # map(function, sequence)
         # .get(val, msg) to retrieve dict item
 
@@ -22,17 +25,23 @@ class Room(object):
         return person['name']
 
     def print_room(self, args):
+        """
+        Prints the name of occupants in a room
+        """
         room_name = args["<room_name>"]
         # name = rooms.get(identifier, None)
 
+        message = ""
+
         room = rooms.get(room_name, None)
         if room == None:
-            return "{} Does Not Exist".format(room_name)
+            message += "{} Does Not Exist".format(room_name)
+            return message
 
         occupants = map(self.get_names, room['occupants'])
-        print "\n".join(occupants)
-        return occupants
 
+        message += "\n".join(occupants)
+        return message
 
     def print_allocations(self, args):
         """
@@ -41,14 +50,13 @@ class Room(object):
 
         data = ""
         for room in rooms:
-            data += "{} \n".format(room.upper())
+            data += "\n{} \n".format(room.upper())
             data += "-" * 65
             data += "\n"
             if len(rooms[room]['occupants']) is 0:
                 data += "No Occupants"
             occupants = map(self.get_names, rooms[room]['occupants'])
-            data +=",".join(occupants)
-
+            data += ",".join(occupants)
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
@@ -69,8 +77,8 @@ class Room(object):
         for person in people_data:
             for room in rooms:
                 if person in rooms[room]['occupants']:
-                    break
-                data += "{}\n".format(self.get_names(person)
+                    data += ""
+            data += "{}\n".format(self.get_names(person))
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:

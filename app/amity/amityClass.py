@@ -26,6 +26,8 @@ class Amity(object):
         """Allows user to enter a list of room names specifying
                 whether office or living spaces"""
 
+        message = ""
+
         room_type = self.get_room_type()
         is_office = False
 
@@ -36,14 +38,12 @@ class Amity(object):
         for room in args["<room_name>"]:
             existing_rooms = rooms.get(room, None)
             if existing_rooms != None:
-                print "{} Exists".format(room)
-            
+                message += "{} Exists".format(room)
+                return message
+
             rooms.update({room: {"occupants": [], "is_office": is_office}})
 
+        message += "You have the following rooms: "
+        message += '\n'.join(rooms.keys())
 
-        # find a better way of doing the print
-
-        print "You have the following rooms: "
-        print '\n'.join(rooms.keys())
-
-        return rooms
+        return message

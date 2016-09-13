@@ -82,20 +82,20 @@ class MyInteractive (cmd.Cmd):
     def do_create_room(self, args):
         """Usage: create_room <room_name>..."""
         # print args
-        my_amity.create_room(args)
+        print(my_amity.create_room(args))
 
     @docopt_cmd
     def do_add_person(self, args):
         """Usage:
         add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]"""
-        person.add_person(args)
+        print(person.add_person(args))
 
     @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage:
         reallocate_person <person_identifier> <new_room_name>"""
 
-        person.reallocate_person(args)
+        print(person.reallocate_person(args))
 
     @docopt_cmd
     def do_load_people(self, args):
@@ -112,20 +112,20 @@ class MyInteractive (cmd.Cmd):
                 TANA LOPEZ FELLOW Y
                 KELLY McGUIRE STAFF N
         """
-        person.load_people(args)
+        print(person.load_people(args))
 
     @docopt_cmd
     def do_print_allocations(self, args):
         """Usage:
         print_allocations [-o <filename>]
         """
-        print my_room.print_allocations(args)
+        print(my_room.print_allocations(args))
 
     @docopt_cmd
     def do_print_unallocated(self, args):
         """Usage:
         print_unallocated [-o <filename>]"""
-        print my_room.print_unallocated(args)
+        print(my_room.print_unallocated(args))
 
     @docopt_cmd
     def do_print_room(self, args):
@@ -133,26 +133,27 @@ class MyInteractive (cmd.Cmd):
         print_room <room_name>
 
         """
-        my_room.print_room(args)
+        print(my_room.print_room(args))
 
     @docopt_cmd
     def do_save_state(self, args):
         """Usage:
         save_state [--db=sqlite_database]"""
-        amity_db.save_state(args)
+        print(amity_db.save_state(args))
 
     @docopt_cmd
     def do_load_state(self, args):
         """Usage: \
         load_state <sqlite_database>"""
-        amity_db.load_state(args)
+        print(amity_db.load_state(args))
 
     def do_quit(self, args):
         """Quits out of Interactive Mode."""
-        # amity_db.save_state({"--db": 'amity.db'})
+        print(amity_db.save_state({"--db": 'amity.db'}))
         print('Good Bye!')
         exit()
-# amity_db.load_state({"<sqlite_database>": 'amity.db'})
+
+amity_db.load_state({"<sqlite_database>": 'amity.db'})
 opt = docopt(__doc__, sys.argv[1:])
 
 if opt['--interactive']:
