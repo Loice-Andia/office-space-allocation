@@ -1,6 +1,6 @@
 import unittest
 import mock
-# from unittest.mock import patch
+from mock import patch
 
 from app.amity.amityClass import Amity, rooms
 from app.person.fellowClass import Fellow
