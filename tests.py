@@ -1,4 +1,6 @@
 import unittest
+import mock
+# from unittest.mock import patch
 
 from app.amity.amityClass import Amity, rooms
 from app.person.fellowClass import Fellow
@@ -7,6 +9,8 @@ from app.person.staffClass import Staff
 from app.rooms.livingspaceClass import LivingSpace
 from app.rooms.officeClass import Office
 from app.rooms.roomClass import Room
+from app.database.amity_database import Database
+from app.database.models import *
 
 
 class TestClasses(unittest.TestCase):
@@ -20,6 +24,7 @@ class TestClasses(unittest.TestCase):
         self.test_room = Room()
         self.test_office = Office()
         self.test_livingspace = LivingSpace()
+        self.test_database = Database()
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -37,6 +42,8 @@ class TestClasses(unittest.TestCase):
             self.test_person, Person, msg="Cannot create `Person` instance")
         self.assertIsInstance(
             self.test_staff, Staff, msg="Cannot create `Staff` instance")
+        self.assertIsInstance(
+            self.test_database, Database, msg="Cannot create `Database` instance")
 
     def test_create_room_in_amity(self):
         # try_create = self.test_amity.create_room({"<room_name>": ["Emerald"]})
