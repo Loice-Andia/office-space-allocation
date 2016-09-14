@@ -14,29 +14,18 @@ class Person(object):
 
     wants_accomodation = 'N'
 
-    def set_default_id(self):
-        """
-        Gets previous existing ids and sets the max as default
-        """
-        identifier = 1
-
-        if len(people_data.keys()) > 0:
-            identifier = max(people_data.keys()) + 1
-
-        return identifier
-
     def add_person(self, args):
         """
-        Adds a person to the People_data dictionary 
+        Adds a person to the People_data dictionary
         allocates the person to a random room.
         """
 
-        person_name = (args["<first_name>"] + " " +
-                       args["<last_name>"]).upper()
+        person_name = "{} {}".format(args["<first_name>"], args["<last_name>"])
+        person_name = person_name.upper()
         message = ""
         wants_accomodation = 'N'
         is_fellow = args['Fellow']
-        self.person_identifier = self.set_default_id()
+        self.person_identifier = len(people_data) + 1
 
         if args["<wants_accomodation>"]:
             wants_accomodation = args["<wants_accomodation>"]
