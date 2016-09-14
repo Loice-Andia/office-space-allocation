@@ -83,7 +83,8 @@ class Room(object):
             for room in rooms:
                 if person in rooms[room]['occupants']:
                     data += ""
-            data += "{}\n".format(self.get_names(person))
+            else:
+                data += "{}\n".format(self.get_names(person))
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:

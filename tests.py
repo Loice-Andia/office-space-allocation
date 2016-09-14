@@ -90,6 +90,12 @@ class TestClasses(unittest.TestCase):
         self.test_print_allocations_with_filename = self.test_room.print_allocations({
             "-o": True, "<filename>": "test_allocations.txt"})
 
+        # Test print unallocated function
+        self.test_print_unallocated_without_filename = self.test_room.print_unallocated({
+            "-o": False, "<filename>": None})
+        self.test_print_unallocated_with_filename = self.test_room.print_unallocated({
+            "-o": True, "<filename>": "test_unallocated.txt"})
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -169,6 +175,11 @@ class TestClasses(unittest.TestCase):
         self.assertNotEqual(self.test_print_allocations_without_filename,
                             "", msg="Wrong data printed")
         self.assertTrue(os.path.exists("test_allocations.txt"))
+
+    def test_print_unallocated(self):
+        self.assertNotEqual(self.test_print_unallocated_without_filename,
+                            "", msg="Wrong data printed")
+        self.assertTrue(os.path.exists("test_unallocated.txt"))
 
 
 if __name__ == '__main__':
