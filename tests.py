@@ -34,6 +34,9 @@ class TestClasses(unittest.TestCase):
 
         self.test_person.add_person(sample_person)
 
+        # Test loading of people from a text file
+        self.test_person.load_people({"<filename>": "try.txt"})
+
         # Test if a person is added twice
         self.test_adding_person_twice = self.test_person.add_person(
             sample_person)
@@ -73,7 +76,7 @@ class TestClasses(unittest.TestCase):
 
         # Test reallocation of rooms
         self.test_reallocate = self.test_person.reallocate_person({
-            "<person_identifier>": 3,
+            "<person_identifier>": 10,
             "<new_room_name>": "Jade"})
 
     def test_class_initialization(self):
@@ -103,6 +106,17 @@ class TestClasses(unittest.TestCase):
             'is_fellow': True}}, people_data,
             msg="Person not created")
 
+    def test_load_people_from_a_text_file(self):
+        self.assertDictContainsSubset({
+            2: {'name': "OLUWAFEMI SULE",
+                'accomodation': 'Y',
+                'is_fellow': True},
+            3: {'name': "DOMINIC WALTERS",
+                'accomodation': 'N',
+                'is_fellow': False}
+        }, people_data,
+            msg="People from text file not added")
+
     def test_calling_add_person_twice_with_same_args(self):
         self.assertEqual(self.test_adding_person_twice,
                          "LOICE ANDIA Already Exists\n",
@@ -110,7 +124,7 @@ class TestClasses(unittest.TestCase):
 
     def test_office_allocation_in_add_person(self):
         self.assertDictContainsSubset({
-            "Krypton": {"occupants": [2], "is_office": True}},
+            "Krypton": {"occupants": [9], "is_office": True}},
             rooms, msg="Person not allocated office")
 
     def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
@@ -131,9 +145,8 @@ class TestClasses(unittest.TestCase):
 
     def test_reallocate_room(self):
         self.assertDictContainsSubset({
-            "Jade": {"occupants": [3], "is_office": False}},
+            "Jade": {"occupants": [10], "is_office": False}},
             rooms, msg="Person has not been reallocated")
-
 
 if __name__ == '__main__':
     unittest.main()
