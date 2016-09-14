@@ -34,6 +34,10 @@ class TestClasses(unittest.TestCase):
 
         self.test_person.add_person(sample_person)
 
+        # Test if a person is added twice
+        self.test_adding_person_twice = self.test_person.add_person(
+            sample_person)
+
         # Test for creation of a single room
         self.test_amity.create_room(
             {"<room_name>": ["Krypton"]}, "O")
@@ -45,6 +49,8 @@ class TestClasses(unittest.TestCase):
         # Test for creation of multiple living spaces
         self.test_amity.create_room(
             {"<room_name>": ["Jade", "Emerald"]}, "L")
+
+        # Test allocation of rooms on add person
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -72,6 +78,11 @@ class TestClasses(unittest.TestCase):
             'accomodation': 'Y',
             'is_fellow': True}}, people_data,
             msg="Person not created")
+
+    def test_calling_add_person_twice_with_same_args(self):
+        self.assertEqual(self.test_adding_person_twice,
+                         "LOICE ANDIA Already Exists\n",
+                         msg="Person added twice")
 
     def test_get_room_type_in_amity(self):
         self.assertEqual(self.test_get_room_type,
