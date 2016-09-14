@@ -105,7 +105,14 @@ class TestClasses(unittest.TestCase):
             "<room_name>": "Oculus"})
 
         # Test database methods
-        self.test_database.connect_to_db("test_database.db")
+        self.test_sample_database = self.test_database.connect_to_db(
+            "test_database.db")
+        self.test_save_people = self.test_database.save_people(
+            self.test_sample_database)
+        self.test_save_rooms = self.test_database.save_rooms(
+            self.test_sample_database)
+        self.test_save_allocations = self.test_database.save_allocations(
+            self.test_sample_database)
         self.test_save_state_with_dbname = self.test_database.save_state({
             "--db": "test_database.db"})
         self.test_save_state_without_dbname = self.test_database.save_state({
@@ -210,6 +217,12 @@ class TestClasses(unittest.TestCase):
                         msg="Database not created")
 
     def test_database_save_state_method(self):
+        self.assertNotEqual(self.test_save_people,
+                            "Failed", msg="People not added to database")
+        self.assertNotEqual(self.test_save_rooms,
+                            "Failed", msg="Rooms not added to database")
+        self.assertNotEqual(self.test_save_allocations,
+                            "Failed", msg="Allocations not added to database")
         self.assertTrue(os.path.exists("test_database.db"),
                         msg="Data not saved to database")
         self.assertTrue(os.path.exists("amity.db"),
