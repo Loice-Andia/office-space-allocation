@@ -1,6 +1,4 @@
 import unittest
-import mock
-from mock import patch
 
 from app.amity.amityClass import Amity, rooms
 from app.person.fellowClass import Fellow
@@ -25,6 +23,7 @@ class TestClasses(unittest.TestCase):
         self.test_office = Office()
         self.test_livingspace = LivingSpace()
         self.test_database = Database()
+        self.test_get_room_type = self.test_amity.get_room_type("O")
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -43,12 +42,15 @@ class TestClasses(unittest.TestCase):
         self.assertIsInstance(
             self.test_staff, Staff, msg="Cannot create `Staff` instance")
         self.assertIsInstance(
-            self.test_database, Database, msg="Cannot create `Database` instance")
+            self.test_database, Database,
+            msg="Cannot create `Database` instance")
+
+    def test_get_room_type_in_amity(self):
+        self.assertEqual(self.test_get_room_type,
+                         "O", msg="Room Type returned is not 'O' ")
 
     def test_create_room_in_amity(self):
-        # try_create = self.test_amity.create_room({"<room_name>": ["Emerald"]})
-        # self.assertNotEqual(0, len(self.test_amity.rooms))
-        # self.assertEqual(str, type(self.test_amity.create_room(room_name))
+        
         pass
 
     def test_add_person_in_person(self):

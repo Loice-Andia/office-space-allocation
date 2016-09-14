@@ -11,9 +11,9 @@ class Amity(object):
         #     'LivingSpace': []
         # }
 
-    def get_room_type(self):
+    def get_room_type(self, room_type=None):
         # Get the room_type from the user
-        room_type = None
+        room_type = room_type
 
         # Assign a group of rooms to a room type
         while room_type not in ['O', 'L']:
@@ -22,13 +22,14 @@ class Amity(object):
             room_type = room_type.upper()
         return room_type
 
-    def create_room(self, args):
+    def create_room(self, args, room_type=None):
         """Allows user to enter a list of room names specifying
                 whether office or living spaces"""
 
         message = ""
+        room_type = room_type
 
-        room_type = self.get_room_type()
+        room_type = self.get_room_type(room_type)
         is_office = False
 
         if room_type == 'O':
