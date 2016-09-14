@@ -27,6 +27,8 @@ from app.amity import my_amity
 from app.person import person
 from app.rooms import my_room
 from app.database import amity_db
+from termcolor import cprint, colored
+from pyfiglet import figlet_format
 
 
 def docopt_cmd(func):
@@ -62,18 +64,32 @@ def docopt_cmd(func):
 
 
 class MyInteractive (cmd.Cmd):
-    intro = 'Welcome to Amity office space allocation!\n\n'\
-        + 'Usage:\n'\
-        + 'amity create_room <room_name>...\n'\
-        + 'amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]\n' \
-        + 'amity reallocate_person <person_identifier> <new_room_name>\n'\
-        + 'amity load_people <filename>\n'\
-        + 'amity print_allocations [-o <filename>]\n'\
-        + 'amity print_unallocated [-o <filename>]\n'\
-        + 'amity print_room <room_name>\n'\
-        + 'amity save_state [--db=sqlite_database]\n'\
-        + 'amity load_state <sqlite_database>\n'\
-        + ' (type help for a list of commands.)'
+
+    cprint(figlet_format('AMITY', font='basic'), 'green', attrs=['bold'])
+
+    def introduction():
+        print "\n"
+        cprint("ROOM ALLOCATION COMMANDS:".center(40), 'green')
+        print "\n"
+        cprint("1. create_room <room_name>...".center(40), 'green')
+        cprint("2. add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]".center(
+            40), 'green')
+        cprint(
+            "3. reallocate_person <person_identifier> <new_room_name>".center(40), 'green')
+        cprint("4. load_people <filename>".center(40), 'green')
+        cprint("5. print_allocations [-o <filename>]".center(40), 'green')
+        cprint("6. print_unallocated [-o <filename>]".center(40), 'green')
+        cprint("7. print_room <room_name>".center(40), 'green')
+        cprint("8. save_state [--db=sqlite_database]".center(40), 'green')
+        cprint("9. load_state <sqlite_database>".center(40), 'green')
+        print "\n"
+        cprint("OTHER COMMANDS:".center(40), 'green')
+        print "\n"
+        cprint("1. -h, --help, help".center(40), 'green')
+        cprint("2. quit".center(40), 'green')
+        print "\n\n"
+
+    intro = introduction()
 
     prompt = '(amity) '
     file = None

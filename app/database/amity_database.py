@@ -132,9 +132,9 @@ class Database(object):
                 rooms_from_db = sess.query(Rooms).all()
                 allocations_from_db = sess.query(Allocations).all()
 
-                print(self.load_people(people_from_db))
-                print(self.load_rooms(rooms_from_db))
-                print(self.load_allocations(allocations_from_db))
+                self.load_people(people_from_db)
+                self.load_rooms(rooms_from_db)
+                self.load_allocations(allocations_from_db)
 
                 message = "Data successfully added"
             except Exception:

@@ -2,16 +2,28 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela-lolo/office-space-allocation/badge.svg?branch=dev)](https://coveralls.io/github/andela-lolo/office-space-allocation?branch=dev)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/32d1e69c23fa419083d6fea338af7a7b)](https://www.codacy.com/app/loice-andia/office-space-allocation?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-lolo/office-space-allocation&amp;utm_campaign=Badge_Grade)
 
-# Office Space Allocation
+# Amity Room Allocation
 
 Amity has rooms which can be offices or living spaces. An office can occupy a maximum of 6 people. A living space can inhabit a maximum of 4 people.
+This is a console application that allocates offices and living spaces at Amity to Andela employees
 
-A person to be allocated could be a fellow or staff. Staff cannot be allocated living spaces. Fellows have a choice to choose a living space or not.
+##Installation
 
-This system will be used to automatically allocate spaces to people at random.
+Clone this repo
+
+$ https://github.com/andela-lolo/office-space-allocation.git
+Navigate to the folder
+
+$ cd office_space_allocation
+Set up a virtualenv then Install packages required
+
+$ pip install  -r requirements.txt
 
 ## Launching the Program
 Run ```python app.py -i```
+
+##Running the tests
+Run ```coverage run tests.py```
 
 ## Usage
 1. ```create_room <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Hogwarts Valhalla Krypton ```
