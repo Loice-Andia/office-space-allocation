@@ -71,7 +71,10 @@ class TestClasses(unittest.TestCase):
         self.test_amity.create_room(
             {"<room_name>": ["Jade", "Emerald"]}, "L")
 
-        # Test allocation of rooms on add person
+        # Test reallocation of rooms
+        self.test_reallocate = self.test_person.reallocate_person({
+            "<person_identifier>": 3,
+            "<new_room_name>": "Jade"})
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -101,18 +104,18 @@ class TestClasses(unittest.TestCase):
             msg="Person not created")
 
     def test_calling_add_person_twice_with_same_args(self):
-        self.assertIn(self.test_adding_person_twice,
-                      "LOICE ANDIA Already Exists\n",
-                      msg="Person added twice")
+        self.assertEqual(self.test_adding_person_twice,
+                         "LOICE ANDIA Already Exists\n",
+                         msg="Person added twice")
 
     def test_office_allocation_in_add_person(self):
         self.assertDictContainsSubset({
-            "Krypton": {"occupants": [2, 3], "is_office": True}},
+            "Krypton": {"occupants": [2], "is_office": True}},
             rooms, msg="Person not allocated office")
 
     def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
         self.assertDictContainsSubset({
-            "Ruby": {"occupants": [3], "is_office": False}},
+            "Ruby": {"occupants": [], "is_office": False}},
             rooms, msg="Person not allocated Living Space")
 
     def test_get_room_type_in_amity(self):
@@ -123,9 +126,13 @@ class TestClasses(unittest.TestCase):
         self.assertDictContainsSubset({
             "Valhalla": {"occupants": [], "is_office": True},
             "Oculus": {"occupants": [], "is_office": True},
-            "Jade": {"occupants": [], "is_office": False},
             "Emerald": {"occupants": [], "is_office": False}},
             rooms, msg="Multiple Rooms were not created")
+
+    def test_reallocate_room(self):
+        self.assertDictContainsSubset({
+            "Jade": {"occupants": [3], "is_office": False}},
+            rooms, msg="Person has not been reallocated")
 
 
 if __name__ == '__main__':
