@@ -25,6 +25,14 @@ class TestClasses(unittest.TestCase):
         self.test_database = Database()
         self.test_get_room_type = self.test_amity.get_room_type("O")
 
+        # Test for creation of multiple offices
+        self.test_amity.create_room(
+            {"<room_name>": ["Valhalla", "Oculus"]}, "O")
+
+        # Test for creation of multiple living spaces
+        self.test_amity.create_room(
+            {"<room_name>": ["Jade", "Emerald"]}, "L")
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -50,8 +58,11 @@ class TestClasses(unittest.TestCase):
                          "O", msg="Room Type returned is not 'O' ")
 
     def test_create_room_in_amity(self):
-        
-        pass
+        self.assertDictEqual({"Valhalla": {"occupants": [], "is_office": True},
+                              "Oculus": {"occupants": [], "is_office": True},
+                              "Jade": {"occupants": [], "is_office": False},
+                              "Emerald": {"occupants": [], "is_office": False}},
+                             rooms, msg="Rooms were not created")
 
     def test_add_person_in_person(self):
         pass
