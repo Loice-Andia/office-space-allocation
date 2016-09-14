@@ -123,6 +123,8 @@ class TestClasses(unittest.TestCase):
         # Test Load state methods
         self.test_load_state = self.test_database.load_state({
             "<sqlite_database>": "test_database.db"})
+        self.test_load_state_with_non_existing_db = self.test_database.load_state({
+            "<sqlite_database>": "test.db"})
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -238,6 +240,9 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(self.test_load_state,
                          "Data successfully added",
                          msg="Data not added from the database")
+        self.assertEqual(self.test_load_state_with_non_existing_db,
+                         "test.db does not exist",
+                         msg="Database Exists")
 
 
 if __name__ == '__main__':
