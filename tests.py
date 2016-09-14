@@ -79,6 +79,10 @@ class TestClasses(unittest.TestCase):
             "<person_identifier>": 10,
             "<new_room_name>": "Jade"})
 
+        # Test getting of a person's name
+        self.test_get_name = self.test_room.get_names(1)
+        self.test_get_name_with_wrong_id = self.test_room.get_names(15)
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -147,6 +151,13 @@ class TestClasses(unittest.TestCase):
         self.assertDictContainsSubset({
             "Jade": {"occupants": [10], "is_office": False}},
             rooms, msg="Person has not been reallocated")
+
+    def test_getting_persons_name_from_people_data_dictionary(self):
+        self.assertEqual(self.test_get_name, "LOICE ANDIA",
+                         msg="Wrong Person name retrieved")
+        self.assertEqual(self.test_get_name_with_wrong_id,
+                         "Person Does not exist", msg="Person Exists")
+
 
 if __name__ == '__main__':
     unittest.main()
