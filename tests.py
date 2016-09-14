@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from app.amity.amityClass import Amity, rooms
@@ -83,6 +84,12 @@ class TestClasses(unittest.TestCase):
         self.test_get_name = self.test_room.get_names(1)
         self.test_get_name_with_wrong_id = self.test_room.get_names(15)
 
+        # Test print allocations function
+        self.test_print_allocations_without_filename = self.test_room.print_allocations({
+            "-o": False, "<filename>": None})
+        self.test_print_allocations_with_filename = self.test_room.print_allocations({
+            "-o": True, "<filename>": "test_allocations.txt"})
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -157,6 +164,11 @@ class TestClasses(unittest.TestCase):
                          msg="Wrong Person name retrieved")
         self.assertEqual(self.test_get_name_with_wrong_id,
                          "Person Does not exist", msg="Person Exists")
+
+    def test_print_allocations(self):
+        self.assertNotEqual(self.test_print_allocations_without_filename,
+                            "", msg="Wrong data printed")
+        self.assertTrue(os.path.exists("test_allocations.txt"))
 
 
 if __name__ == '__main__':
