@@ -96,6 +96,14 @@ class TestClasses(unittest.TestCase):
         self.test_print_unallocated_with_filename = self.test_room.print_unallocated({
             "-o": True, "<filename>": "test_unallocated.txt"})
 
+        # Test print room function
+        self.test_printing_of_non_existing_room = self.test_room.print_room({
+            "<room_name>": "Midgar"})
+        self.test_printing_of_existing_room = self.test_room.print_room({
+            "<room_name>": "Jade"})
+        self.test_printing_of_empty_room = self.test_room.print_room({
+            "<room_name>": "Oculus"})
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -180,6 +188,14 @@ class TestClasses(unittest.TestCase):
         self.assertNotEqual(self.test_print_unallocated_without_filename,
                             "", msg="Wrong data printed")
         self.assertTrue(os.path.exists("test_unallocated.txt"))
+
+    def test_print_room(self):
+        self.assertEqual(self.test_printing_of_non_existing_room,
+            "Midgar Does Not Exist", msg="Room Exists")
+        self.assertNotEqual(self.test_printing_of_existing_room,
+            "", msg="Room Does Not Exist")
+        self.assertIn(self.test_printing_of_empty_room,
+            "No Occupants", msg="Room has occupants")
 
 
 if __name__ == '__main__':

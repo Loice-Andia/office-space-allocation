@@ -38,9 +38,13 @@ class Room(object):
             message += "{} Does Not Exist".format(room_name)
             return message
 
-        occupants = map(self.get_names, room['occupants'])
+        try:
+            occupants = map(self.get_names, room['occupants'])
 
-        message += "\n".join(occupants)
+            message += "\n".join(occupants)
+        except Exception:
+            message += "No Occupants"
+            
         return message
 
     def print_allocations(self, args):
@@ -83,8 +87,7 @@ class Room(object):
             for room in rooms:
                 if person in rooms[room]['occupants']:
                     data += ""
-            else:
-                data += "{}\n".format(self.get_names(person))
+            data += "{}\n".format(self.get_names(person))
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
