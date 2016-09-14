@@ -117,12 +117,16 @@ class TestClasses(unittest.TestCase):
             self.test_sample_database)
         self.test_save_state_with_dbname = self.test_database.save_state({
             "--db": "test_database.db"})
+        self.test_save_state_failure = self.test_database.save_state({
+            "--db": ""})
         self.test_save_state_without_dbname = self.test_database.save_state({
             "--db": None})
 
         # Test Load state methods
         self.test_load_state = self.test_database.load_state({
             "<sqlite_database>": "test_database.db"})
+        self.test_load_state_failure = self.test_database.load_state({
+            "<sqlite_database>": ""})
         self.test_load_state_with_non_existing_db = self.test_database.load_state({
             "<sqlite_database>": "test.db"})
 
@@ -233,6 +237,8 @@ class TestClasses(unittest.TestCase):
                             "Failed", msg="Allocations not added to database")
         self.assertTrue(os.path.exists("test_database.db"),
                         msg="Data not saved to database")
+        self.assertRaises(Exception, self.test_save_state_failure,
+                          msg="Exception not raised")
         self.assertTrue(os.path.exists("amity.db"),
                         msg="Data not saved to database")
 
@@ -243,6 +249,8 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(self.test_load_state_with_non_existing_db,
                          "test.db does not exist",
                          msg="Database Exists")
+        self.assertRaises(Exception, self.test_load_state_failure,
+                          msg="Exception not raised")
 
 
 if __name__ == '__main__':
