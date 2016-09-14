@@ -8,7 +8,7 @@ Amity has rooms which can be offices or living spaces. An office can occupy a ma
 
 This is a console application that allocates offices and living spaces at Amity to Andela employees
 
-##Installation
+## Installation
 
 Clone this repo
 
@@ -23,10 +23,10 @@ Set up a virtualenv then Install packages required
 ```pip install  -r requirements.txt```
 
 ## Launching the Program
-Run ```python app.py -i```
+`python app.py -i`
 
-##Running the tests
-Run ```coverage run tests.py```
+## Running the tests
+```coverage run tests.py```
 
 ## Usage
 1. ```create_room <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Hogwarts Valhalla Krypton ```
