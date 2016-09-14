@@ -11,13 +11,13 @@ This is a console application that allocates offices and living spaces at Amity 
 
 Clone this repo
 
-$ https://github.com/andela-lolo/office-space-allocation.git
+```https://github.com/andela-lolo/office-space-allocation.git```
 Navigate to the folder
 
-$ cd office_space_allocation
+```cd office_space_allocation```
 Set up a virtualenv then Install packages required
 
-$ pip install  -r requirements.txt
+```pip install  -r requirements.txt```
 
 ## Launching the Program
 Run ```python app.py -i```
