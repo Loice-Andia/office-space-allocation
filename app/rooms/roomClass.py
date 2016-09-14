@@ -44,7 +44,7 @@ class Room(object):
             message += "\n".join(occupants)
         except Exception:
             message += "No Occupants"
-            
+
         return message
 
     def print_allocations(self, args):

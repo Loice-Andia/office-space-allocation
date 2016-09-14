@@ -107,6 +107,8 @@ class TestClasses(unittest.TestCase):
         # Test database methods
         self.test_sample_database = self.test_database.connect_to_db(
             "test_database.db")
+
+        # Test methods for saving to the database
         self.test_save_people = self.test_database.save_people(
             self.test_sample_database)
         self.test_save_rooms = self.test_database.save_rooms(
@@ -117,6 +119,10 @@ class TestClasses(unittest.TestCase):
             "--db": "test_database.db"})
         self.test_save_state_without_dbname = self.test_database.save_state({
             "--db": None})
+
+        # Test Load state methods
+        self.test_load_state = self.test_database.load_state({
+            "<sqlite_database>": "test_database.db"})
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -227,6 +233,11 @@ class TestClasses(unittest.TestCase):
                         msg="Data not saved to database")
         self.assertTrue(os.path.exists("amity.db"),
                         msg="Data not saved to database")
+
+    def test_database_load_state_method(self):
+        self.assertEqual(self.test_load_state,
+                         "Data successfully added",
+                         msg="Data not added from the database")
 
 
 if __name__ == '__main__':
