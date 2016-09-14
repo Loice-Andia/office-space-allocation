@@ -42,6 +42,15 @@ class TestClasses(unittest.TestCase):
         self.test_amity.create_room(
             {"<room_name>": ["Krypton"]}, "O")
 
+        # Test add person and allocate office
+        sample_staff = {"<first_name>": "John",
+                        "<last_name>": "Doe",
+                        "Fellow": False,
+                        "Staff": True,
+                        "<wants_accomodation>": None}
+
+        self.test_person.add_person(sample_staff)
+
         # Test for creation of multiple offices
         self.test_amity.create_room(
             {"<room_name>": ["Valhalla", "Oculus"]}, "O")
@@ -73,28 +82,32 @@ class TestClasses(unittest.TestCase):
             msg="Cannot create `Database` instance")
 
     def test_add_person_in_person(self):
-        self.assertDictEqual({1: {
+        self.assertDictContainsSubset({1: {
             'name': "LOICE ANDIA",
             'accomodation': 'Y',
             'is_fellow': True}}, people_data,
             msg="Person not created")
 
     def test_calling_add_person_twice_with_same_args(self):
-        self.assertEqual(self.test_adding_person_twice,
-                         "LOICE ANDIA Already Exists\n",
-                         msg="Person added twice")
+        self.assertIn(self.test_adding_person_twice,
+                      "LOICE ANDIA Already Exists\n",
+                      msg="Person added twice")
+
+    def test_office_allocation_in_add_person(self):
+        self.assertDictContainsSubset({
+            "Krypton": {"occupants": [2], "is_office": True}},
+            rooms, msg="Person not allocated office")
 
     def test_get_room_type_in_amity(self):
         self.assertEqual(self.test_get_room_type,
                          "O", msg="Room Type returned is not 'O' ")
 
     def test_create_room_in_amity(self):
-        self.assertDictEqual({"Krypton": {"occupants": [], "is_office": True},
-                              "Valhalla": {"occupants": [], "is_office": True},
+        self.assertDictContainsSubset({"Valhalla": {"occupants": [], "is_office": True},
                               "Oculus": {"occupants": [], "is_office": True},
                               "Jade": {"occupants": [], "is_office": False},
                               "Emerald": {"occupants": [], "is_office": False}},
-                             rooms, msg="Rooms were not created")
+                             rooms, msg="Multiple Rooms were not created")
 
 
 if __name__ == '__main__':
