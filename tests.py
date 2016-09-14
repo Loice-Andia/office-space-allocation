@@ -51,6 +51,18 @@ class TestClasses(unittest.TestCase):
 
         self.test_person.add_person(sample_staff)
 
+        # Test adding of a fellow and allocate office and living space
+        self.test_amity.create_room(
+            {"<room_name>": ["Ruby"]}, "L")
+
+        sample_fellow = {"<first_name>": "Jimmy",
+                         "<last_name>": "Kamau",
+                         "Fellow": True,
+                         "Staff": False,
+                         "<wants_accomodation>": 'Y'}
+
+        self.test_person.add_person(sample_fellow)
+
         # Test for creation of multiple offices
         self.test_amity.create_room(
             {"<room_name>": ["Valhalla", "Oculus"]}, "O")
@@ -95,19 +107,25 @@ class TestClasses(unittest.TestCase):
 
     def test_office_allocation_in_add_person(self):
         self.assertDictContainsSubset({
-            "Krypton": {"occupants": [2], "is_office": True}},
+            "Krypton": {"occupants": [2, 3], "is_office": True}},
             rooms, msg="Person not allocated office")
+
+    def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
+        self.assertDictContainsSubset({
+            "Ruby": {"occupants": [3], "is_office": False}},
+            rooms, msg="Person not allocated Living Space")
 
     def test_get_room_type_in_amity(self):
         self.assertEqual(self.test_get_room_type,
                          "O", msg="Room Type returned is not 'O' ")
 
     def test_create_room_in_amity(self):
-        self.assertDictContainsSubset({"Valhalla": {"occupants": [], "is_office": True},
-                              "Oculus": {"occupants": [], "is_office": True},
-                              "Jade": {"occupants": [], "is_office": False},
-                              "Emerald": {"occupants": [], "is_office": False}},
-                             rooms, msg="Multiple Rooms were not created")
+        self.assertDictContainsSubset({
+            "Valhalla": {"occupants": [], "is_office": True},
+            "Oculus": {"occupants": [], "is_office": True},
+            "Jade": {"occupants": [], "is_office": False},
+            "Emerald": {"occupants": [], "is_office": False}},
+            rooms, msg="Multiple Rooms were not created")
 
 
 if __name__ == '__main__':
