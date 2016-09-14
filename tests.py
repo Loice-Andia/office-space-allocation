@@ -25,6 +25,10 @@ class TestClasses(unittest.TestCase):
         self.test_database = Database()
         self.test_get_room_type = self.test_amity.get_room_type("O")
 
+        # Test for creation of a single room
+        self.test_amity.create_room(
+            {"<room_name>": ["Krypton"]}, "O")
+
         # Test for creation of multiple offices
         self.test_amity.create_room(
             {"<room_name>": ["Valhalla", "Oculus"]}, "O")
@@ -32,6 +36,9 @@ class TestClasses(unittest.TestCase):
         # Test for creation of multiple living spaces
         self.test_amity.create_room(
             {"<room_name>": ["Jade", "Emerald"]}, "L")
+
+        # Test getting default person Identifier
+        self.test_person_default_id = self.test_person.set_default_id()
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -58,11 +65,16 @@ class TestClasses(unittest.TestCase):
                          "O", msg="Room Type returned is not 'O' ")
 
     def test_create_room_in_amity(self):
-        self.assertDictEqual({"Valhalla": {"occupants": [], "is_office": True},
+        self.assertDictEqual({"Krypton": {"occupants": [], "is_office": True},
+                              "Valhalla": {"occupants": [], "is_office": True},
                               "Oculus": {"occupants": [], "is_office": True},
                               "Jade": {"occupants": [], "is_office": False},
                               "Emerald": {"occupants": [], "is_office": False}},
                              rooms, msg="Rooms were not created")
+
+    def test_set_default_id_for_a_person(self):
+        self.assertEqual(self.test_person_default_id, 1,
+                         msg="Default Id not defined")
 
     def test_add_person_in_person(self):
         pass
