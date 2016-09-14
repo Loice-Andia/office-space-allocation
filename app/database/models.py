@@ -24,6 +24,3 @@ class Allocations(Base):
     id = Column(Integer, primary_key=True)
     room_name = Column(String)
     occupant_id = Column(Integer)
-
-    # occupants = relationship(People)
-    # room = relationship(Rooms)
