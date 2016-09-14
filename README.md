@@ -5,6 +5,7 @@
 # Amity Room Allocation
 
 Amity has rooms which can be offices or living spaces. An office can occupy a maximum of 6 people. A living space can inhabit a maximum of 4 people.
+
 This is a console application that allocates offices and living spaces at Amity to Andela employees
 
 ##Installation
@@ -12,9 +13,11 @@ This is a console application that allocates offices and living spaces at Amity 
 Clone this repo
 
 ```https://github.com/andela-lolo/office-space-allocation.git```
+
 Navigate to the folder
 
 ```cd office_space_allocation```
+
 Set up a virtualenv then Install packages required
 
 ```pip install  -r requirements.txt```
