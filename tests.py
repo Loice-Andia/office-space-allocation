@@ -104,8 +104,12 @@ class TestClasses(unittest.TestCase):
         self.test_printing_of_empty_room = self.test_room.print_room({
             "<room_name>": "Oculus"})
 
-        #Test database creation
+        # Test database methods
         self.test_database.connect_to_db("test_database.db")
+        self.test_save_state_with_dbname = self.test_database.save_state({
+            "--db": "test_database.db"})
+        self.test_save_state_without_dbname = self.test_database.save_state({
+            "--db": None})
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -185,7 +189,8 @@ class TestClasses(unittest.TestCase):
     def test_print_allocations(self):
         self.assertNotEqual(self.test_print_allocations_without_filename,
                             "", msg="Wrong data printed")
-        self.assertTrue(os.path.exists("test_allocations.txt"))
+        self.assertTrue(os.path.exists("test_allocations.txt"),
+                        msg="File not created")
 
     def test_print_unallocated(self):
         self.assertNotEqual(self.test_print_unallocated_without_filename,
@@ -201,7 +206,14 @@ class TestClasses(unittest.TestCase):
                       "No Occupants", msg="Room has occupants")
 
     def test_database_creation(self):
-        self.assertTrue(os.path.exists("test_database.db"))
+        self.assertTrue(os.path.exists("test_database.db"),
+                        msg="Database not created")
+
+    def test_database_save_state_method(self):
+        self.assertTrue(os.path.exists("test_database.db"),
+                        msg="Data not saved to database")
+        self.assertTrue(os.path.exists("amity.db"),
+                        msg="Data not saved to database")
 
 
 if __name__ == '__main__':
