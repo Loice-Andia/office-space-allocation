@@ -252,6 +252,11 @@ class TestClasses(unittest.TestCase):
         self.assertRaises(Exception, self.test_load_state_failure,
                           msg="Exception not raised")
 
+    def tearDown(self):
+        os.remove("test_database.db")
+        os.remove("test_allocations.txt")
+        os.remove("test_unallocated.txt")
+
 
 if __name__ == '__main__':
     unittest.main()
