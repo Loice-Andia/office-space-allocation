@@ -104,6 +104,9 @@ class TestClasses(unittest.TestCase):
         self.test_printing_of_empty_room = self.test_room.print_room({
             "<room_name>": "Oculus"})
 
+        #Test database creation
+        self.test_database.connect_to_db("test_database.db")
+
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_amity, Amity, msg="Cannot create `Amity` instance")
@@ -191,11 +194,14 @@ class TestClasses(unittest.TestCase):
 
     def test_print_room(self):
         self.assertEqual(self.test_printing_of_non_existing_room,
-            "Midgar Does Not Exist", msg="Room Exists")
+                         "Midgar Does Not Exist", msg="Room Exists")
         self.assertNotEqual(self.test_printing_of_existing_room,
-            "", msg="Room Does Not Exist")
+                            "", msg="Room Does Not Exist")
         self.assertIn(self.test_printing_of_empty_room,
-            "No Occupants", msg="Room has occupants")
+                      "No Occupants", msg="Room has occupants")
+
+    def test_database_creation(self):
+        self.assertTrue(os.path.exists("test_database.db"))
 
 
 if __name__ == '__main__':
