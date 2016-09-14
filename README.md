@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/andela-lolo/office-space-allocation.svg?branch=dev)](https://travis-ci.org/andela-lolo/office-space-allocation)
 [![Coverage Status](https://coveralls.io/repos/github/andela-lolo/office-space-allocation/badge.svg?branch=dev)](https://coveralls.io/github/andela-lolo/office-space-allocation?branch=dev)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/32d1e69c23fa419083d6fea338af7a7b)](https://www.codacy.com/app/loice-andia/office-space-allocation?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andela-lolo/office-space-allocation&amp;utm_campaign=Badge_Grade)
 
 # Office Space Allocation
 
