@@ -33,18 +33,15 @@ class Database(object):
         database to store the data in rooms and people dictionary.
         Creates database and saves data.
         """
-        # print args
+
+        self.db_name = "amity.db"
         if args["--db"]:
             self.db_name = args["--db"]
-        self.db_name = "amity.db"
 
         # Check if the database already exists, if it does delete existing.
-        # import ipdb
-        # ipdb.set_trace()
 
         if os.path.exists(self.db_name):
             os.remove(self.db_name)
-        # self.db = create_engine("sqlite:///" + self.db_name)
 
         try:
             save_session = self.connect_to_db(self.db_name)
@@ -52,7 +49,8 @@ class Database(object):
             self.save_rooms(save_session)
             self.save_allocations(save_session)
 
-            message = "Data has been stored in the {} database".format(self.db_name)
+            message = "Data has been stored in the {} database".format(
+                self.db_name)
 
         except Exception:
             message = "Error saving data to {}".format(self.db_name)
@@ -77,7 +75,7 @@ class Database(object):
                                 wants_accomodation=wants_accomodation,
                                 is_fellow=is_fellow)
                 storage_session.add(people)
-                # find out what to return
+                
             return people
         except Exception:
             return "Failed"
@@ -120,8 +118,6 @@ class Database(object):
         """
         Loads data from a database into the application
         """
-        # import ipdb
-        # ipdb.set_trace()
         db_name = args["<sqlite_database>"]
         if os.path.exists(db_name):
 
