@@ -82,12 +82,26 @@ class Room(object):
         if not prints the name and missing room
         """
         data = "Those unallocated:\n"
+        # import ipdb
+        # ipdb.set_trace()
 
         for person in people_data:
-            for room in rooms:
-                if person in rooms[room]['occupants']:
-                    data += ""
-            data += "{}\n".format(self.get_names(person))
+            if len(rooms):
+                for room in rooms:
+                    if rooms[room]['is_office'] and person in rooms[room]['occupants']:
+                        data += ""
+                    else:
+                        data += "{}: No Office\n".format(self.get_names(person))
+
+                    if not rooms[room]['is_office'] and person in rooms[room]['occupants']:
+                        break
+                    else:
+                        if people_data[person]['accomodation'] == 'Y':
+                            data += "{}: No Living Space\n".format(
+                                self.get_names(person))
+            else:
+                data += "No rooms created\n"
+            
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
