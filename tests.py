@@ -256,6 +256,7 @@ class TestClasses(unittest.TestCase):
         os.remove("test_database.db")
         os.remove("test_allocations.txt")
         os.remove("test_unallocated.txt")
+        os.remove('amity.db')
 
 
 if __name__ == '__main__':

@@ -89,14 +89,12 @@ class Room(object):
             if len(rooms):
                 for room in rooms:
                     if rooms[room]['is_office'] and person in rooms[room]['occupants']:
-                        data += ""
-                    else:
-                        data += "{}: No Office\n".format(self.get_names(person))
+                        break
+                    data += "{}: No Office\n".format(self.get_names(person))
 
                     if not rooms[room]['is_office'] and person in rooms[room]['occupants']:
                         break
-                    else:
-                        if people_data[person]['accomodation'] == 'Y':
+                    if people_data[person]['accomodation'] == 'Y':
                             data += "{}: No Living Space\n".format(
                                 self.get_names(person))
             else:
