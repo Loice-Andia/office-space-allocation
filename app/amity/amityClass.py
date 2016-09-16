@@ -1,11 +1,43 @@
+
+"""
+
+This module holds the global rooms dictionary and the main Amity class.
+The rooms dictionary is used for storing rooms and occupants in each room.
+The Amity class creates rooms(offices and living spaces)
+by taking a room_type input from the user and
+saves it in the rooms dictionary.
+
+"""
+
 rooms = {}
 
 
 class Amity(object):
-    """Super class for amity"""
+    """
+
+    This is the main Amity class.
+    It has the get_room_type and create_room methods.
+    get_room_type method:
+        gets input from the user on the room type and returns the room_type.
+    create_room method:
+        gets the list of room_names to be added from the args passed
+        gets the room_type from the get_room_type method
+        Saves the rooms created in the rooms dictionary
+    sample rooms dictionary:
+        rooms = {
+            1:{'name': 'LILAC', 'occupants':[]},
+            2:{'name': 'VALHALLA', 'occupants':[]},
+        }
+
+    """
 
     def get_room_type(self, room_type=None):
-        # Get the room_type from the user
+        """
+
+        This method gets the room_type from the user
+        after running the create_room command.
+
+        """
         room_type = room_type
 
         # Assign a group of rooms to a room type
@@ -17,8 +49,11 @@ class Amity(object):
 
     def create_room(self, args, room_type=None):
         """
+
         Allows user to enter a list of room names specifying
-        whether office or living spaces"""
+        whether office or living spaces and adds them to the rooms dict
+
+        """
 
         message = ""
         room_type = room_type
@@ -36,7 +71,9 @@ class Amity(object):
                 message += "{} Exists".format(room)
                 return message
 
-            rooms.update({room: {"occupants": [], "is_office": is_office}})
+            rooms.update({room.upper(): {
+                "occupants": [], "is_office": is_office}
+            })
 
         message += "You have the following rooms:\n "
         message += '\n'.join(rooms.keys())

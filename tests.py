@@ -53,7 +53,7 @@ class TestClasses(unittest.TestCase):
                         "Staff": True,
                         "<wants_accomodation>": None}
 
-        self.test_person.add_person(sample_staff)
+        self.test_allocate_office = self.test_person.add_person(sample_staff)
 
         # Test adding of a fellow and allocate office and living space
         self.test_amity.create_room(
@@ -174,13 +174,12 @@ class TestClasses(unittest.TestCase):
                          msg="Person added twice")
 
     def test_office_allocation_in_add_person(self):
-        self.assertDictContainsSubset({
-            "Krypton": {"occupants": [9], "is_office": True}},
-            rooms, msg="Person not allocated office")
+        self.assertRaises(Exception, self.test_allocate_office,
+                          msg="Person not allocated office")
 
     def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
         self.assertDictContainsSubset({
-            "Ruby": {"occupants": [], "is_office": False}},
+            "RUBY": {"occupants": [], "is_office": False}},
             rooms, msg="Person not allocated Living Space")
 
     def test_get_room_type_in_amity(self):
@@ -189,14 +188,14 @@ class TestClasses(unittest.TestCase):
 
     def test_create_room_in_amity(self):
         self.assertDictContainsSubset({
-            "Valhalla": {"occupants": [], "is_office": True},
-            "Oculus": {"occupants": [], "is_office": True},
-            "Emerald": {"occupants": [], "is_office": False}},
+            "VALHALLA": {"occupants": [], "is_office": True},
+            "OCULUS": {"occupants": [], "is_office": True},
+            "EMERALD": {"occupants": [], "is_office": False}},
             rooms, msg="Multiple Rooms were not created")
 
     def test_reallocate_room(self):
         self.assertDictContainsSubset({
-            "Jade": {"occupants": [10], "is_office": False}},
+            "JADE": {"occupants": [10], "is_office": False}},
             rooms, msg="Person has not been reallocated")
 
     def test_getting_persons_name_from_people_data_dictionary(self):
@@ -218,7 +217,7 @@ class TestClasses(unittest.TestCase):
 
     def test_print_room(self):
         self.assertEqual(self.test_printing_of_non_existing_room,
-                         "Midgar Does Not Exist", msg="Room Exists")
+                         "MIDGAR Does Not Exist", msg="Room Exists")
         self.assertNotEqual(self.test_printing_of_existing_room,
                             "", msg="Room Does Not Exist")
         self.assertIn(self.test_printing_of_empty_room,

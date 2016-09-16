@@ -93,7 +93,7 @@ class Person(object):
         message = ""
 
         person_identifier = int(args["<person_identifier>"])
-        new_room = args["<new_room_name>"]
+        new_room = args["<new_room_name>"].upper()
 
         person = people_data.get(person_identifier, 'Does not exist')
 

@@ -28,7 +28,7 @@ class Room(object):
         """
         Prints the name of occupants in a room
         """
-        room_name = args["<room_name>"]
+        room_name = args["<room_name>"].upper()
         # name = rooms.get(identifier, None)
 
         message = ""
@@ -40,7 +40,7 @@ class Room(object):
 
         if not room['occupants']:
             return "No Occupants"
-            
+
         message += room_name.upper()
         occupants = map(self.get_names, room['occupants'])
 
