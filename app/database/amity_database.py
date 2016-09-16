@@ -9,7 +9,28 @@ from models import *
 
 
 class Database(object):
-    """ Database class"""
+    """
+
+    This is the Database class that has all methods of creating,
+    connecting and reading from the database.
+    METHODS
+    --------------------------------
+    connect_to_db method:
+        Takes up the database name as an argument and creates the database.
+        It creates a session that is used to access the data in the database
+        and to also add data to the database.
+        It returns the session created
+    save_state method:
+        gets the database name from the args passed.
+        By using the save_people, save_rooms and save_allocations methods,
+        it saves the data from the rooms and people_data dictionary to the database.
+    load_state method:
+        gets the database name from the args passed.
+        Uses the connect_to_db function to connect to the database
+        By using the load_people, load_rooms and load_allocations methods,
+        it loads the data from the database to the rooms and people_data dictionaries.
+
+    """
 
     def __init__(self):
         self.db = None
