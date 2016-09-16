@@ -6,13 +6,34 @@ people_data = {}
 
 class Person(object):
     """
-    Person Class
+
+    This is the Person class that has all methods of adding a person,
+    loading people from a text file and allocating them rooms.
+    METHODS
+    --------------------------------
+    add_person method:
+        Takes up the person's name, role and if one wants accomodation
+        from the args passed.
+        It checks if the person already exist, if not add the person to
+        the people dict and calls the allocate_rooms method
+    allocate_rooms method:
+        Takes the person identifier as a param.
+        It then allocates the person an office and allocates living spaces
+        to the people who are fellows and want accomodation
+    reallocate_person method:
+        Takes up the person's id and room name from the args passed.
+        It removes the id from the current room and appends to the new room.
+    load_people method:
+        Takes up the filename from the args passed.
+        Opens the file and reads the line then adds the persons details to an
+        args dictionary.
+        Calls the add_person method with the args dict to add the people and
+        allocate rooms.
+
     """
 
     def __init__(self):
-        self.person_name = ''
-
-    wants_accomodation = 'N'
+        self.person_name = None
 
     def add_person(self, args):
         """
@@ -22,17 +43,15 @@ class Person(object):
 
         person_name = "{} {}".format(args["<first_name>"], args["<last_name>"])
         person_name = person_name.upper()
-        message = ""
         wants_accomodation = 'N'
         is_fellow = args['Fellow']
+
         self.person_identifier = len(people_data) + 1
 
         if args["<wants_accomodation>"]:
             wants_accomodation = args["<wants_accomodation>"]
 
         for person in people_data:
-            # import ipdb
-            # ipdb.set_trace()
             if people_data[person]['name'] == person_name:
                 message = "{} Already Exists\n".format(person_name)
                 return message
@@ -44,7 +63,7 @@ class Person(object):
                 'is_fellow': is_fellow}
         })
 
-        message += self.allocate_rooms(self.person_identifier)
+        message = self.allocate_rooms(self.person_identifier)
 
         return message
 
@@ -90,7 +109,6 @@ class Person(object):
         Deletes the person identifier in the current room
         and appends it to the new room
         """
-        message = ""
 
         person_identifier = int(args["<person_identifier>"])
         new_room = args["<new_room_name>"].upper()
@@ -105,7 +123,7 @@ class Person(object):
         # Append identifier to new_room
         rooms[new_room]['occupants'].append(person_identifier)
 
-        message += "{} has been removed from {} and allocated {} room\n".format(
+        message = "{} has been removed from {} and allocated {} room\n".format(
             person['name'], current_room, new_room)
         return message
 
@@ -122,8 +140,6 @@ class Person(object):
                 TANA LOPEZ FELLOW Y
                 KELLY McGUIRE STAFF N
         """
-        # print args
-        arg_dict = {}
         message = ""
 
         with open(args["<filename>"], 'r') as input_file:
@@ -142,7 +158,7 @@ class Person(object):
                     if 'Y' in person:
                         wants_accomodation = 'Y'
 
-                    arg_dict.update({
+                    arg_dict = ({
                         "<first_name>": person[0],
                         "<last_name>": person[1],
                         "Staff": is_staff,
