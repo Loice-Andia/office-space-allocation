@@ -56,9 +56,8 @@ class Amity(object):
 
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
-            existing_rooms = rooms.get(room, None)
-            if existing_rooms != None:
-                message += "{} Exists".format(room)
+            if room.upper() in rooms:
+                message += "{} Exists\n".format(room.upper())
                 return message
 
             rooms.update({room.upper(): {

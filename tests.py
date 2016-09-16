@@ -46,6 +46,10 @@ class TestClasses(unittest.TestCase):
         self.test_amity.create_room(
             {"<room_name>": ["Krypton"]}, "O")
 
+        # Test if a room is added twice
+        self.test_adding_room_twice = self.test_amity.create_room(
+            {"<room_name>": ["Krypton"]}, "O")
+
         # Test add person and allocate office
         sample_staff = {"<first_name>": "John",
                         "<last_name>": "Doe",
@@ -172,6 +176,11 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(self.test_adding_person_twice,
                          "LOICE ANDIA Already Exists\n",
                          msg="Person added twice")
+
+    def test_adding_rooms_twice(self):
+        self.assertEqual(self.test_adding_room_twice,
+                         "KRYPTON Exists\n",
+                         msg="Room added twice")
 
     def test_office_allocation_in_add_person(self):
         self.assertRaises(Exception, self.test_allocate_office,
