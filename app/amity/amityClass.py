@@ -1,14 +1,4 @@
 
-"""
-
-This module holds the global rooms dictionary and the main Amity class.
-The rooms dictionary is used for storing rooms and occupants in each room.
-The Amity class creates rooms(offices and living spaces)
-by taking a room_type input from the user and
-saves it in the rooms dictionary.
-
-"""
-
 rooms = {}
 
 
