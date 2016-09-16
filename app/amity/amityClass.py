@@ -45,7 +45,6 @@ class Amity(object):
 
         """
 
-        message = ""
         room_type = room_type
 
         room_type = self.get_room_type(room_type)
@@ -57,14 +56,14 @@ class Amity(object):
         # Adds room to the rooms dict
         for room in args["<room_name>"]:
             if room.upper() in rooms:
-                message += "{} Exists\n".format(room.upper())
+                message = "{} Exists\n".format(room.upper())
                 return message
 
             rooms.update({room.upper(): {
                 "occupants": [], "is_office": is_office}
             })
 
-        message += "You have the following rooms:\n "
+        message = "You have the following rooms:\n "
         message += '\n'.join(rooms.keys())
 
         return message
