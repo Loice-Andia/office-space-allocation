@@ -4,13 +4,6 @@ rooms = {}
 class Amity(object):
     """Super class for amity"""
 
-    def __init__(self):
-        super(Amity, self).__init__()
-        # self.rooms = {
-        #     'Office': [],
-        #     'LivingSpace': []
-        # }
-
     def get_room_type(self, room_type=None):
         # Get the room_type from the user
         room_type = room_type
@@ -23,8 +16,9 @@ class Amity(object):
         return room_type
 
     def create_room(self, args, room_type=None):
-        """Allows user to enter a list of room names specifying
-                whether office or living spaces"""
+        """
+        Allows user to enter a list of room names specifying
+        whether office or living spaces"""
 
         message = ""
         room_type = room_type

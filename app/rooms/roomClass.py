@@ -38,12 +38,14 @@ class Room(object):
             message += "{} Does Not Exist".format(room_name)
             return message
 
-        try:
-            occupants = map(self.get_names, room['occupants'])
+        if not room['occupants']:
+            return "No Occupants"
+            
+        message += room_name.upper()
+        occupants = map(self.get_names, room['occupants'])
 
-            message += "\n".join(occupants)
-        except Exception:
-            message += "No Occupants"
+        message += "\n".join(occupants)
+        
 
         return message
 
@@ -70,39 +72,49 @@ class Room(object):
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "Allocations has been saved to {}".format(args["<filename>"])
+                print "Allocations has been saved to {}".format(
+                    args["<filename>"])
         return data
 
     def print_unallocated(self, args):
         """
         Loops through the people_data dictionary
-        Checks if an identifier in the people_data has been allocated an office,
+        Checks if an identifier in the people_data
+        has been allocated an office,
         if not prints the name.
-        Checks if a persons who wants accomodation has been allocated a living space,
+        Checks if a persons who wants accomodation
+        has been allocated a living space,
         if not prints the name and missing room
         """
-        data = "Those unallocated:\n"
-        # import ipdb
-        # ipdb.set_trace()
+        data = ""
 
-        for person in people_data:
-            if len(rooms):
-                for room in rooms:
-                    if rooms[room]['is_office'] and person in rooms[room]['occupants']:
-                        break
-                    data += "{}: No Office\n".format(self.get_names(person))
+        office_allocations = []
+        living_space_allocations = []
 
-                    if not rooms[room]['is_office'] and person in rooms[room]['occupants']:
-                        break
-                    if people_data[person]['accomodation'] == 'Y':
-                            data += "{}: No Living Space\n".format(
-                                self.get_names(person))
-            else:
-                data += "No rooms created\n"
-            
+        for room_name, room_info in rooms.items():
+            if room_info['is_office']:
+                office_allocations += room_info['occupants']
+            if not room_info['is_office']:
+                living_space_allocations += room_info['occupants']
+
+        unallocated_offices = list(
+            set(people_data.keys()) - set(office_allocations))
+        people_without_offices = map(self.get_names, unallocated_offices)
+
+        data += "Those unallocated Offices:\n"
+        data += "\n".join(people_without_offices)
+
+        data += "\n\nThose unallocated living spaces:\n"
+
+        for person_id, person_info in people_data.items():
+            if person_info['is_fellow'] and person_info['accomodation'] == 'Y':
+                if person_id not in living_space_allocations:
+
+                    data += "{} \n".format(person_info['name'])
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "Unallocated people have been saved to {} ".format(args["<filename>"])
+                print "Unallocated people have been saved to {} ".format(
+                    args["<filename>"])
         return data
