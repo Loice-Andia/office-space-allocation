@@ -3,7 +3,11 @@ from roomClass import Room
 
 class Office(Room):
     """
-    Office
+
+    This is the Office class that inherits from the Room class.
+    It declares the room_type as an 'office' and sets the room
+    capacity to 4.
+
     """
 
     def __init__(self):

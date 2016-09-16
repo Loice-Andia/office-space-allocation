@@ -9,6 +9,11 @@ class Person(object):
 
     This is the Person class that has all methods of adding a person,
     loading people from a text file and allocating them rooms.
+    sample people_data dictionary:
+        people_data = {
+            1:{'name': 'LOICE ANDIA', 'is_fellow': True, 'accomodation': 'Y'},
+            2:{'name': 'JOHN DOE', 'is_fellow': False, 'accomodation': 'N'},
+        }
     METHODS
     --------------------------------
     add_person method:

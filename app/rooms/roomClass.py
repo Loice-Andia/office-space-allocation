@@ -4,20 +4,32 @@ from app.amity.amityClass import rooms
 
 class Room(object):
     """
-    Room
-    """
-    # Replace the '+=' with .format()
+    This is the Room class that has all functions that display data
+    from the rooms dict.
+    METHODS
+    ---------------------------------
+    get_names method:
+        Takes up the person's id as aa param and returns the name of the
+        person from the people_data dictionary
+    print_room method:
+        Takes the room_name from the args passed and prints the names of
+        occupants in the room.
+    print_allocations method:
+        Takes up the filename as an optional argument.
+        For every room, it prints out the names of the occupants in the room.
+        If filename is provided, it saves data to the file
+    print_unallocated method:
+        Takes up the filename as an optional argument.
+        Compares the occupants in each room to the people dictionary,
+        if a person has not been allocated the relevant room, prints out the name.
+        If filename is provided, it saves data to the file
 
-    def __init__(self):
-        self.room_name = ""
-        self.room_type = ""
+    """
 
     def get_names(self, identifier):
         """
         Gets the name of a person from the people_data dictionary
         """
-        # map(function, sequence)
-        # .get(val, msg) to retrieve dict item
 
         person = people_data.get(identifier, None)
         if person == None:
@@ -29,23 +41,19 @@ class Room(object):
         Prints the name of occupants in a room
         """
         room_name = args["<room_name>"].upper()
-        # name = rooms.get(identifier, None)
-
-        message = ""
 
         room = rooms.get(room_name, None)
         if room == None:
-            message += "{} Does Not Exist".format(room_name)
+            message = "{} Does Not Exist".format(room_name)
             return message
 
         if not room['occupants']:
             return "No Occupants"
 
-        message += room_name.upper()
+        message = room_name.upper()
         occupants = map(self.get_names, room['occupants'])
 
         message += "\n".join(occupants)
-        
 
         return message
 
@@ -53,15 +61,12 @@ class Room(object):
         """
         Loops through the rooms object printing the room and the occupants
         """
-
-        data = ""
-
         for room in rooms:
             room_info = rooms.get(room, None)
             room_type = "Living Space"
             if room_info['is_office']:
                 room_type = "Office"
-            data += "\n\n{} ({}) \n".format(room.upper(), room_type)
+            data = "\n\n{} ({}) \n".format(room.upper(), room_type)
             data += "-" * 65
             data += "\n"
             if len(rooms[room]['occupants']) is 0:

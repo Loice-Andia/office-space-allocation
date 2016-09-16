@@ -6,7 +6,8 @@ class Amity(object):
     """
 
     This is the main Amity class.
-    It has the get_room_type and create_room methods.
+    METHODS
+    ----------------------------
     get_room_type method:
         gets input from the user on the room type and returns the room_type.
     create_room method:
@@ -15,8 +16,8 @@ class Amity(object):
         Saves the rooms created in the rooms dictionary
     sample rooms dictionary:
         rooms = {
-            1:{'name': 'LILAC', 'occupants':[]},
-            2:{'name': 'VALHALLA', 'occupants':[]},
+            LILAC:{'is_office': True, 'occupants':[]},
+            Jade:{'is_office': False, 'occupants':[]},
         }
 
     """
