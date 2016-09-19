@@ -138,6 +138,7 @@ class Person(object):
         """
         Remove a person from the room
         """
+
         for person_id, person_info in people_data.items():
             if args["<person_name>"].upper() in person_info['name']:
                 if people_data.pop(person_id):
@@ -145,8 +146,8 @@ class Person(object):
                         if person_id in rooms[current_room]['occupants']:
                             rooms[current_room]['occupants'].remove(person_id)
 
-                        return "{} has been deleted".format(
-                            args["<person_name>"].upper())
+                    return "{} has been deleted".format(
+                        args["<person_name>"].upper())
         return "{} not found".format(args["<person_name>"].upper())
 
     def load_people(self, args):

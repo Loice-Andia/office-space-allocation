@@ -1,7 +1,7 @@
 import unittest
 
 from personClass import Person, people_data
-from app.amity.amityClass import Amity, rooms
+from app.amity.amityClass import Amity
 from fellowClass import Fellow
 from staffClass import Staff
 
@@ -60,12 +60,18 @@ class TestPerson(unittest.TestCase):
                          "Staff": False,
                          "<wants_accomodation>": 'Y'}
 
-        self.test_person.add_person(sample_fellow)
+        self.test_adding_fellow = self.test_person.add_person(sample_fellow)
 
         # Test reallocation of rooms
         self.test_reallocate = self.test_person.reallocate_person({
             "<person_name>": "Sule",
             "<new_room_name>": "Krypton"})
+
+        # Test Removal of a person
+        self.test_removing_person = self.test_person.remove_person(
+            {"<person_name>": "KELLY"})
+        self.test_remove_non_existing_person = self.test_person.remove_person(
+            {"<person_name>": "TRIAL"})
 
     def test_class_initialization(self):
         self.assertIsInstance(
@@ -105,13 +111,20 @@ class TestPerson(unittest.TestCase):
                           msg="Person not allocated office")
 
     def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
-        self.assertDictContainsSubset({
-            "RUBY": {"occupants": [10], "is_office": False}},
-            rooms, msg="Person not allocated Living Space")
+        self.assertIn("RUBY", self.test_adding_fellow,
+                      msg="Person not allocated Living Space")
 
     def test_reallocate_room(self):
         self.assertIn("allocated KRYPTON", self.test_reallocate,
                       msg="Person has not been reallocated")
+
+    def test_removal_of_a_person(self):
+        self.assertNotEqual(None,
+                            self.test_removing_person,
+                            msg="Person has not been deleted")
+        self.assertEqual("TRIAL not found",
+                         self.test_remove_non_existing_person,
+                         msg="Person found")
 
 
 if __name__ == '__main__':

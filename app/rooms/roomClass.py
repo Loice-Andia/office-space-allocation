@@ -96,6 +96,7 @@ class Room(object):
 
         office_allocations = []
         living_space_allocations = []
+        people_without_living_spaces = []
 
         for room_name, room_info in rooms.items():
             if room_info['is_office']:
@@ -108,15 +109,22 @@ class Room(object):
         people_without_offices = map(self.get_names, unallocated_offices)
 
         data += "Those unallocated Offices:\n"
-        data += "\n".join(people_without_offices)
+        if len(people_without_offices):
+            data += "\n".join(people_without_offices)
+        else:
+            data += "NONE"
 
         data += "\n\nThose unallocated living spaces:\n"
 
         for person_id, person_info in people_data.items():
             if person_info['is_fellow'] and person_info['accomodation'] == 'Y':
                 if person_id not in living_space_allocations:
+                    people_without_living_spaces.append(person_info['name'])
 
-                    data += "{} \n".format(person_info['name'])
+        if len(people_without_living_spaces):
+            data += "{} \n".format(person_info['name'])
+        else:
+            data += "NONE"
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
