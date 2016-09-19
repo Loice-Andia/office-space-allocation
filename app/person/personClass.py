@@ -115,10 +115,12 @@ class Person(object):
         and appends it to the new room
         """
 
-        person_identifier = int(args["<person_identifier>"])
+        person_name = args["<person_name>"].upper()
         new_room = args["<new_room_name>"].upper()
 
-        person = people_data.get(person_identifier, 'Does not exist')
+        for person in people_data:
+            if person_name in people_data[person]['name']:
+                person_identifier = person
 
         # find currently allocated room and remove identifier
         for current_room in rooms:
@@ -129,8 +131,23 @@ class Person(object):
         rooms[new_room]['occupants'].append(person_identifier)
 
         message = "{} has been removed from {} and allocated {} room\n".format(
-            person['name'], current_room, new_room)
+            person_name, current_room, new_room)
         return message
+
+    def remove_person(self, args):
+        """
+        Remove a person from the room
+        """
+        for person_id, person_info in people_data.items():
+            if args["<person_name>"].upper() in person_info['name']:
+                if people_data.pop(person_id):
+                    for current_room in rooms:
+                        if person_id in rooms[current_room]['occupants']:
+                            rooms[current_room]['occupants'].remove(person_id)
+
+                        return "{} has been deleted".format(
+                            args["<person_name>"].upper())
+        return "{} not found".format(args["<person_name>"].upper())
 
     def load_people(self, args):
         """

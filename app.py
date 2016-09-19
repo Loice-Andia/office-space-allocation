@@ -5,7 +5,8 @@ interactive command application.
 Usage:
     amity create_room <room_name>...
     amity add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]
-    amity reallocate_person <person_identifier> <new_room_name>
+    amity reallocate_person <person_name> <new_room_name>
+    amity remove_person <person_identifier>
     amity load_people <filename>
     amity print_allocations [-o <filename>]
     amity print_unallocated [-o <filename>]
@@ -65,23 +66,27 @@ def docopt_cmd(func):
 
 class MyInteractive (cmd.Cmd):
 
-    cprint(figlet_format('AMITY', font='basic'), 'green', attrs=['bold'])
+    cprint(figlet_format('AMITY', font='univers'), 'green', attrs=['bold'])
 
     def introduction():
         print "\n"
         cprint("ROOM ALLOCATION COMMANDS:".center(40), 'green')
         print "\n"
         cprint("1. create_room <room_name>...".center(40), 'green')
-        cprint("2. add_person <first_name> <last_name> (Fellow|Staff) [<wants_accomodation>]".center(
-            40), 'green')
         cprint(
-            "3. reallocate_person <person_identifier> <new_room_name>".center(40), 'green')
-        cprint("4. load_people <filename>".center(40), 'green')
-        cprint("5. print_allocations [-o <filename>]".center(40), 'green')
-        cprint("6. print_unallocated [-o <filename>]".center(40), 'green')
-        cprint("7. print_room <room_name>".center(40), 'green')
-        cprint("8. save_state [--db=sqlite_database]".center(40), 'green')
-        cprint("9. load_state <sqlite_database>".center(40), 'green')
+            "2. add_person <first_name> <last_name> (Fellow|Staff)"
+            "[<wants_accomodation>]".center(40), 'green')
+        cprint(
+            "3. reallocate_person <person_name> <new_room_name>".center(
+                40), 'green')
+        cprint(
+            "4. remove_person <person_name>".center(40), 'green')
+        cprint("5. load_people <filename>".center(40), 'green')
+        cprint("6. print_allocations [-o <filename>]".center(40), 'green')
+        cprint("7. print_unallocated [-o <filename>]".center(40), 'green')
+        cprint("8. print_room <room_name>".center(40), 'green')
+        cprint("9. save_state [--db=sqlite_database]".center(40), 'green')
+        cprint("10. load_state <sqlite_database>".center(40), 'green')
         print "\n"
         cprint("OTHER COMMANDS:".center(40), 'green')
         print "\n"
@@ -97,7 +102,7 @@ class MyInteractive (cmd.Cmd):
     @docopt_cmd
     def do_create_room(self, args):
         """Usage: create_room <room_name>..."""
-        # print args
+        
         print(my_amity.create_room(args))
 
     @docopt_cmd
@@ -107,9 +112,16 @@ class MyInteractive (cmd.Cmd):
         print(person.add_person(args))
 
     @docopt_cmd
+    def do_remove_person(self, args):
+        """Usage:
+        remove_person <person_name>"""
+
+        print(person.remove_person(args))
+
+    @docopt_cmd
     def do_reallocate_person(self, args):
         """Usage:
-        reallocate_person <person_identifier> <new_room_name>"""
+        reallocate_person <person_name> <new_room_name>"""
 
         print(person.reallocate_person(args))
 

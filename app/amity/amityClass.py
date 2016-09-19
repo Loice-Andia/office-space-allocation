@@ -4,6 +4,7 @@ rooms = {}
 
 class Amity(object):
     """
+    
 
     This is the main Amity class.
     METHODS
@@ -16,8 +17,8 @@ class Amity(object):
         Saves the rooms created in the rooms dictionary
     sample rooms dictionary:
         rooms = {
-            LILAC:{'is_office': True, 'occupants':[]},
-            Jade:{'is_office': False, 'occupants':[]},
+            "LILAC" :{'is_office': True, 'occupants':[]},
+            "JADE" :{'is_office': False, 'occupants':[]},
         }
 
     """
