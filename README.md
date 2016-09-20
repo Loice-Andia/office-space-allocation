@@ -39,7 +39,7 @@ Run ``` tox ```
 
 2. ```add_person < first_name> <last_name> (Fellow|Staff)``` Add a new person. You must specify their first name, last name and whether they are a fellow or staff member. Optionally, you can indicate whether or not they want space with "Y" or "N". If you indicate that the person wants space, they are automatically allocated a room. Staff members can only be allocated an office while fellows can only be allocated a living space using this command. If there are no rooms in the system, the person will not be added. Example: ```add_person Ada Lovelace Fellow Y```
 
-3. ```reallocate_person <person_name> <new_room_name>``` Using this command, you can allocate an already allocated person another room, or allocate a previously unallocated person a room. You must specify the person's employee ID as well as the room to be allocated. Note that staff members cannot be allocated living spaces, while fellows can be allocated offices using this command. Example: ```reallocate_person Ada Hogwarts```
+3. ```reallocate_person <person_name> <new_room_name>``` Using this command, you can allocate an already allocated person another room, or allocate a previously unallocated person a room. You must specify the person's name as well as the room to be allocated. Note that staff members cannot be allocated living spaces, while fellows can be allocated offices using this command. Example: ```reallocate_person Ada Hogwarts```
 
 4. ```remove_peron <person_name>``` This command removes a person completely from the system. Example: ```remove_person Ada```
 
