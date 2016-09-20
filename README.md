@@ -25,12 +25,16 @@ Set up a virtualenv then Install packages required
 ```pip install  -r requirements.txt```
 
 ## Launching the Program
+
 ```python app.py -i```
 
 ## Running the tests
-```tox```
+
+Run ``` tox ```
+
 
 ## Usage
+
 1. ```create_room <room_name>...``` Create a new room or several new rooms. You must specify whether it is a living space or an office as well as the room name. You may add several rooms of the same type at once. Example: ``` create_room Hogwarts Valhalla Krypton ```
 
 2. ```add_person < first_name> <last_name> (Fellow|Staff)``` Add a new person. You must specify their first name, last name and whether they are a fellow or staff member. Optionally, you can indicate whether or not they want space with "Y" or "N". If you indicate that the person wants space, they are automatically allocated a room. Staff members can only be allocated an office while fellows can only be allocated a living space using this command. If there are no rooms in the system, the person will not be added. Example: ```add_person Ada Lovelace Fellow Y```
