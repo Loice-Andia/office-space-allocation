@@ -122,7 +122,7 @@ class Room(object):
                     people_without_living_spaces.append(person_info['name'])
 
         if len(people_without_living_spaces):
-            data += "{} \n".format(person_info['name'])
+            data += "\n".join(people_without_living_spaces)
         else:
             data += "NONE"
 
