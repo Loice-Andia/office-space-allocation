@@ -127,11 +127,12 @@ class Person(object):
             if person_identifier in rooms[current_room]['occupants']:
                 rooms[current_room]['occupants'].remove(person_identifier)
 
+
         # Append identifier to new_room
         rooms[new_room]['occupants'].append(person_identifier)
 
-        message = "{} has been removed from {} and allocated {} room\n".format(
-            person_name, current_room, new_room)
+        message = "{} has been reallocated {} room\n".format(
+            person_name, new_room)
         return message
 
     def remove_person(self, args):
