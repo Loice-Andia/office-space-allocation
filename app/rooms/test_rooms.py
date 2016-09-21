@@ -96,8 +96,8 @@ class TestRoom(unittest.TestCase):
                          "MIDGAR Does Not Exist", msg="Room Exists")
         self.assertNotEqual(self.test_printing_of_existing_room,
                             "", msg="Room Does Not Exist")
-        self.assertIn(self.test_printing_of_empty_room,
-                      "No Occupants", msg="Room has occupants")
+        self.assertIn("No Occupants", self.test_printing_of_empty_room,
+                      msg="Room has occupants")
 
     def tearDown(self):
         os.remove("test_allocations.txt")

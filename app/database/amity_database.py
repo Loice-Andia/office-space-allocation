@@ -1,11 +1,11 @@
 import os
+from .models import *
 from app.amity import my_amity
 from app.amity.amityClass import rooms
 from app.person.personClass import people_data
 from app.rooms import my_room
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import *
 
 
 class Database(object):

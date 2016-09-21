@@ -47,11 +47,14 @@ class Room(object):
             message = "{} Does Not Exist".format(room_name)
             return message
 
-        if not room['occupants']:
-            return "No Occupants"
+        message = "{}\n".format(room_name.upper())
+        message += "-" * 30
 
-        message = room_name.upper()
-        occupants = map(self.get_names, room['occupants'])
+        if not room['occupants']:
+            message += "No Occupants"
+            return message
+
+        occupants = list(map(self.get_names, room['occupants']))
 
         message += "\n".join(occupants)
 
@@ -73,13 +76,13 @@ class Room(object):
             if len(rooms[room]['occupants']) is 0:
                 data += "No Occupants"
             occupants = map(self.get_names, rooms[room]['occupants'])
-            data += ",".join(occupants)
+            data += "\n".join(occupants)
 
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "Allocations has been saved to {}".format(
-                    args["<filename>"])
+                print("Allocations has been saved to {}".format(
+                    args["<filename>"]))
         return data
 
     def print_unallocated(self, args):
@@ -106,7 +109,7 @@ class Room(object):
 
         unallocated_offices = list(
             set(people_data.keys()) - set(office_allocations))
-        people_without_offices = map(self.get_names, unallocated_offices)
+        people_without_offices = list(map(self.get_names, unallocated_offices))
 
         data += "Those unallocated Offices:\n"
         if len(people_without_offices):
@@ -129,6 +132,6 @@ class Room(object):
         if args["-o"]:
             with open(args["<filename>"], 'wt') as output_file:
                 output_file.write(data)
-                print "Unallocated people have been saved to {} ".format(
-                    args["<filename>"])
+                print("Unallocated people have been saved to {} ".format(
+                    args["<filename>"]))
         return data

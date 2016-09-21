@@ -69,9 +69,9 @@ class MyInteractive (cmd.Cmd):
     cprint(figlet_format('AMITY', font='univers'), 'green', attrs=['bold'])
 
     def introduction():
-        print "\n"
+        cprint("\n")
         cprint("ROOM ALLOCATION COMMANDS:".center(40), 'green')
-        print "\n"
+        cprint("\n")
         cprint("1. create_room <room_name>...".center(40), 'green')
         cprint(
             "2. add_person <first_name> <last_name> (Fellow|Staff)"
@@ -87,12 +87,12 @@ class MyInteractive (cmd.Cmd):
         cprint("8. print_room <room_name>".center(40), 'green')
         cprint("9. save_state [--db=sqlite_database]".center(40), 'green')
         cprint("10. load_state <sqlite_database>".center(40), 'green')
-        print "\n"
+        cprint("\n")
         cprint("OTHER COMMANDS:".center(40), 'green')
-        print "\n"
+        cprint("\n")
         cprint("1. -h, --help, help".center(40), 'green')
         cprint("2. quit".center(40), 'green')
-        print "\n\n"
+        cprint("\n\n")
 
     intro = introduction()
 

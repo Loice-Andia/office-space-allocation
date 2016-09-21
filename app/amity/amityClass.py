@@ -34,7 +34,7 @@ class Amity(object):
 
         # Assign a group of rooms to a room type
         while room_type not in ['O', 'L']:
-            room_type = raw_input(
+            room_type = input(
                 "Enter room type: \n o: Office space \n l: Living space: \n")
             room_type = room_type.upper()
         return room_type
