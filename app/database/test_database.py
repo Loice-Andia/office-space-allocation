@@ -64,6 +64,20 @@ class testDatabase(unittest.TestCase):
         # Test Load state methods
         mocked_connection("test_database.db")
         mocked_connection.assert_called_once_with("test_database.db")
+        self.load_people = self.test_database.load_people(
+            mocked_connection)
+        self.assertNotEqual(self.load_people,
+                            "Failed", msg="People not loaded")
+
+        self.test_load_rooms = self.test_database.load_rooms(
+            mocked_connection)
+        self.assertNotEqual(self.test_load_rooms,
+                            "Failed", msg="Rooms not loaded")
+
+        self.test_load_allocations = self.test_database.load_allocations(
+            mocked_connection)
+        self.assertNotEqual(self.test_load_allocations,
+                            "Failed", msg="Allocations not loaded")
         load_state = mocked_load_state("test_database.db")
         load_state.return_value = "Data successfully added"
         self.assertEqual(load_state.return_value,
