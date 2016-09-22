@@ -1,10 +1,6 @@
 import unittest
-
-from personClass import Person, people_data
-from app.amity.amityClass import Amity
-from fellowClass import Fellow
-from staffClass import Staff
-
+import mock
+from personClass import Person
 
 class TestPerson(unittest.TestCase):
     """
@@ -16,11 +12,13 @@ class TestPerson(unittest.TestCase):
     """
 
     def setUp(self):
-        self.test_amity = Amity()
-        self.test_fellow = Fellow()
-        self.test_staff = Staff()
         self.test_person = Person()
 
+    def test_class_initialization(self):
+        self.assertIsInstance(
+            self.test_person, Person, msg="Cannot create `Person` instance")
+
+    def test_add_person_in_person(self):
         # Test add person function in Person class without rooms
         sample_person = {"<first_name>": "Loice",
                          "<last_name>": "Andia",
@@ -28,18 +26,36 @@ class TestPerson(unittest.TestCase):
                          "Staff": False,
                          "<wants_accomodation>": 'Y'}
 
-        self.test_person.add_person(sample_person)
+        add_person = self.test_person.add_person(sample_person)
+        add_person_twice = self.test_person.add_person(sample_person)
+        self.assertIn('LOICE ANDIA', add_person,
+                      msg="Person not created")
+        self.assertEqual(add_person_twice,
+                         "LOICE ANDIA Already Exists\n",
+                         msg="Person added twice")
 
-        # Test loading of people from a text file
-        self.test_person.load_people({"<filename>": "try.txt"})
+    @mock.patch('personClass.open')
+    @mock.patch('personClass.Person.add_person')
+    def test_load_people_from_a_text_file(self, mocked_add_person, mocked_open):
 
-        # Test if a person is added twice
-        self.test_adding_person_twice = self.test_person.add_person(
-            sample_person)
+        self.test_person.load_people({"<filename>": "non_existent.txt"})
+        mocked_open.assert_called_once_with("non_existent.txt", 'r')
 
-        # Test for creation of a single room
-        self.test_amity.create_room(
-            {"<room_name>": ["Krypton"]}, "O")
+        sample_txt_data = "OLUWAFEMI SULE FELLOW Y\nDOMINIC WALTERS STAFF\nSIMON PATTERSON FELLOW Y\n"
+
+        with mock.patch('builtins.open', mock.mock_open(read_data=sample_txt_data)) as mock_file:
+            mock_read_line = open("try.txt").readline()
+            assert mock_file.called
+        mock_file.assert_called_once_with("try.txt")
+        self.assertEqual(mock_read_line, "OLUWAFEMI SULE FELLOW Y\n")
+
+        mocked_add_person.return_value = "OLUWAFEMI SULE has been allocated No office and No livingSpace\n"
+        self.assertEqual("OLUWAFEMI SULE has been allocated No office and No livingSpace\n",
+                         mocked_add_person.return_value, msg="Person not added from file")
+
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': []}})
+    def test_office_allocation_in_add_person(self):
 
         # Test add person and allocate office
         sample_staff = {"<first_name>": "John",
@@ -49,81 +65,50 @@ class TestPerson(unittest.TestCase):
                         "<wants_accomodation>": None}
 
         self.test_allocate_office = self.test_person.add_person(sample_staff)
+        self.assertRaises(Exception, self.test_allocate_office,
+                          msg="Person not allocated office")
 
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': []},
+        'RUBY': {'is_office': False, 'occupants': []}})
+    def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
         # Test adding of a fellow and allocate office and living space
-        self.test_amity.create_room(
-            {"<room_name>": ["Ruby"]}, "L")
-
         sample_fellow = {"<first_name>": "Jimmy",
                          "<last_name>": "Kamau",
                          "Fellow": True,
                          "Staff": False,
                          "<wants_accomodation>": 'Y'}
 
-        self.test_adding_fellow = self.test_person.add_person(sample_fellow)
-
-        # Test reallocation of rooms
-        self.test_reallocate = self.test_person.reallocate_person({
-            "<person_name>": "Sule",
-            "<new_room_name>": "Krypton"})
-
-        # Test Removal of a person
-        self.test_removing_person = self.test_person.remove_person(
-            {"<person_name>": "KELLY"})
-        self.test_remove_non_existing_person = self.test_person.remove_person(
-            {"<person_name>": "TRIAL"})
-
-    def test_class_initialization(self):
-        self.assertIsInstance(
-            self.test_amity, Amity, msg="Cannot create `Amity` instance")
-        self.assertIsInstance(
-            self.test_fellow, Fellow, msg="Cannot create `Fellow` instance")
-        self.assertIsInstance(
-            self.test_person, Person, msg="Cannot create `Person` instance")
-        self.assertIsInstance(
-            self.test_staff, Staff, msg="Cannot create `Staff` instance")
-
-    def test_add_person_in_person(self):
-        self.assertDictContainsSubset({1: {
-            'name': "LOICE ANDIA",
-            'accomodation': 'Y',
-            'is_fellow': True}}, people_data,
-            msg="Person not created")
-
-    def test_load_people_from_a_text_file(self):
-        self.assertDictContainsSubset({
-            2: {'name': "OLUWAFEMI SULE",
-                'accomodation': 'Y',
-                'is_fellow': True},
-            3: {'name': "DOMINIC WALTERS",
-                'accomodation': 'N',
-                'is_fellow': False}
-        }, people_data,
-            msg="People from text file not added")
-
-    def test_calling_add_person_twice_with_same_args(self):
-        self.assertEqual(self.test_adding_person_twice,
-                         "LOICE ANDIA Already Exists\n",
-                         msg="Person added twice")
-
-    def test_office_allocation_in_add_person(self):
-        self.assertRaises(Exception, self.test_allocate_office,
-                          msg="Person not allocated office")
-
-    def test_allocation_of_office_and_living_space_when_adding_a_fellow(self):
-        self.assertIn("RUBY", self.test_adding_fellow,
+        self.adding_fellow = self.test_person.add_person(sample_fellow)
+        self.assertIn("RUBY", self.adding_fellow,
                       msg="Person not allocated Living Space")
 
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': []},
+        'VALHALLA': {'is_office': True, 'occupants': [1]}})
+    @mock.patch.dict('personClass.people_data', {
+        1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'}})
     def test_reallocate_room(self):
-        self.assertIn("allocated KRYPTON", self.test_reallocate,
+        # Test reallocation of rooms
+        self.reallocate = self.test_person.reallocate_person({
+            "<person_name>": "Sule",
+            "<new_room_name>": "Krypton"})
+        self.assertIn("allocated KRYPTON", self.reallocate,
                       msg="Person has not been reallocated")
 
+    @mock.patch.dict('personClass.people_data', {
+        8: {'name': 'KELLY MCGUIRE', 'is_fellow': True, 'accomodation': 'Y'}})
     def test_removal_of_a_person(self):
+        # Test Removal of a person
+        self.removing_person = self.test_person.remove_person(
+            {"<person_name>": "KELLY"})
+        self.remove_non_existing_person = self.test_person.remove_person(
+            {"<person_name>": "TRIAL"})
         self.assertNotEqual(None,
-                            self.test_removing_person,
+                            self.removing_person,
                             msg="Person has not been deleted")
         self.assertEqual("TRIAL not found",
-                         self.test_remove_non_existing_person,
+                         self.remove_non_existing_person,
                          msg="Person found")
 
 

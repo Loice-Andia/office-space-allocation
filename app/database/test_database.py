@@ -1,45 +1,74 @@
-import os
 import unittest
-
-from app.amity.amityClass import Amity
-from app.person.personClass import Person
+import mock
 from app.database.amity_database import Database
 
 
-class TestClasses(unittest.TestCase):
-    """Class to test class initialization"""
+class testDatabase(unittest.TestCase):
+    """
+
+    This is Test class for Database methods.
+    It contains tests for the save_state and load_state methods.
+
+    """
 
     def setUp(self):
-        self.test_amity = Amity()
-        self.test_person = Person()
         self.test_database = Database()
 
-        self.test_amity.create_room(
-            {"<room_name>": ["Valhalla", "Oculus"]}, "O")
+    def test_class_initialization(self):
+        self.assertIsInstance(
+            self.test_database, Database,
+            msg="Cannot create `Database` instance")
 
-        self.test_amity.create_room(
-            {"<room_name>": ["Jade"]}, "L")
-        self.test_person.load_people({"<filename>": "try.txt"})
-
-
+    @mock.patch('amity_database.Database.connect_to_db')
+    def test_database_creation(self, mocked_connection):
         # Test database methods
-        self.test_sample_database = self.test_database.connect_to_db(
+        self.test_sample_database = mocked_connection(
             "test_database.db")
+        mocked_connection.assert_called_once_with("test_database.db")    
 
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': [2]},
+        'VALHALLA': {'is_office': True, 'occupants': [1]},
+        'JADE': {'is_office': False, 'occupants': [1]}})
+    @mock.patch.dict('app.person.personClass.people_data', {
+        1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'},
+        2: {'name': 'LOICE ANDIA', 'is_fellow': False, 'accomodation': 'N'}})
+    @mock.patch('amity_database.Database.connect_to_db')
+    def test_database_save_state_method(self, mocked_connection):
         # Test methods for saving to the database
+        mocked_connection("test_database.db")
         self.test_save_people = self.test_database.save_people(
-            self.test_sample_database)
+            mocked_connection)
+        self.assertNotEqual(self.test_save_people,
+                            "Failed", msg="People not added to database")
+
         self.test_save_rooms = self.test_database.save_rooms(
-            self.test_sample_database)
+            mocked_connection)
+        self.assertNotEqual(self.test_save_rooms,
+                            "Failed", msg="Rooms not added to database")
+
         self.test_save_allocations = self.test_database.save_allocations(
-            self.test_sample_database)
+            mocked_connection)
+        self.assertNotEqual(self.test_save_allocations,
+                            "Failed", msg="Allocations not added to database")
+
         self.test_save_state_with_dbname = self.test_database.save_state({
             "--db": "test_database.db"})
+        mocked_connection.assert_called_once_with("test_database.db")
+
         self.test_save_state_failure = self.test_database.save_state({
             "--db": ""})
-        self.test_save_state_without_dbname = self.test_database.save_state({
-            "--db": None})
+        self.assertRaises(Exception, self.test_save_state_failure,
+                          msg="Exception not raised")
 
+    @mock.patch('amity_database.Database.connect_to_db')
+    def test_save_state_without_db_name(self, mocked_connection):
+        mocked_connection("amity.db")
+        self.test_database.save_state({"--db": None})
+        mocked_connection.assert_called_once_with("amity.db")
+
+    @mock.patch('amity_database.Database.connect_to_db')
+    def test_database_load_state_method(self, mocked_connection):
         # Test Load state methods
         self.test_load_state = self.test_database.load_state({
             "<sqlite_database>": "test_database.db"})
@@ -47,35 +76,6 @@ class TestClasses(unittest.TestCase):
             "<sqlite_database>": ""})
         self.test_load_state_with_non_existing_db = self.test_database.load_state({
             "<sqlite_database>": "test.db"})
-
-    def test_class_initialization(self):
-        self.assertIsInstance(
-            self.test_amity, Amity, msg="Cannot create `Amity` instance")
-        self.assertIsInstance(
-            self.test_person, Person, msg="Cannot create `Person` instance")
-        self.assertIsInstance(
-            self.test_database, Database,
-            msg="Cannot create `Database` instance")
-
-    def test_database_creation(self):
-        self.assertTrue(os.path.exists("test_database.db"),
-                        msg="Database not created")
-
-    def test_database_save_state_method(self):
-        self.assertNotEqual(self.test_save_people,
-                            "Failed", msg="People not added to database")
-        self.assertNotEqual(self.test_save_rooms,
-                            "Failed", msg="Rooms not added to database")
-        self.assertNotEqual(self.test_save_allocations,
-                            "Failed", msg="Allocations not added to database")
-        self.assertTrue(os.path.exists("test_database.db"),
-                        msg="Data not saved to database")
-        self.assertRaises(Exception, self.test_save_state_failure,
-                          msg="Exception not raised")
-        self.assertTrue(os.path.exists("amity.db"),
-                        msg="Data not saved to database")
-
-    def test_database_load_state_method(self):
         self.assertEqual(self.test_load_state,
                          "Data successfully added",
                          msg="Data not added from the database")
@@ -84,10 +84,6 @@ class TestClasses(unittest.TestCase):
                          msg="Database Exists")
         self.assertRaises(Exception, self.test_load_state_failure,
                           msg="Exception not raised")
-
-    def tearDown(self):
-        os.remove("test_database.db")
-        os.remove('amity.db')
 
 
 if __name__ == '__main__':

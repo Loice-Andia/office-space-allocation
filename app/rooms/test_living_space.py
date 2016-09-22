@@ -5,9 +5,8 @@ from livingspaceClass import LivingSpace
 class TestLivingSpace(unittest.TestCase):
     """
 
-    This is Test class for Room class and its methods.
-    It contains tests for the get_name, print_room,
-    print_allocations and print_unallocated methods.
+    This is Test class for LivingSpace class and
+    tests its initialiation
 
     """
 

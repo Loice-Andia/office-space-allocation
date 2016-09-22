@@ -1,8 +1,6 @@
-import os
 import unittest
+import mock
 from roomClass import Room
-from app.amity.amityClass import Amity
-from app.person.personClass import Person
 
 
 class TestRoom(unittest.TestCase):
@@ -15,31 +13,14 @@ class TestRoom(unittest.TestCase):
     """
 
     def setUp(self):
-        self.test_amity = Amity()
-        self.test_person = Person()
         self.test_room = Room()
-
-        sample_fellow = {"<first_name>": "Jimmy",
-                         "<last_name>": "Kamau",
-                         "Fellow": True,
-                         "Staff": False,
-                         "<wants_accomodation>": 'Y'}
-
-        self.test_person.add_person(sample_fellow)
-
-        self.test_amity.create_room(
-            {"<room_name>": ["Valhalla", "Oculus"]}, "O")
-
-        self.test_amity.create_room(
-            {"<room_name>": ["Jade"]}, "L")
-        self.test_person.load_people({"<filename>": "try.txt"})
-        self.test_amity.create_room(
-            {"<room_name>": ["Emerald"]}, "L")
 
     def test_class_initialization(self):
         self.assertIsInstance(
             self.test_room, Room, msg="Cannot create `Room` instance")
 
+    @mock.patch.dict('app.person.personClass.people_data', {
+        1: {'name': 'JIMMY KAMAU', 'is_fellow': True, 'accomodation': 'Y'}})
     def test_getting_persons_name_from_people_data_dictionary(self):
         # Test getting of a person's name
         self.get_name = self.test_room.get_names(1)
@@ -49,30 +30,46 @@ class TestRoom(unittest.TestCase):
         self.assertEqual(self.get_name_with_wrong_id,
                          "Person Does not exist", msg="Person Exists")
 
-    def test_print_allocations(self):
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': [2]},
+        'VALHALLA': {'is_office': True, 'occupants': [1]},
+        'JADE': {'is_office': False, 'occupants': [1]}})
+    @mock.patch.dict('app.person.personClass.people_data', {
+        1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'},
+        2: {'name': 'LOICE ANDIA', 'is_fellow': False, 'accomodation': 'N'}})
+    @mock.patch('roomClass.open')
+    def test_print_allocations(self, mocked_open):
         # Test print allocations function
         self.print_allocations_without_filename = self.test_room.print_allocations({
             "-o": False, "<filename>": None})
-        self.print_allocations_with_filename = self.test_room.print_allocations({
+        self.test_room.print_allocations({
             "-o": True, "<filename>": "test_allocations.txt"})
+
+        mocked_open.assert_called_once_with("test_allocations.txt", 'wt')
         self.assertNotEqual(self.print_allocations_without_filename,
                             "", msg="Wrong data printed")
-        self.assertTrue(os.path.exists("test_allocations.txt"),
-                        msg="File not created")
-        os.remove("test_allocations.txt")
 
-    def test_print_unallocated(self):
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'KRYPTON': {'is_office': True, 'occupants': []}})
+    @mock.patch.dict('app.person.personClass.people_data', {
+        1: {'name': 'JIMMY KAMAU', 'is_fellow': True, 'accomodation': 'Y'}})
+    @mock.patch('roomClass.open')
+    def test_print_unallocated(self, mocked_open):
         # Test print unallocated function
         self.print_unallocated_without_filename = self.test_room.print_unallocated({
             "-o": False, "<filename>": None})
-        self.print_unallocated_with_filename = self.test_room.print_unallocated({
+        self.test_room.print_unallocated({
             "-o": True, "<filename>": "test_unallocated.txt"})
         self.assertIn("JIMMY KAMAU",
                       self.print_unallocated_without_filename,
                       msg="Wrong data printed")
-        self.assertTrue(os.path.exists("test_unallocated.txt"))
-        os.remove("test_unallocated.txt")
+        mocked_open.assert_called_once_with("test_unallocated.txt", 'wt')
 
+    @mock.patch.dict('app.amity.amityClass.rooms', {
+        'JADE': {'is_office': False, 'occupants': [1]},
+        'EMERALD': {'is_office': False, 'occupants': []}})
+    @mock.patch.dict('app.person.personClass.people_data', {
+        1: {'name': 'JIMMY KAMAU', 'is_fellow': True, 'accomodation': 'Y'}})
     def test_print_room(self):
         # Test print room function
         self.printing_of_non_existing_room = self.test_room.print_room({
