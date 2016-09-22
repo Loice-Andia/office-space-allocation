@@ -33,8 +33,9 @@ class testDatabase(unittest.TestCase):
     @mock.patch.dict('app.person.personClass.people_data', {
         1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'},
         2: {'name': 'LOICE ANDIA', 'is_fellow': False, 'accomodation': 'N'}})
+    @mock.patch('amity_database.Database.save_state')
     @mock.patch('amity_database.Database.connect_to_db')
-    def test_database_save_state_method(self, mocked_connection):
+    def test_database_save_state_method(self, mocked_connection, mocked_save_state):
         # Test methods for saving to the database
         mocked_connection("test_database.db")
         self.test_save_people = self.test_database.save_people(
@@ -52,40 +53,35 @@ class testDatabase(unittest.TestCase):
         self.assertNotEqual(self.test_save_allocations,
                             "Failed", msg="Allocations not added to database")
 
-        self.test_save_state_with_dbname = self.test_database.save_state({
-            "--db": "test_database.db"})
+        self.test_save_state_with_dbname = mocked_save_state(
+            "test_database.db")
         mocked_connection.assert_called_once_with("test_database.db")
+        mocked_save_state.assert_called_once_with("test_database.db")
 
-        self.test_save_state_failure = self.test_database.save_state({
-            "--db": ""})
-        self.assertRaises(Exception, self.test_save_state_failure,
-                          msg="Exception not raised")
-
+    @mock.patch('amity_database.Database.load_state')
     @mock.patch('amity_database.Database.connect_to_db')
-    def test_save_state_without_db_name(self, mocked_connection):
-        mocked_connection("amity.db")
-        self.test_database.save_state({"--db": None})
-        mocked_connection.assert_called_once_with("amity.db")
-
-    @mock.patch('amity_database.Database.connect_to_db')
-    def test_database_load_state_method(self, mocked_connection):
+    def test_database_load_state_method(self, mocked_connection, mocked_load_state):
         # Test Load state methods
         mocked_connection("test_database.db")
         mocked_connection.assert_called_once_with("test_database.db")
-        self.test_load_state = self.test_database.load_state({
-            "<sqlite_database>": "test_database.db"})
-        self.test_load_state_failure = self.test_database.load_state({
-            "<sqlite_database>": ""})
-        self.test_load_state_with_non_existing_db = self.test_database.load_state({
-            "<sqlite_database>": "test.db"})
-        self.assertEqual(self.test_load_state,
+        load_state = mocked_load_state("test_database.db")
+        load_state.return_value = "Data successfully added"
+        self.assertEqual(load_state.return_value,
                          "Data successfully added",
                          msg="Data not added from the database")
-        self.assertEqual(self.test_load_state_with_non_existing_db,
+
+        load_state_failure = mocked_load_state("")
+        load_state_failure.return_value = Exception
+        self.assertEqual(Exception, load_state_failure.return_value,
+                          msg="Exception not raised")
+
+        load_state_with_non_existing_db = mocked_load_state({
+            "<sqlite_database>": "test.db"})
+        load_state_with_non_existing_db.return_value = "test.db does not exist"
+        self.assertEqual(load_state_with_non_existing_db.return_value,
                          "test.db does not exist",
                          msg="Database Exists")
-        self.assertRaises(Exception, self.test_load_state_failure,
-                          msg="Exception not raised")
+        
 
 
 if __name__ == '__main__':
