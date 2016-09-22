@@ -24,7 +24,7 @@ class testDatabase(unittest.TestCase):
         # Test database methods
         self.test_sample_database = mocked_connection(
             "test_database.db")
-        mocked_connection.assert_called_once_with("test_database.db")    
+        mocked_connection.assert_called_once_with("test_database.db")
 
     @mock.patch.dict('app.amity.amityClass.rooms', {
         'KRYPTON': {'is_office': True, 'occupants': [2]},
@@ -70,6 +70,8 @@ class testDatabase(unittest.TestCase):
     @mock.patch('amity_database.Database.connect_to_db')
     def test_database_load_state_method(self, mocked_connection):
         # Test Load state methods
+        mocked_connection("test_database.db")
+        mocked_connection.assert_called_once_with("test_database.db")
         self.test_load_state = self.test_database.load_state({
             "<sqlite_database>": "test_database.db"})
         self.test_load_state_failure = self.test_database.load_state({

@@ -49,6 +49,7 @@ class Room(object):
 
         message = "{}\n".format(room_name.upper())
         message += "-" * 30
+        message +="\n"
 
         if not room['occupants']:
             message += "No Occupants"

@@ -4,7 +4,7 @@ rooms = {}
 
 class Amity(object):
     """
-    
+
 
     This is the main Amity class.
     METHODS

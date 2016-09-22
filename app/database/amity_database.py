@@ -1,5 +1,5 @@
 import os
-from models import *
+from app.database.models import *
 from app.amity import my_amity
 from app.amity.amityClass import rooms
 from app.person.personClass import people_data
