@@ -73,7 +73,7 @@ class testDatabase(unittest.TestCase):
         load_state_failure = mocked_load_state("")
         load_state_failure.return_value = Exception
         self.assertEqual(Exception, load_state_failure.return_value,
-                          msg="Exception not raised")
+                         msg="Exception not raised")
 
         load_state_with_non_existing_db = mocked_load_state({
             "<sqlite_database>": "test.db"})
@@ -81,7 +81,6 @@ class testDatabase(unittest.TestCase):
         self.assertEqual(load_state_with_non_existing_db.return_value,
                          "test.db does not exist",
                          msg="Database Exists")
-        
 
 
 if __name__ == '__main__':
