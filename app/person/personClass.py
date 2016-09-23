@@ -123,17 +123,27 @@ class Person(object):
                 person_identifier = person
 
         # find currently allocated room and remove identifier
-        for current_room in rooms:
-            if person_identifier in rooms[current_room]['occupants']:
-                rooms[current_room]['occupants'].remove(person_identifier)
 
+        for current_room in rooms:
+            if (rooms[new_room]['is_office'] and rooms[current_room]['is_office']) or (not rooms[new_room]['is_office'] and not rooms[current_room]['is_office']):
+                if person_identifier in rooms[current_room]['occupants']:
+                    rooms[current_room]['occupants'].remove(person_identifier)
 
         # Append identifier to new_room
-        rooms[new_room]['occupants'].append(person_identifier)
-
-        message = "{} has been reallocated {} room\n".format(
-            person_name, new_room)
-        return message
+        if rooms[new_room]['is_office'] and len(rooms[new_room]['occupants']) < 4:
+            rooms[new_room]['occupants'].append(person_identifier)
+            message = "{} has been reallocated {} room\n".format(
+                person_name, new_room)
+            return message
+        if not rooms[new_room]['is_office'] and len(rooms[new_room]['occupants']) < 6:
+            if people_data[person_identifier]['is_fellow']:
+                rooms[new_room]['occupants'].append(person_identifier)
+                message = "{} has been reallocated {} room\n".format(
+                    person_name, new_room)
+                return message
+            if not people_data[person_identifier]['is_fellow']:
+                return "STAFF CANNOT BE ALLOCATED LIVING SPACES"
+        return "{} is full".format(new_room)
 
     def remove_person(self, args):
         """
