@@ -2,6 +2,7 @@ import unittest
 import mock
 from personClass import Person
 
+
 class TestPerson(unittest.TestCase):
     """
 
@@ -85,7 +86,9 @@ class TestPerson(unittest.TestCase):
 
     @mock.patch.dict('app.amity.amityClass.rooms', {
         'KRYPTON': {'is_office': True, 'occupants': []},
-        'VALHALLA': {'is_office': True, 'occupants': [1]}})
+        'VALHALLA': {'is_office': True, 'occupants': [1]},
+        'JADE': {'is_office': False, 'occupants': [1]},
+        'OCULUS': {'is_office': True, 'occupants': [2, 3, 4, 5]}})
     @mock.patch.dict('personClass.people_data', {
         1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'}})
     def test_reallocate_room(self):
@@ -94,6 +97,12 @@ class TestPerson(unittest.TestCase):
             "<person_name>": "Sule",
             "<new_room_name>": "Krypton"})
         self.assertIn("allocated KRYPTON", self.reallocate,
+                      msg="Person has not been reallocated")
+
+        self.reallocate_to_full_room = self.test_person.reallocate_person({
+            "<person_name>": "Sule",
+            "<new_room_name>": "oculus"})
+        self.assertIn("full", self.reallocate_to_full_room,
                       msg="Person has not been reallocated")
 
     @mock.patch.dict('personClass.people_data', {
