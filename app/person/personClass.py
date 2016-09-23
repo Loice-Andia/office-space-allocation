@@ -123,9 +123,12 @@ class Person(object):
                 person_identifier = person
 
         # find currently allocated room and remove identifier
+        new_room_type = rooms[new_room]['is_office']
+        
 
         for current_room in rooms:
-            if (rooms[new_room]['is_office'] and rooms[current_room]['is_office']) or (not rooms[new_room]['is_office'] and not rooms[current_room]['is_office']):
+            current_room_type = rooms[current_room]['is_office']
+            if new_room_type and current_room_type:
                 if person_identifier in rooms[current_room]['occupants']:
                     rooms[current_room]['occupants'].remove(person_identifier)
 
