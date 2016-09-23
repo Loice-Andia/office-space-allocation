@@ -88,6 +88,7 @@ class TestPerson(unittest.TestCase):
         'KRYPTON': {'is_office': True, 'occupants': []},
         'VALHALLA': {'is_office': True, 'occupants': [1]},
         'JADE': {'is_office': False, 'occupants': [1]},
+        'EMERALD': {'is_office': False, 'occupants': [5]},
         'OCULUS': {'is_office': True, 'occupants': [2, 3, 4, 5]}})
     @mock.patch.dict('personClass.people_data', {
         1: {'name': 'OLUWAFEMI SULE', 'is_fellow': True, 'accomodation': 'Y'},
@@ -110,8 +111,14 @@ class TestPerson(unittest.TestCase):
             "<person_name>": "Njira",
             "<new_room_name>": "jade"})
         self.assertEqual(self.reallocate_staff_living_space,
-            "STAFF CANNOT BE ALLOCATED LIVING SPACES",
-            msg="Staff allocated living spaces")
+                         "STAFF CANNOT BE ALLOCATED LIVING SPACES",
+                         msg="Staff allocated living spaces")
+
+        self.reallocate = self.test_person.reallocate_person({
+            "<person_name>": "Sule",
+            "<new_room_name>": "Emerald"})
+        self.assertIn("allocated EMERALD", self.reallocate,
+                      msg="Person has not been reallocated")
 
     @mock.patch.dict('personClass.people_data', {
         8: {'name': 'KELLY MCGUIRE', 'is_fellow': True, 'accomodation': 'Y'}})
