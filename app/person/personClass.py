@@ -124,7 +124,6 @@ class Person(object):
 
         # find currently allocated room and remove identifier
         new_room_type = rooms[new_room]['is_office']
-        
 
         for current_room in rooms:
             current_room_type = rooms[current_room]['is_office']
